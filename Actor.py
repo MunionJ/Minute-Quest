@@ -51,10 +51,10 @@ class Actor(pygame.sprite.Sprite):
             if abs(self.velocity.x) < 0.1:
                 self.velocity.x = 0
 
-    def update(self):
+    def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
-        pass
+        self.move(keys, dt)
 
     def draw(self):
         """Base draw method. Will be filled
