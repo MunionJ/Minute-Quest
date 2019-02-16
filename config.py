@@ -1,0 +1,2 @@
+SCREEN_RES = (1024,768)
+GAME_NAME = "Minute Quest"
