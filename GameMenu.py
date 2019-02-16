@@ -61,7 +61,7 @@ class GameMenu(pygame.sprite.Sprite):
             x = self.margin + button.rect.w//2
             y = current_y
             button.updateLocation(x,y)
-            current_y += button.rect.h + 3
+            current_y += button.rect.h + 5
 
     def update(self,key):
         """Evaluate action based on user keypress"""
