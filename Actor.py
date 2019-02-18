@@ -56,7 +56,11 @@ class Actor(pygame.sprite.Sprite):
             out later."""
         self.move(keys, dt)
 
-    def draw(self):
+    def draw(self, window):
         """Base draw method. Will be filled
             out later."""
-        pass
+        # temporarily just drawing a rect
+        pygame.draw.rect(window,
+                         (255, 255, 255),
+                         (self.pos.x, self.pos.y, 24, 24)
+                         )
