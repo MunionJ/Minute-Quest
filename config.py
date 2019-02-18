@@ -1,2 +1,5 @@
 SCREEN_RES = (1024,768)
 GAME_NAME = "Minute Quest"
+
+PLAYER_SPAWN = None
+ENEMIES_SPAWN = []
