@@ -13,17 +13,17 @@ class Actor(pygame.sprite.Sprite):
 
         super().__init__()
         self.pos = vec(start_pos[0], start_pos[1])
-        self.prevPos = self.position
+        self.prevPos = self.pos
         self.velocity = vec(0, 0)
         self.accel = vec(0.5, -0.5)
         self.max_speed = 10
         self.image = pygame.image.load(img)
-        self.rect = self.image.get_rect()
+        self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
         self.debug = False
 
     def move(self, keys, dt):
         """Base movement method."""
-
+        #print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
         movedHorizontal = False
         if keys[pygame.K_s]:
             # Implement ability to crouch?

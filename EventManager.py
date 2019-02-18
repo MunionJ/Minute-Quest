@@ -52,7 +52,6 @@ class EventManager:
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
         temp = None
-
         # check to see if any game pads are connected
         if len(self.joySticks):
             # 360 pad buttons: 0 = 'A', 1 = 'B', 2 = 'X', 3 = 'Y'
