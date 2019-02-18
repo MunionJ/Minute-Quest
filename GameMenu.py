@@ -1,6 +1,8 @@
 import pygame
 from config import *
 from Button import Button
+
+
 class GameMenu(pygame.sprite.Sprite):
 
     def __init__(self):
