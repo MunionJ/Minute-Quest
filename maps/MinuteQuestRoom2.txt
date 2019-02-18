@@ -7,7 +7,7 @@ orientation=orthogonal
 background_color=0,0,0,255
 
 [tilesets]
-tileset=ProjectUtumno_full.png,32,32,0,0
+tileset=E:/College/2018-2019/Spring Semester/Game Programming Foundations 2/Labs/Minute Quest/ProjectUtumno_full.png,32,32,0,0
 
 [layer]
 type=Background
