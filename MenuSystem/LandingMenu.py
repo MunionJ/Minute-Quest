@@ -1,31 +1,33 @@
 import pygame
 from config import *
-from Button import Button
-class ControlsMenu(pygame.sprite.Sprite):
+from MenuSystem.Button import Button
+class LandingMenu(pygame.sprite.Sprite):
 
     def __init__(self):
-        """Initialize Control Menu"""
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
 
         self.rect = self.screen.get_rect()
         self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',20)
-        self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',75)
+        self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',100)
         self.headertextColor = pygame.color.THECOLORS['white']
         self.bg_color = pygame.color.THECOLORS['black']
         self.buttonColor = pygame.color.THECOLORS['blue']
         self.buttonTextColor = pygame.color.THECOLORS['white']
-        self.buttonSelectColor = pygame.color.THECOLORS['white']
-        self.margin = 25
+        self.buttonSelectColor = pygame.color.THECOLORS['black']
+        self.margin = 20
+        self.bg_image = pygame.image.load('./images/Frozen Skull tweaked by deevad.png')
+        self.bg_image = pygame.transform.scale(self.bg_image,SCREEN_RES)
 
         self.screen.fill(self.bg_color)
-        self.header = self.headerFont.render("Controls",False,self.headertextColor)
+        self.header = self.headerFont.render(GAME_NAME,False,self.headertextColor)
         self.headerRect = self.header.get_rect()
-        self.headerRect.topleft = (self.margin, self.margin)
+        self.headerRect.midtop = (SCREEN_RES[0]//2, 100)
         self.buttonOptions = [
-            "KeyBoard Controls",
-            "Gamepad Controls",
-            "Back"
+            "New Game",
+            "Load Game",
+            "Game Controls",
+            "Exit"
         ]
         self.buttons = []
         for option in self.buttonOptions:
@@ -37,10 +39,6 @@ class ControlsMenu(pygame.sprite.Sprite):
         default = self.buttons[self.current_index]
         default.select()
         self.selectedOption = None
-        self.keyboardControls = pygame.Surface(SCREEN_RES)
-        self.gamepadControls = pygame.Surface(SCREEN_RES)
-        self.createGamePadDisplay()
-        self.createKeyBoardDisplay()
 
     def Reset(self):
         self.current_index = 0
@@ -49,30 +47,21 @@ class ControlsMenu(pygame.sprite.Sprite):
             button.deselect()
         self.buttons[self.current_index].select()
 
-    def createKeyBoardDisplay(self):
-        """Describe Inputs for Users using Keyboard"""
-        pass
-
-    def createGamePadDisplay(self):
-        """Describe Inputs for Users using Gamepad"""
-        pass
-
     def placeButtons(self):
-        """Place buttons on screen"""
         gap_y = self.margin
         totalHeightButton = 0
         for button in self.buttons:
             totalHeightButton += gap_y + button.rect.h
 
-        current_y = SCREEN_RES[1] - totalHeightButton - self.margin
+
+        current_y = self.headerRect.bottom + 100
         for button in self.buttons:
-            x = self.margin + button.rect.w//2
+            x = (SCREEN_RES[0]//2)
             y = current_y
             button.updateLocation(x,y)
-            current_y += button.rect.h + 5
+            current_y += gap_y + button.rect.h
 
     def update(self,key):
-        """Evaluate action based on user keypress"""
         if key == pygame.K_w or key == pygame.K_a:
             if self.current_index > 0:
                 self.buttons[self.current_index].deselect()
@@ -86,28 +75,21 @@ class ControlsMenu(pygame.sprite.Sprite):
                 self.current_index += 1
                 self.buttons[self.current_index].select()
 
-
-        if self.buttonOptions[self.current_index] == "KeyBoard Controls":
-            pass
-        elif self.buttonOptions[self.current_index] == "Gamepad Controls":
-            pass
-
         if key == pygame.K_RETURN:
-            if self.buttonOptions[self.current_index] == "Back":
-                self.setMenuSelection()
+            self.setMenuSelection(self.buttonOptions[self.current_index])
 
     def getMenuSelection(self):
         return self.selectedOption
 
-    def setMenuSelection(self):
-        self.selectedOption = self.buttonOptions[self.current_index]
+    def setMenuSelection(self, selected=None):
+        self.selectedOption = selected
 
     def draw(self, window):
         self.screen.fill(self.bg_color)
+        self.screen.blit(self.bg_image,(0,0))
         self.screen.blit(self.header,self.headerRect)
         for button in self.buttons:
             button.draw(self.screen)
-
         window.blit(self.screen,self.rect)
 
 if __name__ == "__main__":

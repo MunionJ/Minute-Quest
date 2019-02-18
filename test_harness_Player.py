@@ -20,7 +20,7 @@ clock = pygame.time.Clock()
 running = True
 
 while running:
-    dt = clock.tick(60) / 1000.0
+    dt = clock.tick(60)
     manager.process_input(dt)
     screen_rect.clamp_ip(player.rect)
     for obj in manager.game_objects["game_objects"]:

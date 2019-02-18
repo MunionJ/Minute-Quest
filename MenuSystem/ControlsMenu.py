@@ -1,9 +1,7 @@
 import pygame
 from config import *
-from Button import Button
-
-
-class GameMenu(pygame.sprite.Sprite):
+from MenuSystem.Button import Button
+class ControlsMenu(pygame.sprite.Sprite):
 
     def __init__(self):
         """Initialize Control Menu"""
@@ -17,19 +15,17 @@ class GameMenu(pygame.sprite.Sprite):
         self.bg_color = pygame.color.THECOLORS['black']
         self.buttonColor = pygame.color.THECOLORS['blue']
         self.buttonTextColor = pygame.color.THECOLORS['white']
-        self.buttonSelectColor = pygame.color.THECOLORS['yellow']
-        self.margin = 10
+        self.buttonSelectColor = pygame.color.THECOLORS['white']
+        self.margin = 25
 
         self.screen.fill(self.bg_color)
-        self.header = self.headerFont.render("Minute Quest",False,self.headertextColor)
+        self.header = self.headerFont.render("Controls",False,self.headertextColor)
         self.headerRect = self.header.get_rect()
         self.headerRect.topleft = (self.margin, self.margin)
         self.buttonOptions = [
-            "Enter Dungeon",
-            "Shop",
-            "Fight The Boss",
-            "Save Game",
-            "Main Menu"
+            "KeyBoard Controls",
+            "Gamepad Controls",
+            "Back"
         ]
         self.buttons = []
         for option in self.buttonOptions:
@@ -43,6 +39,8 @@ class GameMenu(pygame.sprite.Sprite):
         self.selectedOption = None
         self.keyboardControls = pygame.Surface(SCREEN_RES)
         self.gamepadControls = pygame.Surface(SCREEN_RES)
+        self.createGamePadDisplay()
+        self.createKeyBoardDisplay()
 
     def Reset(self):
         self.current_index = 0
@@ -50,6 +48,14 @@ class GameMenu(pygame.sprite.Sprite):
         for button in self.buttons:
             button.deselect()
         self.buttons[self.current_index].select()
+
+    def createKeyBoardDisplay(self):
+        """Describe Inputs for Users using Keyboard"""
+        pass
+
+    def createGamePadDisplay(self):
+        """Describe Inputs for Users using Gamepad"""
+        pass
 
     def placeButtons(self):
         """Place buttons on screen"""
@@ -73,6 +79,7 @@ class GameMenu(pygame.sprite.Sprite):
                 self.current_index -= 1
                 self.buttons[self.current_index].select()
 
+
         if key == pygame.K_s or key == pygame.K_d:
             if self.current_index < len(self.buttons)-1:
                 self.buttons[self.current_index].deselect()
@@ -80,17 +87,13 @@ class GameMenu(pygame.sprite.Sprite):
                 self.buttons[self.current_index].select()
 
 
-        if self.buttonOptions[self.current_index] == "Enter the Dungon":
+        if self.buttonOptions[self.current_index] == "KeyBoard Controls":
             pass
-        elif self.buttonOptions[self.current_index] == "Shop":
-            pass
-        elif self.buttonOptions[self.current_index] == "Fight The Boss":
-            pass
-        elif self.buttonOptions[self.current_index] == "Save Game":
+        elif self.buttonOptions[self.current_index] == "Gamepad Controls":
             pass
 
         if key == pygame.K_RETURN:
-            if self.buttonOptions[self.current_index] == "Main Menu":
+            if self.buttonOptions[self.current_index] == "Back":
                 self.setMenuSelection()
 
     def getMenuSelection(self):

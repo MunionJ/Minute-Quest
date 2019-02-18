@@ -1,9 +1,8 @@
-import pygame
-from GameMenuStates import GameMenus as menu
+from MenuSystem.GameMenuStates import GameMenus as menu
+from MenuSystem.LandingMenu import *
+from MenuSystem.ControlsMenu import *
+from MenuSystem.GameMenu import *
 from EventManager import *
-from LandingMenu import *
-from ControlsMenu import *
-from GameMenu import *
 
 class GameManager:
 
