@@ -8,6 +8,7 @@ from EventManager import *
 pygame.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 screen_size = (1024, 768)
+bg_color = pygame.color.THECOLORS['black']
 window = pygame.display.set_mode(screen_size)
 pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
@@ -21,8 +22,16 @@ running = True
 
 while running:
     dt = clock.tick(60)
-    manager.process_input(dt)
+    running = manager.process_input(dt)
+
+    events = pygame.event.get()
+    for event in events:
+        if event.type == pygame.QUIT:
+            running = False
+
     screen_rect.clamp_ip(player.rect)
+    window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
+
     pygame.display.flip()

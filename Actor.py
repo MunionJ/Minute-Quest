@@ -32,7 +32,7 @@ class Actor(pygame.sprite.Sprite):
             self.velocity.x += self.accel.x * dt
             movedHorizontal = True
         elif keys[pygame.K_a]:
-            self.velocity -= self.accel.x * dt
+            self.velocity.x -= (self.accel.x * dt)
             movedHorizontal = True
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0

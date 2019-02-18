@@ -51,6 +51,10 @@ class EventManager:
     def process_input(self, dt):
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_ESCAPE]:
+            return False
+
         temp = None
         # check to see if any game pads are connected
         if len(self.joySticks):
@@ -119,10 +123,12 @@ class EventManager:
 
                 keys = tuple(temp)
 
-        for key in self.game_objects:
-            list = self.game_objects[key]
-            for obj in list:
+        for obj in self.game_objects['game_objects']:
                 obj.update(keys, dt)
+
+        pygame.event.pump()
+        return True
+
 
     def process_menu_input(self):
         e = pygame.event.poll()
