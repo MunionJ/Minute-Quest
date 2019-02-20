@@ -29,9 +29,14 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen_rect.clamp_ip(player.rect)
+    player.rect.clamp_ip(screen_rect)
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
+
+    pygame.draw.rect(window,
+                     (0, 255, 0),
+                     screen_rect,
+                     5)
 
     pygame.display.flip()

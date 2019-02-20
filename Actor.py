@@ -40,6 +40,9 @@ class Actor(pygame.sprite.Sprite):
             self.velocity.x -= (self.accel.x * dt)
             movedHorizontal = True
 
+        if keys[pygame.K_F1]:
+            self.debug = not self.debug
+
         # if the entity is not currently moving, decrease their velocity until it reaches 0
         if movedHorizontal:
             self.prevPos = self.pos
@@ -63,6 +66,8 @@ class Actor(pygame.sprite.Sprite):
         # Gravity and Player Movement
         self.accel = vec(0.5, PLAYER_GRAV)
         self.velocity.y -= self.accel.y
+        self.pos += self.velocity
+        self.rect.center = self.pos
         self.move(keys, dt)
 
     def draw(self, window):
@@ -71,5 +76,10 @@ class Actor(pygame.sprite.Sprite):
         # temporarily just drawing a rect
         pygame.draw.rect(window,
                          (255, 255, 255),
-                         (self.pos.x, self.pos.y, 24, 24)
+                         self.rect
                          )
+        if self.debug:
+            pygame.draw.rect(window,
+                             (255, 0, 0),
+                             self.rect,
+                             2)
