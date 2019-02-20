@@ -30,6 +30,7 @@ while running:
             running = False
 
     player.rect.clamp_ip(screen_rect)
+    player.set_pos()
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
