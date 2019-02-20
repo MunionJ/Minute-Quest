@@ -3,7 +3,7 @@ from config import *
 
 vec = pygame.math.Vector2
 
-
+# alrighty
 class Actor(pygame.sprite.Sprite):
     """This is the base class from which Player,
         Enemy, etc. will inherit from."""
