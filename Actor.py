@@ -77,6 +77,7 @@ class Actor(pygame.sprite.Sprite):
         self.rect.center = self.pos
         self.move(keys, dt)
 
+    # alrighty
     def draw(self, window):
         """Base draw method. Will be filled
             out later."""
