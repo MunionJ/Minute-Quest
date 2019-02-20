@@ -5,11 +5,13 @@ from Actor import *
 class Player(Actor):
     """ The player class which will be controlled
         by the user."""
+
     def __init__(self, start_pos, img):
         super().__init__(start_pos, img)
         self.max_hp = 10
         self.cur_hp = self.max_hp
         self.alive = True
+        self.jump_vector = vec(0, -3.5)
         # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
@@ -36,10 +38,20 @@ class Player(Actor):
             overridden if need be."""
         pass
 
+    def update(self, keys, dt):
+        """ Testing Player jumping."""
+        super().update(keys, dt)
+        print(self.pos, self.rect.center)
+
+        if keys[pygame.K_SPACE]:
+            self.jump()
+
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
-        pass
+        self.velocity += self.jump_vector
+        self.pos += self.velocity
+        self.rect.center = self.pos
 
     def use_ability(self):
         """ Generic ability usage class.
@@ -61,3 +73,8 @@ class Player(Actor):
         """ Generic method for gaining
             xp."""
         pass
+
+    def set_pos(self):
+        """ Sets the player's position."""
+        self.pos = self.rect.center
+
