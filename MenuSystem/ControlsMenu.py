@@ -53,6 +53,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         """Describe Inputs for Users using Keyboard"""
         window = pygame.Surface(SCREEN_RES)
         font = self.font
+        pygame.font.render("test",)
         pass
 
     def createGamePadDisplay(self):
@@ -60,7 +61,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         win = pygame.Surface(SCREEN_RES)
         controller = self.controller
         font = self.font
-
+        win.blit(controller,(300,200))
         pass
 
     def placeButtons(self):
