@@ -5,6 +5,9 @@ from Actor import *
 class Player(Actor):
     """ The player class which will be controlled
         by the user."""
+
+    #TEST CHANGE
+
     def __init__(self, start_pos, img):
         super().__init__(start_pos, img)
         self.max_hp = 10
