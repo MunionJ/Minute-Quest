@@ -28,6 +28,7 @@ class Player(Actor):
 
     def ranged_attack(self):
         """ Generic ranged attack method. Blah blah blah."""
+        pass
 
     def receive_dmg(self):
         """ Generic method for when a

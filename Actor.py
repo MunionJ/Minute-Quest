@@ -1,4 +1,5 @@
 import pygame
+from config import *
 
 vec = pygame.math.Vector2
 
@@ -20,10 +21,14 @@ class Actor(pygame.sprite.Sprite):
         self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
         self.debug = False
+        self.jumping = False
+        self.jump_offset = 0
 
+    # Possibly add the movement code to the player class specifically, as we will not be controlling enemies with key
+    #  presses, they will have their own unique movement
     def move(self, keys, dt):
         """Base movement method."""
-        #print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
+        # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
         movedHorizontal = False
         if keys[pygame.K_s]:
             # Implement ability to crouch?
@@ -31,7 +36,7 @@ class Actor(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             self.velocity.x += self.accel.x * dt
             movedHorizontal = True
-        elif keys[pygame.K_a]:
+        if keys[pygame.K_a]:
             self.velocity.x -= (self.accel.x * dt)
             movedHorizontal = True
 
@@ -54,6 +59,10 @@ class Actor(pygame.sprite.Sprite):
     def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
+
+        # Gravity and Player Movement
+        self.accel = vec(0.5, PLAYER_GRAV)
+        self.velocity.y -= self.accel.y
         self.move(keys, dt)
 
     def draw(self, window):
