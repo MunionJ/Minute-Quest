@@ -1,16 +1,18 @@
 import pygame
 from config import *
 from MenuSystem.Button import Button
+
+
 class ControlsMenu(pygame.sprite.Sprite):
 
     def __init__(self):
         """Initialize Control Menu"""
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
-
+        self.controller = pygame.image.load("images/controller.png")
         self.rect = self.screen.get_rect()
-        self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',20)
-        self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',75)
+        self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf', 20)
+        self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf', 75)
         self.headertextColor = pygame.color.THECOLORS['white']
         self.bg_color = pygame.color.THECOLORS['black']
         self.buttonColor = pygame.color.THECOLORS['blue']
@@ -19,7 +21,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         self.margin = 25
 
         self.screen.fill(self.bg_color)
-        self.header = self.headerFont.render("Controls",False,self.headertextColor)
+        self.header = self.headerFont.render("Controls", False, self.headertextColor)
         self.headerRect = self.header.get_rect()
         self.headerRect.topleft = (self.margin, self.margin)
         self.buttonOptions = [
@@ -29,8 +31,8 @@ class ControlsMenu(pygame.sprite.Sprite):
         ]
         self.buttons = []
         for option in self.buttonOptions:
-            text = self.font.render(option,False,self.buttonTextColor)
-            self.buttons.append( Button(text, 0, 0, 300, 50, self.buttonColor,self.buttonSelectColor) )
+            text = self.font.render(option, False, self.buttonTextColor)
+            self.buttons.append(Button(text, 0, 0, 300, 50, self.buttonColor, self.buttonSelectColor))
 
         self.placeButtons()
         self.current_index = 0
@@ -51,10 +53,18 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def createKeyBoardDisplay(self):
         """Describe Inputs for Users using Keyboard"""
+        #self.keyboardControls = window
+        #font = self.font
+        #pygame.font.render("test", )
         pass
 
     def createGamePadDisplay(self):
         """Describe Inputs for Users using Gamepad"""
+        #self.gamepadControls = win
+        #controller: object = self.controller
+        #font = self.font
+        #pygame.win.fill(0, 0, 0)
+        #pygame.win.blit(controller, (300, 200))
         pass
 
     def placeButtons(self):
@@ -66,12 +76,12 @@ class ControlsMenu(pygame.sprite.Sprite):
 
         current_y = SCREEN_RES[1] - totalHeightButton - self.margin
         for button in self.buttons:
-            x = self.margin + button.rect.w//2
+            x = self.margin + button.rect.w // 2
             y = current_y
-            button.updateLocation(x,y)
+            button.updateLocation(x, y)
             current_y += button.rect.h + 5
 
-    def update(self,key):
+    def update(self, key):
         """Evaluate action based on user keypress"""
         if key == pygame.K_w or key == pygame.K_a:
             if self.current_index > 0:
@@ -79,13 +89,11 @@ class ControlsMenu(pygame.sprite.Sprite):
                 self.current_index -= 1
                 self.buttons[self.current_index].select()
 
-
         if key == pygame.K_s or key == pygame.K_d:
-            if self.current_index < len(self.buttons)-1:
+            if self.current_index < len(self.buttons) - 1:
                 self.buttons[self.current_index].deselect()
                 self.current_index += 1
                 self.buttons[self.current_index].select()
-
 
         if self.buttonOptions[self.current_index] == "KeyBoard Controls":
             pass
@@ -104,11 +112,12 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def draw(self, window):
         self.screen.fill(self.bg_color)
-        self.screen.blit(self.header,self.headerRect)
+        self.screen.blit(self.header, self.headerRect)
         for button in self.buttons:
             button.draw(self.screen)
 
-        window.blit(self.screen,self.rect)
+        window.blit(self.screen, self.rect)
+
 
 if __name__ == "__main__":
     import os
@@ -136,5 +145,3 @@ if __name__ == "__main__":
         screen.fill(pygame.color.THECOLORS['black'])
         menu.draw(screen)
         pygame.display.update()
-
-
