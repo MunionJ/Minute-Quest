@@ -17,6 +17,7 @@ class Actor(pygame.sprite.Sprite):
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
         self.accel = vec(0.5, 0)
+        self.jump_vector = vec(0, -3.5)
         self.max_speed = 10
         self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
@@ -46,7 +47,7 @@ class Actor(pygame.sprite.Sprite):
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
         if movedHorizontal:
-            self.cur_state = self.states[1]     # running
+            self.cur_state = self.states[2]     # running
             self.prevPos = self.pos
 
             # self.velocity.length() returns the Euclidean length of the vector
@@ -62,16 +63,23 @@ class Actor(pygame.sprite.Sprite):
                 self.velocity.x = 0
             self.cur_state = self.states[0]  # standing
 
+    # def jump(self, dt):
+    #     """
+    #     Basic Jump method for entities.
+    #     :param dt: Delta Time
+    #     :return: Jump acceleration
+    #     """
+    #     self.cur_state = [1]
+
+
     def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
 
         # Gravity and Player Movement
         # player jumping
-        if self.cur_state == self.states[2]:    # jumping
+        if self.cur_state == self.states[0]:
             self.accel = vec(0.5, PLAYER_GRAV)
-        else:
-            self.accel = vec(0.5, 0)
         self.velocity.y -= self.accel.y
         self.pos += self.velocity
         self.rect.center = self.pos
