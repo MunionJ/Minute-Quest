@@ -7,7 +7,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         """Initialize Control Menu"""
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
-
+        self.controller = pygame.image.load("controller.png")
         self.rect = self.screen.get_rect()
         self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',20)
         self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',75)
@@ -51,10 +51,16 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def createKeyBoardDisplay(self):
         """Describe Inputs for Users using Keyboard"""
+        window = pygame.Surface(SCREEN_RES)
+        font = self.font
         pass
 
     def createGamePadDisplay(self):
         """Describe Inputs for Users using Gamepad"""
+        win = pygame.Surface(SCREEN_RES)
+        controller = self.controller
+        font = self.font
+
         pass
 
     def placeButtons(self):
