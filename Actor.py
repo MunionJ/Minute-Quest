@@ -65,6 +65,7 @@ class Actor(pygame.sprite.Sprite):
         self.velocity.y -= self.accel.y
         self.move(keys, dt)
 
+    # alrighty
     def draw(self, window):
         """Base draw method. Will be filled
             out later."""
