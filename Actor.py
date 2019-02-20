@@ -16,12 +16,13 @@ class Actor(pygame.sprite.Sprite):
         self.pos = vec(start_pos[0], start_pos[1])
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
-        self.accel = vec(0.5, -0.5)
+        self.accel = vec(0.5, 0)
         self.max_speed = 10
         self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
         self.debug = False
-        self.jumping = False
+        self.states = ["standing", "jumping", "running"]
+        self.cur_state = self.states[0]
         self.jump_offset = 0
 
     # Possibly add the movement code to the player class specifically, as we will not be controlling enemies with key
@@ -45,6 +46,7 @@ class Actor(pygame.sprite.Sprite):
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
         if movedHorizontal:
+            self.cur_state = self.states[1]     # running
             self.prevPos = self.pos
 
             # self.velocity.length() returns the Euclidean length of the vector
@@ -58,13 +60,18 @@ class Actor(pygame.sprite.Sprite):
             self.velocity.x /= 10
             if abs(self.velocity.x) < 0.1:
                 self.velocity.x = 0
+            self.cur_state = self.states[0]  # standing
 
     def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
 
         # Gravity and Player Movement
-        self.accel = vec(0.5, PLAYER_GRAV)
+        # player jumping
+        if self.cur_state == self.states[2]:    # jumping
+            self.accel = vec(0.5, PLAYER_GRAV)
+        else:
+            self.accel = vec(0.5, 0)
         self.velocity.y -= self.accel.y
         self.pos += self.velocity
         self.rect.center = self.pos
