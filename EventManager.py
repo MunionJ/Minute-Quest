@@ -126,9 +126,8 @@ class EventManager:
         for obj in self.game_objects['game_objects']:
                 obj.update(keys, dt)
 
-        pygame.event.pump()
+        #pygame.event.pump()
         return True
-
 
     def process_menu_input(self):
         e = pygame.event.poll()
