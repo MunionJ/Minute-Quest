@@ -50,7 +50,7 @@ def loadMap(filename):
             if readingData:
                 dataCount += 1
                 tileStr = line.split(',')
-                lineData = [int(datum) - 1 for datum in tileStr if len(datum)]
+                lineData = [int(datum) - 1 for datum in tileStr if len(datum)]  #Subtact off 1 from id index to get correct alignments
                 tileData.append(lineData)
                 if dataCount == map_h:
                     readingData = False
