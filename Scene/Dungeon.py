@@ -22,7 +22,6 @@ class Dungeon:
         self.playerSpawn = self.rooms[0].playerSpawn
 
         x_offset = self.rooms[0].totalMapWidth
-        print(self.rooms[0].exitPoint.bottom)
         y_offset = 0
         if num_rooms > 1:
             y_offset = self.rooms[0].exitPoint.bottom

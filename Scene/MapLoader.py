@@ -6,7 +6,7 @@ def loadMap(filename):
     try:
         fp = open(filename, 'r')  # Reads file
     except:
-        print(filename + 'not found.');
+        print(filename + ' not found.');
         return None
 
     section = None
