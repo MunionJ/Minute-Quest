@@ -29,6 +29,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    print(player.cur_state, player.jump_offset, player.pos, player.velocity, player.accel)
     player.rect.clamp_ip(screen_rect)
     player.set_pos()
     window.fill(bg_color)

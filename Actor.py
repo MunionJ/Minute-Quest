@@ -17,12 +17,12 @@ class Actor(pygame.sprite.Sprite):
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
         self.accel = vec(0.5, 0)
-        self.jump_vector = vec(0, -3.5)
+        self.jump_vector = vec(0.2 , -3.5)
         self.max_speed = 10
         self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
         self.debug = False
-        self.states = ["standing", "jumping", "running"]
+        self.states = ["standing", "jumping", "running", "falling"]
         self.cur_state = self.states[0]
         self.jump_offset = 0
 
@@ -71,21 +71,30 @@ class Actor(pygame.sprite.Sprite):
     #     """
     #     self.cur_state = [1]
 
-
     def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
-
         # Gravity and Player Movement
-        # player jumping
-        if self.cur_state == self.states[0]:
+
+        # PLAYER JUMPING
+        # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
+        if self.pos[1] < SCREEN_RES[1] - 40:   # If pos is larger than 40 px off the floor, set state to falling
+            self.cur_state = self.states[3]
+
+        if self.cur_state == self.states[0]:   # If current state is standing, do not apply gravity
+            self.accel = vec(0.5, 0)
+
+        if self.cur_state == self.states[1]:   # If current state is jumping, add the jump vector
+            self.accel = self.jump_vector
+
+        if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
             self.accel = vec(0.5, PLAYER_GRAV)
-        self.velocity.y -= self.accel.y
+
+        self.velocity += self.accel
         self.pos += self.velocity
         self.rect.center = self.pos
         self.move(keys, dt)
 
-    # alrighty
     def draw(self, window):
         """Base draw method. Will be filled
             out later."""
