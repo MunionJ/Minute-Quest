@@ -17,7 +17,7 @@ class Actor(pygame.sprite.Sprite):
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
         self.accel = vec(0.5, 0)
-        self.jump_vector = vec(0.2 , -3.5)
+        self.jump_vector = vec(0.2, -4)
         self.max_speed = 10
         self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)

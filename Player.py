@@ -42,18 +42,13 @@ class Player(Actor):
         super().update(keys, dt)
         # print(self.pos, self.rect.center)
 
-        if keys[pygame.K_SPACE] and self.cur_state != self.states[1] and self.jump_offset == 0:
+        if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
             self.cur_state = self.states[1]
 
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
-        if self.cur_state == self.states[1]:
-            self.jump_offset += 1
-            if self.jump_offset >= JUMP_HEIGHT:
-                self.cur_state = self.states[3]
-        elif self.jump_offset > 0 and self.cur_state == self.states[3]:
-            self.jump_offset -= 1
+        pass
 
     def use_ability(self):
         """ Generic ability usage class.
