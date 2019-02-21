@@ -63,14 +63,6 @@ class Actor(pygame.sprite.Sprite):
                 self.velocity.x = 0
             self.cur_state = self.states[0]  # standing
 
-    # def jump(self, dt):
-    #     """
-    #     Basic Jump method for entities.
-    #     :param dt: Delta Time
-    #     :return: Jump acceleration
-    #     """
-    #     self.cur_state = [1]
-
     def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
