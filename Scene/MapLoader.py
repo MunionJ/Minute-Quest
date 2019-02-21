@@ -60,8 +60,6 @@ def loadMap(filename):
                 tileData = []
                 dataCount = 0
 
-
-
     mymap['header'] = headermap
 
     mymap['layers'] = layerData
