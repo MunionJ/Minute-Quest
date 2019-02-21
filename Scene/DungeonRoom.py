@@ -15,7 +15,6 @@ class DungeonRoom:
     def __init__(self, file_name, image_name):
         """ Param: file_name is a string containing the name of
                    the Flare text file with the map data"""
-
         parsed = loadMap(file_name)             # returns map containing header data, tileset data, and layer data
         self.header_data = parsed['header']         # keys: width , height, tilewidth, tileheight, background_color
         self.tile_sets_data = parsed['tileset']     # fname,tile_width,tile_height,gap_x,gap_y
@@ -39,6 +38,7 @@ class DungeonRoom:
         self.enemySpawnPoints = []
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
+
 
         for i in range(len(self.layer_data)):
             layer = self.layer_data[i]
@@ -78,4 +78,3 @@ class DungeonRoom:
                                 self.exitPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             elif tilecode in PLAYER_SPAWNS:
                                 self.playerSpawn = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
-

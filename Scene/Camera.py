@@ -118,7 +118,7 @@ if __name__ == "__main__":
     eventManager = EventManager()
     camera = Camera(map)
 
-    camera.reticle.setPos( (SCREEN_RES[0]//2,SCREEN_RES[1]//2) )
+    camera.reticle.setPos( camera.dungeon.playerSpawn.center )
     eventManager.addGameObject(camera.reticle)
     for room in camera.dungeon.rooms:
         for wall in room.walls.sprites():
