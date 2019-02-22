@@ -16,7 +16,7 @@ class Actor(pygame.sprite.Sprite):
         self.pos = vec(start_pos[0], start_pos[1])
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
-        self.accel = vec(0.5, 0)
+        self.accel = vec(0, 0)
         self.jump_vector = vec(0.2, -4)
         self.max_speed = 10
         self.image = pygame.image.load(img)
@@ -36,10 +36,12 @@ class Actor(pygame.sprite.Sprite):
             # Implement ability to crouch?
             pass
         if keys[pygame.K_d]:
-            self.velocity.x += self.accel.x * dt
+            if self.accel.x < MAX_X_ACC:
+                self.accel.x += PLAYER_ACC
             movedHorizontal = True
         if keys[pygame.K_a]:
-            self.velocity.x -= (self.accel.x * dt)
+            if self.accel.x > -MAX_X_ACC:
+                self.accel.x -= PLAYER_ACC
             movedHorizontal = True
 
         if keys[pygame.K_F1]:
@@ -54,14 +56,24 @@ class Actor(pygame.sprite.Sprite):
             if self.velocity.length() > self.max_speed:
                 self.velocity.scale_to_length(self.max_speed)
 
+
             self.pos += self.velocity
             self.rect.center = (int(self.pos.x), int(self.pos.y))
 
-        if not movedHorizontal:
-            self.velocity.x /= 10
-            if abs(self.velocity.x) < 0.1:
-                self.velocity.x = 0
-            self.cur_state = self.states[0]  # standing
+        if not keys[pygame.K_a]:
+            if self.accel.x < 0:
+                self.accel.x = 0
+            if self.velocity.x < 0:
+                self.velocity.x -= 2*PLAYER_FRICTION
+                if self.velocity.x > 0:
+                    self.velocity.x = 0
+        if not keys[pygame.K_d]:
+            if self.accel.x > 0:
+                self.accel.x = 0
+            if self.velocity.x > 0:
+                self.velocity.x += 2*PLAYER_FRICTION
+                if self.velocity.x < 0:
+                    self.velocity.x = 0
 
     def update(self, keys, dt):
         """Base update method. Will be filled
@@ -74,7 +86,7 @@ class Actor(pygame.sprite.Sprite):
             self.cur_state = self.states[3]
 
         if self.cur_state == self.states[0]:   # If current state is standing, do not apply gravity
-            self.accel = vec(0.5, 0)
+            self.accel = vec(0, 0)
 
         if self.cur_state == self.states[1]:   # If current state is jumping, add the jump vector
             self.accel = self.jump_vector

@@ -7,9 +7,8 @@ from EventManager import *
 
 pygame.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
-screen_size = (1024, 768)
 bg_color = pygame.color.THECOLORS['black']
-window = pygame.display.set_mode(screen_size)
+window = pygame.display.set_mode(SCREEN_RES)
 pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
@@ -29,7 +28,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    print(player.cur_state, player.pos, player.velocity, player.accel)
+    #print(player.cur_state, player.pos, player.velocity, player.accel)
     updated_rect = player.rect.clamp(screen_rect)
     player.set_pos(updated_rect)
     window.fill(bg_color)
