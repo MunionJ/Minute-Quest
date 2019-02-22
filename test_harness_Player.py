@@ -29,9 +29,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    print(player.cur_state, player.jump_offset, player.pos, player.velocity, player.accel)
-    player.rect.clamp_ip(screen_rect)
-    player.set_pos()
+    print(player.cur_state, player.pos, player.velocity, player.accel)
+    updated_rect = player.rect.clamp(screen_rect)
+    player.set_pos(updated_rect)
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)

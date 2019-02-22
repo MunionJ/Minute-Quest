@@ -70,7 +70,7 @@ class Actor(pygame.sprite.Sprite):
 
         # PLAYER JUMPING
         # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
-        if self.pos[1] < SCREEN_RES[1] - 40:   # If pos is larger than 40 px off the floor, set state to falling
+        if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 40 px off the floor, set state to falling
             self.cur_state = self.states[3]
 
         if self.cur_state == self.states[0]:   # If current state is standing, do not apply gravity
@@ -80,7 +80,7 @@ class Actor(pygame.sprite.Sprite):
             self.accel = self.jump_vector
 
         if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
-            self.accel = vec(0.5, PLAYER_GRAV)
+            self.accel = vec(0.02, PLAYER_GRAV)
 
         self.velocity += self.accel
         self.pos += self.velocity

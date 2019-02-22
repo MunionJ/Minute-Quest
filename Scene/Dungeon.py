@@ -3,6 +3,7 @@ import random
 from config import *
 from Scene.DungeonRoom import *
 
+
 class Dungeon:
     def __init__(self,num_rooms):
         self.rooms = []

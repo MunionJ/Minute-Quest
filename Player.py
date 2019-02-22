@@ -71,7 +71,11 @@ class Player(Actor):
             xp."""
         pass
 
-    def set_pos(self):
+    def set_pos(self, new_rect):
         """ Sets the player's position."""
-        self.pos = self.rect.center
-
+        if int(self.rect[0]) != int(new_rect[0]):
+            self.rect[0] = new_rect[0]
+            self.velocity.x = 0
+        if int(self.rect[1]) != int(new_rect[1]):
+            self.rect[1] = new_rect[1]
+            self.velocity.y = 0
