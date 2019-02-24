@@ -20,7 +20,6 @@ class Player(Actor):
         self.invuln_timer = 3
         # player stats: a dictionary or a Stats class?
 
-
     def melee_attack(self):
         """ Generic melee attack method. Will be
             overridden by more specialized
@@ -40,15 +39,19 @@ class Player(Actor):
     def update(self, keys, dt):
         """ Testing Player jumping."""
         super().update(keys, dt)
-        # print(self.pos, self.rect.center)
+        print("Updating: ",self.pos, self.rect.center)
+        self.prevPos = self.pos
+        self.pos.x, self.pos.y = self.rect.center
 
-        if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
-            self.cur_state = self.states[1]
+        if keys[pygame.K_SPACE]:
+            self.jump()
 
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
-        pass
+        self.velocity += self.jump_vector
+        self.pos += self.velocity
+        self.rect.center = self.pos
 
     def use_ability(self):
         """ Generic ability usage class.
@@ -71,11 +74,8 @@ class Player(Actor):
             xp."""
         pass
 
-    def set_pos(self, new_rect):
+    def set_pos(self):
         """ Sets the player's position."""
-        if int(self.rect[0]) != int(new_rect[0]):
-            self.rect[0] = new_rect[0]
-            self.velocity.x = 0
-        if int(self.rect[1]) != int(new_rect[1]):
-            self.rect[1] = new_rect[1]
-            self.velocity.y = 0
+        #self.prevPos.x, self.prevPos.y = self.rect.center
+        self.pos.x, self.pos.y = self.rect.center
+        print("Setting pos: ",self.pos, self.rect.center)

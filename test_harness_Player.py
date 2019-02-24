@@ -22,6 +22,7 @@ running = True
 
 while running:
     dt = clock.tick(60)
+
     running = manager.process_input(dt)
 
     events = pygame.event.get()
