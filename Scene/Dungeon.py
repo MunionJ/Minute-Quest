@@ -89,7 +89,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(SCREEN_RES)
     eventManager = EventManager()
     dungeon = Dungeon(4)
-    camera = Camera(dungeon.rooms[0])
+    camera = Camera(dungeon)
 
     camera.reticle.setPos( (SCREEN_RES[0]//2,SCREEN_RES[1]//2) )
     eventManager.addGameObject(camera.reticle)
