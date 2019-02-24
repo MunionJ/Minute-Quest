@@ -73,7 +73,6 @@ class Player(Actor):
 
     def set_pos(self, new_rect):
         """ Sets the player's position."""
-        print(self.rect.x,self.rect.y,new_rect.x,new_rect.y)
         if int(self.rect[0]) != int(new_rect[0]):
             self.rect[0] = new_rect[0]
             self.velocity.x = 0
