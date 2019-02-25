@@ -139,10 +139,7 @@ class EventManager:
                 return False
             elif e.key == pygame.K_F1:
                 self.turnOnDebugMode()
-            elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d:
-                for menu in self.game_objects['game_menus']:
-                    menu.update(e.key)
-            elif e.key == pygame.K_RETURN:
+            elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
                 for menu in self.game_objects['game_menus']:
                     menu.update(e.key)
 
