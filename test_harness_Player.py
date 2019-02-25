@@ -7,13 +7,15 @@ from EventManager import *
 
 pygame.init()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
-screen_size = (1024, 768)
 bg_color = pygame.color.THECOLORS['black']
-window = pygame.display.set_mode(screen_size)
+window = pygame.display.set_mode(SCREEN_RES)
 pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
-                "images/characters.png")
+                "images/character1/right1.png")
+# the image can be changed back to "images/characters.png" but its the whole sheet
+players = pygame.sprite.Group()
+players.add(player)
 
 manager.addGameObject(player)
 screen_rect = window.get_rect()
@@ -22,6 +24,7 @@ running = True
 
 while running:
     dt = clock.tick(60)
+
     running = manager.process_input(dt)
 
     events = pygame.event.get()
@@ -29,8 +32,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    player.rect.clamp_ip(screen_rect)
-    player.set_pos()
+    #print(player.cur_state, player.pos, player.velocity, player.accel)
+    updated_rect = player.rect.clamp(screen_rect)
+    player.set_pos(updated_rect)
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
@@ -39,5 +43,6 @@ while running:
                      (0, 255, 0),
                      screen_rect,
                      5)
+    players.draw(window)
 
     pygame.display.flip()

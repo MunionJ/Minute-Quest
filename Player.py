@@ -11,7 +11,6 @@ class Player(Actor):
         self.max_hp = 10
         self.cur_hp = self.max_hp
         self.alive = True
-        self.jump_vector = vec(0, -3.5)
         # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
@@ -41,17 +40,15 @@ class Player(Actor):
     def update(self, keys, dt):
         """ Testing Player jumping."""
         super().update(keys, dt)
-        print(self.pos, self.rect.center)
+        # print(self.pos, self.rect.center)
 
-        if keys[pygame.K_SPACE]:
-            self.jump()
+        if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
+            self.cur_state = self.states[1]
 
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
-        self.velocity += self.jump_vector
-        self.pos += self.velocity
-        self.rect.center = self.pos
+        pass
 
     def use_ability(self):
         """ Generic ability usage class.
@@ -74,7 +71,11 @@ class Player(Actor):
             xp."""
         pass
 
-    def set_pos(self):
+    def set_pos(self, new_rect):
         """ Sets the player's position."""
-        self.pos = self.rect.center
-
+        if int(self.rect[0]) != int(new_rect[0]):
+            self.rect[0] = new_rect[0]
+            self.velocity.x = 0
+        if int(self.rect[1]) != int(new_rect[1]):
+            self.rect[1] = new_rect[1]
+            self.velocity.y = 0
