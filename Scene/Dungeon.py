@@ -24,12 +24,10 @@ class Dungeon:
             room = DungeonRoom(dungeonName, sprite_sheet)
             self.rooms.append(room)
 
+        print(roomName)
         self.playerSpawn = self.rooms[0].playerSpawn
 
         x_offset = self.rooms[0].totalMapWidth
-        y_offset = 0
-        if num_rooms > 1:
-            y_offset = self.rooms[0].exitPoint.bottom
 
         smallest_y = self.rooms[0].totalMapHeight
         largest_y = self.rooms[0].totalMapHeight
@@ -66,7 +64,6 @@ class Dungeon:
 
 
             x_offset += currentRoom.totalMapWidth
-            y_offset = currentRoom.exitPoint.bottom
             smallest_y = min(currentRoom.bgImageRect.top,prevRoom.bgImageRect.top)
             largest_y = max(currentRoom.bgImageRect.bottom,prevRoom.bgImageRect.bottom)
 

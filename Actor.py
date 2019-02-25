@@ -94,7 +94,7 @@ class Actor(pygame.sprite.Sprite):
         if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
             self.accel = vec(0.02, PLAYER_GRAV)
 
-        self.velocity += self.accel
+        self.velocity += self.accel * dt
         self.pos += self.velocity
         self.rect.center = self.pos
         self.move(keys, dt)
