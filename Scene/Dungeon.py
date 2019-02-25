@@ -17,7 +17,11 @@ class Dungeon:
             roomName = random.choice(ROOMS[roomType])
             tempChoices[roomType].remove(roomName)
             dungeonName = "../maps/{0}/{1}".format(roomType,roomName)
-            room = DungeonRoom(dungeonName, MAP_SPRITE_SHEET)
+
+            sprite_sheet = self.assignSpriteSheet(roomName)
+            if sprite_sheet == None:
+                raise TypeError("Map Name Not Found in Config " + roomName)
+            room = DungeonRoom(dungeonName, sprite_sheet)
             self.rooms.append(room)
 
         self.playerSpawn = self.rooms[0].playerSpawn
@@ -74,6 +78,18 @@ class Dungeon:
     def draw(self,screen):
         for room in self.rooms:
             room.draw(screen)
+
+    def assignSpriteSheet(self, roomName):
+        for name in WALLS_ONE:
+            if name in roomName:
+                return "../images/walls1.png"
+
+        for name in UTUMNO:
+            if name in roomName:
+                return "../images/ProjectUtumno_full.png"
+
+        return None
+
 
 if __name__ == "__main__":
     import os
