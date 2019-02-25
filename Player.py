@@ -7,7 +7,7 @@ class Player(Actor):
         by the user."""
 
     def __init__(self, start_pos, img):
-        super().__init__(start_pos, img)
+        super().__init__(start_pos, img+"/right1.png")
         self.max_hp = 10
         self.cur_hp = self.max_hp
         self.level = 1
