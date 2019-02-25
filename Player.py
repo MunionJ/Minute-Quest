@@ -11,6 +11,7 @@ class Player(Actor):
         self.max_hp = 10
         self.cur_hp = self.max_hp
         self.alive = True
+        self.image = pygame.image.load(img)
         # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
