@@ -12,7 +12,10 @@ window = pygame.display.set_mode(SCREEN_RES)
 pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
-                "images/characters.png")
+                "images/character1/right1.png")
+# the image can be changed back to "images/characters.png" but its the whole sheet
+players = pygame.sprite.Group()
+players.add(player)
 
 manager.addGameObject(player)
 screen_rect = window.get_rect()
@@ -40,5 +43,6 @@ while running:
                      (0, 255, 0),
                      screen_rect,
                      5)
+    players.draw(window)
 
     pygame.display.flip()
