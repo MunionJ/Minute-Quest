@@ -10,7 +10,9 @@ class Player(Actor):
         super().__init__(start_pos, img)
         self.max_hp = 10
         self.cur_hp = self.max_hp
+        self.level = 1
         self.alive = True
+        self.image = pygame.image.load(img)
         # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
@@ -19,7 +21,6 @@ class Player(Actor):
         # figure out a time later
         self.invuln_timer = 3
         # player stats: a dictionary or a Stats class?
-
 
     def melee_attack(self):
         """ Generic melee attack method. Will be
@@ -71,11 +72,21 @@ class Player(Actor):
             xp."""
         pass
 
+    def gain_level(self):
+        """ Generic method for increasing
+            player level."""
+        pass
+
     def set_pos(self, new_rect):
         """ Sets the player's position."""
         if int(self.rect[0]) != int(new_rect[0]):
             self.rect[0] = new_rect[0]
             self.velocity.x = 0
+            self.accel.x = 0
+            self.pos.x = self.rect.center[0]
         if int(self.rect[1]) != int(new_rect[1]):
             self.rect[1] = new_rect[1]
             self.velocity.y = 0
+            self.accel.y = 0
+            self.pos.y = self.rect.center[1]
+        print(self.pos, self.velocity, self.accel)
