@@ -17,9 +17,9 @@ class Actor(pygame.sprite.Sprite):
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
         self.accel = vec(0, 0)
-        self.jump_vector = vec(0, -JUMP_VEC)
+        self.jump_vector = vec(0.2, -4)
         self.max_speed = 10
-
+        self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
         self.debug = False
         self.states = ["standing", "jumping", "running", "falling"]
@@ -27,7 +27,7 @@ class Actor(pygame.sprite.Sprite):
         self.jump_offset = 0
 
     # Possibly add the movement code to the player class specifically, as we will not be controlling enemies with key
-    #  presses, they will have their own unique movement ok
+    #  presses, they will have their own unique movement
     def move(self, keys, dt):
         """Base movement method."""
         # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
@@ -80,27 +80,24 @@ class Actor(pygame.sprite.Sprite):
             out later."""
         # Gravity and Player Movement
 
+        # PLAYER JUMPING
         # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
-        self.apply_physics(dt)
-
-        self.velocity += self.accel * dt
-        self.pos += self.velocity
-        self.rect.center = self.pos
-        self.move(keys, dt)
-
-    def apply_physics(self, dt):
-        """ Apply physics based on Actor's current state."""
-        if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 30 px off the floor, set state to falling
+        if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 40 px off the floor, set state to falling
             self.cur_state = self.states[3]
 
         if self.cur_state == self.states[0]:   # If current state is standing, do not apply gravity
             self.accel = vec(0, 0)
 
         if self.cur_state == self.states[1]:   # If current state is jumping, add the jump vector
-            self.velocity += self.jump_vector
+            self.accel = self.jump_vector
 
         if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
-            self.accel += vec(0, PLAYER_GRAV)
+            self.accel = vec(0.02, PLAYER_GRAV)
+
+        self.velocity += self.accel
+        self.pos += self.velocity
+        self.rect.center = self.pos
+        self.move(keys, dt)
 
     def draw(self, window):
         """Base draw method. Will be filled

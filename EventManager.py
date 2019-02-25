@@ -1,4 +1,4 @@
-# Names: Jon Munion, Daniel Kratzenberg
+# Names: Jon Munion, Daniel Kratzenberg, Alexander Brown
 # ETGG1802-01
 # Lab 2: File I/O
 
