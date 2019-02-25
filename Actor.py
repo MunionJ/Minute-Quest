@@ -80,8 +80,16 @@ class Actor(pygame.sprite.Sprite):
             out later."""
         # Gravity and Player Movement
 
-        # PLAYER JUMPING
         # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
+        self.apply_physics()
+
+        self.velocity += self.accel
+        self.pos += self.velocity
+        self.rect.center = self.pos
+        self.move(keys, dt)
+
+    def apply_physics(self):
+        """ Apply physics based on Actor's current state."""
         if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 30 px off the floor, set state to falling
             self.cur_state = self.states[3]
 
@@ -93,11 +101,6 @@ class Actor(pygame.sprite.Sprite):
 
         if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
             self.accel = vec(0, PLAYER_GRAV)
-
-        self.velocity += self.accel
-        self.pos += self.velocity
-        self.rect.center = self.pos
-        self.move(keys, dt)
 
     def draw(self, window):
         """Base draw method. Will be filled
