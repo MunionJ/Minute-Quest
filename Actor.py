@@ -19,7 +19,6 @@ class Actor(pygame.sprite.Sprite):
         self.accel = vec(0, 0)
         self.jump_vector = vec(0.2, -4)
         self.max_speed = 10
-        self.image = pygame.image.load(img)
         self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
         self.debug = False
         self.states = ["standing", "jumping", "running", "falling"]
