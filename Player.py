@@ -12,7 +12,17 @@ class Player(Actor):
         self.cur_hp = self.max_hp
         self.level = 1
         self.alive = True
-        self.image = pygame.image.load(img)
+        self.frames = [pygame.image.load(img + "/right1.png"), pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False), pygame.image.load(img + "/jump1.png")]
+        for i in range(len(self.frames)):
+            rect = self.frames[i].get_rect()
+            width = int(rect.w*(64/rect.h))
+            height = 64
+            self.frames[i] = pygame.transform.scale(self.frames[i], (width, height))
+            self.frames[i] = self.frames[i].convert_alpha()
+        self.rect = self.frames[0].get_rect()
+        self.image = self.frames[0]
+
+
         # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
@@ -43,8 +53,15 @@ class Player(Actor):
         super().update(keys, dt)
         # print(self.pos, self.rect.center)
 
+        if keys[pygame.K_d]:
+            self.image = self.frames[0]
+        if keys[pygame.K_a]:
+            self.image = self.frames[1]
+
+
         if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
             self.cur_state = self.states[1]
+            self.image = self.frames[2]
 
     def jump(self):
         """ Generic jump method. Can be
@@ -90,3 +107,6 @@ class Player(Actor):
             self.accel.y = 0
             self.pos.y = self.rect.center[1]
         print(self.pos, self.velocity, self.accel)
+
+    def draw(self, window):
+        window.blit(self.image,self.rect)
