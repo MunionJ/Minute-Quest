@@ -10,6 +10,7 @@ class Player(Actor):
         super().__init__(start_pos, img)
         self.max_hp = 10
         self.cur_hp = self.max_hp
+        self.level = 1
         self.alive = True
         self.image = pygame.image.load(img)
         # need jump vector
@@ -20,7 +21,6 @@ class Player(Actor):
         # figure out a time later
         self.invuln_timer = 3
         # player stats: a dictionary or a Stats class?
-
 
     def melee_attack(self):
         """ Generic melee attack method. Will be
@@ -70,6 +70,11 @@ class Player(Actor):
     def gain_xp(self):
         """ Generic method for gaining
             xp."""
+        pass
+
+    def gain_level(self):
+        """ Generic method for increasing
+            player level."""
         pass
 
     def set_pos(self, new_rect):
