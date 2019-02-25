@@ -27,7 +27,7 @@ class Actor(pygame.sprite.Sprite):
         self.jump_offset = 0
 
     # Possibly add the movement code to the player class specifically, as we will not be controlling enemies with key
-    #  presses, they will have their own unique movement
+    #  presses, they will have their own unique movement ok
     def move(self, keys, dt):
         """Base movement method."""
         # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
