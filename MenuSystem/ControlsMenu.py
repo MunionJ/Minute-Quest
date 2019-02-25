@@ -51,24 +51,26 @@ class ControlsMenu(pygame.sprite.Sprite):
             button.deselect()
         self.buttons[self.current_index].select()
 
-    def createKeyBoardDisplay(self, window):
+    def createKeyBoardDisplay(self):
         """Describe Inputs for Users using Keyboard"""
-        self.keyboardControls = window
-        font = self.font
-        pygame.window.fill(0, 0, 0)
-        text = pygame.font.render("The wasd keys move the character w is jump b is attack and v is crotch ")
-        window.blit(text, (0, 0))
+        #window = self.keyboardControls
+        #font = self.font
+        #pygame.window.fill(0, 0, 0)
+        #text = pygame.font.render("The wasd keys move the character w is jump b is attack and v is crotch ")
+        #window.blit(text, (0, 0))
+        pass
 
-    def createGamePadDisplay(self, window):
+    def createGamePadDisplay(self):
         """Describe Inputs for Users using Gamepad"""
-        self.gamepadControls = window
-        controller: object = self.controller
-        font = self.font
-        pygame.window.fill(0, 0, 0)
-        pygame.window.blit(controller, (300, 200))
-        text = pygame.font.render(
-            "The joystick moves along with the d pad up is jump the a button is attack and the b button is crotch")
-        pygame.window.blit(text, (0, 0))
+        #window = self.gamepadControls
+        #controller: object = self.controller
+        #font = self.font
+        #pygame.window.fill(0, 0, 0)
+        #pygame.window.blit(controller, (300, 200))
+        #text = pygame.font.render(
+            #"The joystick moves along with the d pad up is jump the a button is attack and the b button is crotch")
+        #pygame.window.blit(text, (0, 0))
+        pass
 
     def placeButtons(self):
         """Place buttons on screen"""
