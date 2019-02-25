@@ -51,20 +51,23 @@ class ControlsMenu(pygame.sprite.Sprite):
             button.deselect()
         self.buttons[self.current_index].select()
 
-    def createKeyBoardDisplay(self):
+    def createKeyBoardDisplay(self, window):
         """Describe Inputs for Users using Keyboard"""
-        #self.keyboardControls = window
-        #font = self.font
-        #pygame.font.render("test", )
-        pass
+        self.keyboardControls = window
+        font = self.font
+        pygame.window.fill(0, 0, 0)
+        pygame.font.render("The wasd keys move the charcter w is jump b is attack and v is crotch ")
 
-    def createGamePadDisplay(self):
+
+    def createGamePadDisplay(self, win):
         """Describe Inputs for Users using Gamepad"""
-        #self.gamepadControls = win
-        #controller: object = self.controller
-        #font = self.font
-        #pygame.win.fill(0, 0, 0)
-        #pygame.win.blit(controller, (300, 200))
+        self.gamepadControls = win
+        controller: object = self.controller
+        font = self.font
+        pygame.win.fill(0, 0, 0)
+        pygame.win.blit(controller, (300, 200))
+        pygame.font.render("The joystick moves along with the d pad up is jump the a button is attack and the b button is crotch")
+
         pass
 
     def placeButtons(self):
