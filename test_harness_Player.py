@@ -32,17 +32,12 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    #print(player.cur_state, player.pos, player.velocity, player.accel)
     updated_rect = player.rect.clamp(screen_rect)
     player.set_pos(updated_rect)
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
 
-    pygame.draw.rect(window,
-                     (0, 255, 0),
-                     screen_rect,
-                     5)
     players.draw(window)
 
     pygame.display.flip()

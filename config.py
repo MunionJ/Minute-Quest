@@ -21,7 +21,7 @@ ROOMS = {
     "EnemyRooms":[
         #"AB_fight_map1.txt",
         #"AB_fight_map2.txt",
-        #"enemy room.txt",
+        "enemy room.txt",
         #"map_enemy_daniel.txt",
         #"MinuteQuestRoom1.txt",
         #"MQ_test_map_battle.txt"
@@ -29,18 +29,18 @@ ROOMS = {
     "LootRooms":[
         # "AB_loot_map1.txt",
         #"map_loot_daniel.txt",
-        "MQ_test_map_loot.txt",
-        #"project loot room.txt"
+        #"MQ_test_map_loot.txt",
+         "project loot room.txt"
     ],
     "PlatformRooms":[
         # "AB_plat_map1.txt",
         #"map_platformer_daniel.txt",
         #"MinuteQuestRoom2.txt",
-        "MQ_test_map_platforming.txt",
-        "project platform room.txt"
+        #"MQ_test_map_platforming.txt",
+         "project platform room.txt"
     ],
     "PuzzleRooms":[
-        "map_puzzle_daniel.txt",
-        #"project puzzle room.txt"
+        #"map_puzzle_daniel.txt",
+         "project puzzle room.txt"
     ]
 }

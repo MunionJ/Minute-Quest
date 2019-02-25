@@ -5,7 +5,7 @@ from Scene.DungeonRoom import *
 
 
 class Dungeon:
-    def __init__(self,num_rooms):
+    def __init__(self, num_rooms):
         self.rooms = []
         tempChoices = ROOMS.copy()
         for i in range(num_rooms):
@@ -31,7 +31,7 @@ class Dungeon:
 
         smallest_y = self.rooms[0].totalMapHeight
         largest_y = self.rooms[0].totalMapHeight
-        for i in range(1,num_rooms):
+        for i in range(1, num_rooms):
             prevRoom = self.rooms[i-1]
             currentRoom = self.rooms[i]
 
@@ -52,12 +52,12 @@ class Dungeon:
                 x,y = point.topleft
                 x += x_offset
                 y += y_offset
-                point.topleft = (x,y)
+                point.topleft = (x, y)
 
-            x,y = currentRoom.exitPoint.topleft
+            x, y = currentRoom.exitPoint.topleft
             x += x_offset
             y -= y_offset
-            currentRoom.exitPoint.topleft = (x,y)
+            currentRoom.exitPoint.topleft = (x, y)
 
             currentRoom.boundary.x += x_offset
             currentRoom.boundary.y += y_offset
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             eventManager.addGameObject(wall)
 
     while running:
-        dt = clock.tick(60)/1000
+        dt = clock.tick(60) / 1000
         running = eventManager.process_input(dt)
 
         events = pygame.event.get()
