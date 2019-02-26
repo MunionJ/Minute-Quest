@@ -79,14 +79,14 @@ class Actor(pygame.sprite.Sprite):
 
         # PLAYER JUMPING
         # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
-        self.apply_physics(dt)
+        self.apply_physics()
 
         self.velocity += self.accel * dt
         self.pos += self.velocity
         self.rect.center = self.pos
         self.move(keys, dt)
 
-    def apply_physics(self, dt):
+    def apply_physics(self):
         """ Apply physics based on Actor's current state."""
         if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 30 px off the floor, set state to falling
             self.cur_state = self.states[3]

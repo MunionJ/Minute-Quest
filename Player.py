@@ -58,7 +58,6 @@ class Player(Actor):
         if keys[pygame.K_a]:
             self.image = self.frames[1]
 
-
         if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
             self.cur_state = self.states[1]
             self.image = self.frames[2]
@@ -106,7 +105,6 @@ class Player(Actor):
             self.velocity.y = 0
             self.accel.y = 0
             self.pos.y = self.rect.center[1]
-        print(self.pos, self.velocity, self.accel)
 
     def draw(self, window):
-        window.blit(self.image,self.rect)
+        window.blit(self.image, self.rect)

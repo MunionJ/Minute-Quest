@@ -2,6 +2,7 @@
 
 import pygame
 import os
+from Enemies import *
 from Player import *
 from EventManager import *
 
@@ -13,6 +14,7 @@ pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
                 "images/character1")
+enemy = Enemy((0, 0), "images/character1")
 # the image can be changed back to "images/characters.png" but its the whole sheet
 players = pygame.sprite.Group()
 players.add(player)

@@ -1,5 +1,4 @@
 import pygame
-from config import *
 from Scene.Tile import Tile
 from Scene.Dungeon import *
 from Scene.Reticle import *

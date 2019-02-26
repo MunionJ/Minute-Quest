@@ -1,6 +1,5 @@
 import pygame
 import random
-from config import *
 from Scene.DungeonRoom import *
 
 
