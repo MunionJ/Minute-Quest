@@ -7,7 +7,7 @@ vec = pygame.math.Vector2
 class Actor(pygame.sprite.Sprite):
     """This is the base class from which Player,
         Enemy, etc. will inherit from."""
-    def __init__(self, start_pos):
+    def __init__(self, start_pos, img):
         # CONSTRUCTOR PARAMETERS #
         # start_pos: a tuple containing a coordinate pair (x, y)
         # img: a .PNG file (a sprite sheet, ideally)
