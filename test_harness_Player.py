@@ -1,6 +1,5 @@
 # Test harness for Player class
 
-import pygame
 import os
 from Enemies import *
 from Player import *

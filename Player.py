@@ -51,7 +51,6 @@ class Player(Actor):
     def update(self, keys, dt):
         """ Testing Player jumping."""
         super().update(keys, dt)
-        # print(self.pos, self.rect.center)
 
         if keys[pygame.K_d]:
             self.image = self.frames[0]
