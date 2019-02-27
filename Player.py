@@ -12,12 +12,11 @@ class Player(Actor):
         self.level = 1
         self.alive = True
         self.t_anim = time.time() + 1 #timer used for animations
-        self.anim = 0 #which frame animations are on. player move animations that update need same number of frames currently
+        self.anim = 0 #which frame of animations are active.
         self.lframes = [ pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
                          pygame.transform.flip(pygame.image.load(img + "/right2.png"), True, False),
                          pygame.transform.flip(pygame.image.load(img + "/right3.png"), True, False),
                          pygame.transform.flip(pygame.image.load(img + "/right2.png"), True, False)]
-        # list of frames while moveing right.
         self.rframes = [pygame.image.load(img + "/right1.png"),
                         pygame.image.load(img + "/right2.png"),
                         pygame.image.load(img + "/right3.png"),
