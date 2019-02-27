@@ -27,7 +27,7 @@ class Player(Actor):
                        "rjump" : pygame.image.load(img + "/jump1.png"),
                        "ljump": pygame.transform.flip(pygame.image.load(img + "/jump1.png"), True, False), }
         # dictionary of frames. the values will be updating to make animations
-        for i in self.frames:   #get rid of this once the lists of frames are all made
+        for i in self.frames:
             rect = self.frames[i].get_rect()
             width = int(rect.w*(64/rect.h))
             height = 64
