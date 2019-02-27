@@ -3,7 +3,7 @@ GAME_NAME = "Minute Quest"
 
 PLAYER_SPAWNS = [79, 13, 356, 212]
 PLAYER_EXITS = [96, 55, 360, 216]
-ENEMIES_SPAWNS = [70, 6016]
+ENEMIES_SPAWNS = [70, 6016, 206]
 
 # Player Variables
 PLAYER_GRAV = 1.2
@@ -25,19 +25,19 @@ ROOMS = {
         "enemy room.txt",
         "map_enemy_daniel.txt",
         "MinuteQuestRoom1.txt",
-        # "MQ_test_map_battle.txt"
+        "MQ_test_map_battle.txt"
     ],
     "LootRooms": [
         # "AB_loot_map1.txt",
         "map_loot_daniel.txt",
-        # "MQ_test_map_loot.txt",
+        "MQ_test_map_loot.txt",
         "project loot room.txt"
     ],
     "PlatformRooms": [
         # "AB_plat_map1.txt",
         "map_platformer_daniel.txt",
         "MinuteQuestRoom2.txt",
-        # "MQ_test_map_platforming.txt",
+        "MQ_test_map_platforming.txt",
         "project platform room.txt"
     ],
     "PuzzleRooms": [
