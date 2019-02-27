@@ -53,6 +53,7 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def createKeyBoardDisplay(self):
         """Describe Inputs for Users using Keyboard"""
+
         pygame.Surface.fill(self.keyboardControls,(0, 0, 0))
         text = pygame.font.Font.render(self.font, "The wasd keys move the character w is jump b is attack and v is crotch ", 12, (0,0,0))
         pygame.Surface.blit(self.keyboardControls,text, (0, 0))
