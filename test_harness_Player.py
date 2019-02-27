@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 running = True
 
 while running:
-    dt = clock.tick(60) / 1000
+    dt = clock.tick() / 1000
 
     running = manager.process_input(dt)
 

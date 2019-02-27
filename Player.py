@@ -9,6 +9,7 @@ class Player(Actor):
 
     def __init__(self, start_pos, img):
         super().__init__(start_pos)
+        self.playerHeight = 48
         self.level = 1
         self.alive = True
         self.t_anim = time.time() + 1 #timer used for animations
@@ -28,20 +29,20 @@ class Player(Actor):
         # dictionary of frames.  the values will be updating to make animations
         for i in self.frames:
             rect = self.frames[i].get_rect()
-            width = int(rect.w*(64/rect.h))
-            height = 64
+            width = int(rect.w*(self.playerHeight/rect.h))
+            height = self.playerHeight
             self.frames[i] = pygame.transform.scale(self.frames[i], (width, height))
             self.frames[i] = self.frames[i].convert_alpha()
         for i in range(len(self.lframes)):
             rect = self.lframes[i].get_rect()
-            width = int(rect.w*(64/rect.h))
-            height = 64
+            width = int(rect.w*(self.playerHeight/rect.h))
+            height = self.playerHeight
             self.lframes[i] = pygame.transform.scale(self.lframes[i], (width, height))
             self.lframes[i] = self.lframes[i].convert_alpha()
         for i in range(len(self.lframes)):
             rect = self.lframes[i].get_rect()
-            width = int(rect.w*(64/rect.h))
-            height = 64
+            width = int(rect.w*(self.playerHeight/rect.h))
+            height = self.playerHeight
             self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
             self.rframes[i] = self.rframes[i].convert_alpha()
         self.rect = self.frames["right"].get_rect()
@@ -89,11 +90,7 @@ class Player(Actor):
             self.image = self.frames["left"]
 
         if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
-            self.cur_state = self.states[1]
-            if self.image == self.frames["right"] or self.image == self.frames["rjump"]:
-                self.image = self.frames["rjump"]
-            if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
-                self.image = self.frames["ljump"]
+            self.jump()
 
         while time.time() > self.t_anim:
             self.anim += 1
@@ -155,7 +152,12 @@ class Player(Actor):
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
-        pass
+        self.cur_state = self.states[1]
+        if self.image == self.frames["right"] or self.image == self.frames["rjump"]:
+            self.image = self.frames["rjump"]
+        if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
+            self.image = self.frames["ljump"]
+        # TODO Apply Jump vector
 
     def use_ability(self):
         """ Generic ability usage class.

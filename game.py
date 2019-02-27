@@ -25,7 +25,7 @@ class Game:
 
     def launch_game(self):
         while self.running:
-            dt = self.clock.tick(60) / 1000
+            dt = self.clock.tick() / 1000
 
             self.running = self.manager.process_input(dt)
 
@@ -43,11 +43,11 @@ class Game:
             pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
 
             self.window.fill(self.bg_color)
-            self.camera.draw(self.window)
+            self.camera.draw(self.window, self.player)
+
             # for obj in self.manager.game_objects["game_objects"]:
             #     obj.draw(self.window)
 
-            self.player.draw(self.window)
             # enemy.draw(window)
 
             pygame.display.flip()

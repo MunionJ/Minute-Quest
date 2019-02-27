@@ -66,7 +66,7 @@ class Camera():
             the game screen."""
         self.debug = not self.debug
 
-    def draw(self,screen):
+    def draw(self, screen, player):
         for map in self.dungeon.rooms:
             screen.blit(
                 map.bgImage,
@@ -79,11 +79,6 @@ class Camera():
                     (int(wall.rect.x - self.pos[0]),int(wall.rect.y - self.pos[1]))
                 )
 
-            screen.blit(
-                self.reticle.image,
-                (self.reticle.rect.x - self.pos[0], self.reticle.rect.y - self.pos[1])
-            )
-
             bg_rect = pygame.Rect(
                 int(map.bgImageRect.x - self.pos[0]),
                 int(map.bgImageRect.y - self.pos[1]),
@@ -91,12 +86,12 @@ class Camera():
                 map.bgImageRect.h
             )
 
-            pygame.draw.rect(
-                screen,
-                pygame.color.THECOLORS['red'],
-                bg_rect,
-                1
-            )
+        screen.blit(
+            player.image,
+            (player.rect.x - self.pos[0], player.rect.y - self.pos[1])
+                    )
+
+
 
 
     def update(self,*args):
