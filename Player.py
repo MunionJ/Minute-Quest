@@ -1,4 +1,5 @@
 import pygame
+import time
 from Actor import *
 
 
@@ -10,21 +11,31 @@ class Player(Actor):
         super().__init__(start_pos)
         self.level = 1
         self.alive = True
+        self.t_anim = time.time() + 1 #timer used for animations
+        self.anim = 0 #which frame animations are on. player move animations that update need same number of frames currently
         self.rframes = [ pygame.image.load(img + "/right1.png"),
                          pygame.image.load(img + "/right2.png"),
                          pygame.image.load(img + "/right3.png"),
                          pygame.image.load(img + "/right4.png"),
                          pygame.image.load(img + "/right5.png")]
+        # list of frames while moveing right.
         self.frames = {"right" : pygame.image.load(img + "/right1.png"),
                        "left" : pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
                        "rjump" : pygame.image.load(img + "/jump1.png"),
                        "ljump": pygame.transform.flip(pygame.image.load(img + "/jump1.png"), True, False), }
-        for i in self.frames:
+        # dictionary of frames. the values will be updating to make animations
+        for i in self.frames:   #get rid of this once the lists of frames are all made
             rect = self.frames[i].get_rect()
             width = int(rect.w*(64/rect.h))
             height = 64
             self.frames[i] = pygame.transform.scale(self.frames[i], (width, height))
             self.frames[i] = self.frames[i].convert_alpha()
+        for i in range(len(self.rframes)): #
+            rect = self.rframes[i].get_rect()
+            width = int(rect.w*(64/rect.h))
+            height = 64
+            self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
+            self.rframes[i] = self.rframes[i].convert_alpha()
         self.rect = self.frames["right"].get_rect()
         self.image = self.frames["right"]
 
@@ -75,6 +86,14 @@ class Player(Actor):
                 self.image = self.frames["rjump"]
             if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
                 self.image = self.frames["ljump"]
+
+        while time.time() > self.t_anim:
+            self.anim += 1
+            if self.anim > len(self.rframes)-1:
+                self.anim = 0
+            self.frames["right"] = self.rframes[self.anim]
+            self.t_anim = time.time() + 1
+
 
 
 
