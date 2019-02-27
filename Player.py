@@ -64,6 +64,9 @@ class Player(Actor):
             "MAX_HP": 0
         }
 
+        self.jumpFrameCount = 0
+        self.jumpFrames = 2
+
     def melee_attack(self):
         """ Generic melee attack method. Will be
             overridden by more specialized
@@ -89,7 +92,7 @@ class Player(Actor):
         if keys[pygame.K_a]:
             self.image = self.frames["left"]
 
-        if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
+        if keys[pygame.K_SPACE] and (self.cur_state == states.Standing or self.cur_state == states.Running):
             self.jump()
 
         while time.time() > self.t_anim:
@@ -100,9 +103,12 @@ class Player(Actor):
             self.frames["left"] = self.lframes[self.anim]
             self.t_anim = time.time() + 0.25
 
-
-
-
+    def isFalling(self):
+        if self.jumpFrameCount <= 0:
+            super().isFalling()
+        else:
+            self.jumpFrameCount -= 1
+            self.velocity += self.jump_vector
 
     def move(self, keys, dt):
         # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
@@ -124,15 +130,9 @@ class Player(Actor):
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
         if movedHorizontal:
-            self.cur_state = self.states[2]     # running
-            self.prevPos = self.pos
-
-            # self.velocity.length() returns the Euclidean length of the vector
-            if self.velocity.length() > self.max_speed:
-                self.velocity.scale_to_length(self.max_speed)
-
-            self.pos += self.velocity
-            self.rect.center = (int(self.pos.x), int(self.pos.y))
+            if self.accel.y == 0:
+                if self.cur_state != states.Running:     # running
+                    self.changeState(states.Running)
 
         if not keys[pygame.K_a]:
             if self.accel.x < 0:
@@ -149,15 +149,20 @@ class Player(Actor):
                 if self.velocity.x < 0:
                     self.velocity.x = 0
 
+        self.determineState()
+
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
-        self.cur_state = self.states[1]
+
         if self.image == self.frames["right"] or self.image == self.frames["rjump"]:
             self.image = self.frames["rjump"]
         if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
             self.image = self.frames["ljump"]
         # TODO Apply Jump vector
+        self.changeState(states.Jumping)
+        self.velocity += self.jump_vector
+        self.jumpFrameCount = self.jumpFrames
 
     def use_ability(self):
         """ Generic ability usage class.
