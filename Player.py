@@ -98,6 +98,51 @@ class Player(Actor):
 
 
 
+    def move(self, keys, dt):
+        # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
+        movedHorizontal = False
+        if keys[pygame.K_s]:
+            # Implement ability to crouch?
+            pass
+        if keys[pygame.K_d]:
+            if self.accel.x < MAX_X_ACC:
+                self.accel.x += PLAYER_ACC
+            movedHorizontal = True
+        if keys[pygame.K_a]:
+            if self.accel.x > -MAX_X_ACC:
+                self.accel.x -= PLAYER_ACC
+            movedHorizontal = True
+
+        if keys[pygame.K_F1]:
+            self.debug = not self.debug
+
+        # if the entity is not currently moving, decrease their velocity until it reaches 0
+        if movedHorizontal:
+            self.cur_state = self.states[2]     # running
+            self.prevPos = self.pos
+
+            # self.velocity.length() returns the Euclidean length of the vector
+            if self.velocity.length() > self.max_speed:
+                self.velocity.scale_to_length(self.max_speed)
+
+            self.pos += self.velocity
+            self.rect.center = (int(self.pos.x), int(self.pos.y))
+
+        if not keys[pygame.K_a]:
+            if self.accel.x < 0:
+                self.accel.x = 0
+            if self.velocity.x < 0:
+                self.velocity.x -= 2*PLAYER_FRICTION
+                if self.velocity.x > 0:
+                    self.velocity.x = 0
+        if not keys[pygame.K_d]:
+            if self.accel.x > 0:
+                self.accel.x = 0
+            if self.velocity.x > 0:
+                self.velocity.x += 2*PLAYER_FRICTION
+                if self.velocity.x < 0:
+                    self.velocity.x = 0
+
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
@@ -128,19 +173,6 @@ class Player(Actor):
         """ Generic method for increasing
             player level."""
         pass
-
-    # def set_pos(self, new_rect):
-    #     """ Sets the player's position."""
-    #     if int(self.rect[0]) != int(new_rect[0]):
-    #         self.rect[0] = new_rect[0]
-    #         self.velocity.x = 0
-    #         self.accel.x = 0
-    #         self.pos.x = self.rect.center[0]
-    #     if int(self.rect[1]) != int(new_rect[1]):
-    #         self.rect[1] = new_rect[1]
-    #         self.velocity.y = 0
-    #         self.accel.y = 0
-    #         self.pos.y = self.rect.center[1]
 
     def draw(self, window):
         super().draw(window)
