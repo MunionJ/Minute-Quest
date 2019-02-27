@@ -43,6 +43,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         self.gamepadControls = pygame.Surface(SCREEN_RES)
         self.createGamePadDisplay()
         self.createKeyBoardDisplay()
+        self.currntbackground = self.keyboardControls
 
     def Reset(self):
         self.current_index = 0
@@ -54,20 +55,28 @@ class ControlsMenu(pygame.sprite.Sprite):
     def createKeyBoardDisplay(self):
         """Describe Inputs for Users using Keyboard"""
 
-        pygame.Surface.fill(self.keyboardControls,(0, 0, 0))
-        text = pygame.font.Font.render(self.font, "The wasd keys move the character w is jump b is attack and v is crotch ", 12, (0,0,0))
-        pygame.Surface.blit(self.keyboardControls,text, (0, 0))
-        pass
-
+        self.keyboardControls.fill((0, 0, 0))
+        text = pygame.font.Font.render(self.font,
+                                       "The ad keys move the character while ws will go through the party, ", 12,
+                                       (255, 255, 255))
+        text2 = pygame.font.Font.render(self.font,
+                                       "and space is jump ", 12,
+                                       (255, 255, 255))
+        self.keyboardControls.blit(text, (300,100))
+        self.keyboardControls.blit(text2, (300, 120))
     def createGamePadDisplay(self):
         """Describe Inputs for Users using Gamepad"""
         controller: object = self.controller
-        pygame.Surface.fill(self.gamepadControls,(0, 0, 0))
-        pygame.Surface.blit(self.gamepadControls, controller, (300, 200))
+        self.gamepadControls.fill((0, 0, 0))
+        self.gamepadControls.blit(controller, (300, 200))
         text = pygame.font.Font.render(self.font,
-            "The joystick moves along with the d pad up is jump the a button is attack and the b button is crotch", 12, (0,0,0))
-        pygame.Surface.blit(self.gamepadControls, text, (0, 0))
-        pass
+                                       "The joystick moves along with the d pad up is jump the a button is attack, ",
+                                       12, (255,255,255))
+        text2 = pygame.font.Font.render(self.font,
+                                       "and the B button is crotch. ",
+                                       12, (255, 255, 255))
+        self.gamepadControls.blit(text, (300, 100))
+        self.gamepadControls.blit(text2, (300, 120))
 
     def placeButtons(self):
         """Place buttons on screen"""
@@ -76,7 +85,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         for button in self.buttons:
             totalHeightButton += gap_y + button.rect.h
 
-        current_y = SCREEN_RES[1] - totalHeightButton - self.margin
+        current_y = SCREEN_RES[1] - totalHeightButton
         for button in self.buttons:
             x = self.margin + button.rect.w // 2
             y = current_y
@@ -98,9 +107,9 @@ class ControlsMenu(pygame.sprite.Sprite):
                 self.buttons[self.current_index].select()
 
         if self.buttonOptions[self.current_index] == "KeyBoard Controls":
-            pass
+            self.currntbackground = self.keyboardControls
         elif self.buttonOptions[self.current_index] == "Gamepad Controls":
-            pass
+            self.currntbackground = self.gamepadControls
 
         if key == pygame.K_RETURN:
             if self.buttonOptions[self.current_index] == "Back":
@@ -114,6 +123,7 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def draw(self, window):
         self.screen.fill(self.bg_color)
+        self.screen.blit(self.currntbackground, (0, 0))
         self.screen.blit(self.header, self.headerRect)
         for button in self.buttons:
             button.draw(self.screen)
