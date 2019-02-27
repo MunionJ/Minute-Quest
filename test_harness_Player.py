@@ -1,7 +1,7 @@
 # Test harness for Player class
 
-import pygame
 import os
+from Enemies import *
 from Player import *
 from EventManager import *
 
@@ -13,11 +13,13 @@ pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
                 "images/character1")
+enemy = Enemy((0, 0), "images/character1")
 # the image can be changed back to "images/characters.png" but its the whole sheet
 players = pygame.sprite.Group()
 players.add(player)
 
 manager.addGameObject(player)
+manager.addGameObject(enemy)
 screen_rect = window.get_rect()
 clock = pygame.time.Clock()
 running = True
@@ -32,17 +34,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    #print(player.cur_state, player.pos, player.velocity, player.accel)
     updated_rect = player.rect.clamp(screen_rect)
+    enemy_updated_rect = enemy.rect.clamp(screen_rect)
+    enemy.set_pos(enemy_updated_rect)
     player.set_pos(updated_rect)
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
 
-    pygame.draw.rect(window,
-                     (0, 255, 0),
-                     screen_rect,
-                     5)
     players.draw(window)
+    enemy.draw(window)
 
     pygame.display.flip()

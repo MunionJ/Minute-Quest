@@ -7,7 +7,7 @@ vec = pygame.math.Vector2
 class Actor(pygame.sprite.Sprite):
     """This is the base class from which Player,
         Enemy, etc. will inherit from."""
-    def __init__(self, start_pos, img):
+    def __init__(self, start_pos):
         # CONSTRUCTOR PARAMETERS #
         # start_pos: a tuple containing a coordinate pair (x, y)
         # img: a .PNG file (a sprite sheet, ideally)
@@ -17,17 +17,14 @@ class Actor(pygame.sprite.Sprite):
         self.prevPos = self.pos
         self.velocity = vec(0, 0)
         self.accel = vec(0, 0)
-        self.jump_vector = vec(0.2, -4)
+        self.jump_vector = vec(0, -JUMP_VEC)
         self.max_speed = 10
-        self.image = pygame.image.load(img)
-        self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
-        self.debug = False
+        self.rect = None
+        self.debug = True
         self.states = ["standing", "jumping", "running", "falling"]
         self.cur_state = self.states[0]
         self.jump_offset = 0
 
-    # Possibly add the movement code to the player class specifically, as we will not be controlling enemies with key
-    #  presses, they will have their own unique movement
     def move(self, keys, dt):
         """Base movement method."""
         # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
@@ -56,7 +53,6 @@ class Actor(pygame.sprite.Sprite):
             if self.velocity.length() > self.max_speed:
                 self.velocity.scale_to_length(self.max_speed)
 
-
             self.pos += self.velocity
             self.rect.center = (int(self.pos.x), int(self.pos.y))
 
@@ -75,6 +71,19 @@ class Actor(pygame.sprite.Sprite):
                 if self.velocity.x < 0:
                     self.velocity.x = 0
 
+    def set_pos(self, new_rect):
+        """ Sets the player's position."""
+        if int(self.rect[0]) != int(new_rect[0]):
+            self.rect[0] = new_rect[0]
+            self.velocity.x = 0
+            self.accel.x = 0
+            self.pos.x = self.rect.center[0]
+        if int(self.rect[1]) != int(new_rect[1]):
+            self.rect[1] = new_rect[1]
+            self.velocity.y = 0
+            self.accel.y = 0
+            self.pos.y = self.rect.center[1]
+
     def update(self, keys, dt):
         """Base update method. Will be filled
             out later."""
@@ -82,22 +91,26 @@ class Actor(pygame.sprite.Sprite):
 
         # PLAYER JUMPING
         # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
-        if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 40 px off the floor, set state to falling
+        self.apply_physics()
+
+        self.velocity += self.accel * dt
+        self.pos += self.velocity
+        self.rect.center = self.pos
+        self.move(keys, dt)
+
+    def apply_physics(self):
+        """ Apply physics based on Actor's current state."""
+        if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 30 px off the floor, set state to falling
             self.cur_state = self.states[3]
 
         if self.cur_state == self.states[0]:   # If current state is standing, do not apply gravity
             self.accel = vec(0, 0)
 
         if self.cur_state == self.states[1]:   # If current state is jumping, add the jump vector
-            self.accel = self.jump_vector
+            self.velocity += self.jump_vector
 
         if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
-            self.accel = vec(0.02, PLAYER_GRAV)
-
-        self.velocity += self.accel
-        self.pos += self.velocity
-        self.rect.center = self.pos
-        self.move(keys, dt)
+            self.accel += vec(0, PLAYER_GRAV)
 
     def draw(self, window):
         """Base draw method. Will be filled
