@@ -92,18 +92,19 @@ class Player(Actor):
             player level."""
         pass
 
-    def set_pos(self, new_rect):
-        """ Sets the player's position."""
-        if int(self.rect[0]) != int(new_rect[0]):
-            self.rect[0] = new_rect[0]
-            self.velocity.x = 0
-            self.accel.x = 0
-            self.pos.x = self.rect.center[0]
-        if int(self.rect[1]) != int(new_rect[1]):
-            self.rect[1] = new_rect[1]
-            self.velocity.y = 0
-            self.accel.y = 0
-            self.pos.y = self.rect.center[1]
+    # def set_pos(self, new_rect):
+    #     """ Sets the player's position."""
+    #     if int(self.rect[0]) != int(new_rect[0]):
+    #         self.rect[0] = new_rect[0]
+    #         self.velocity.x = 0
+    #         self.accel.x = 0
+    #         self.pos.x = self.rect.center[0]
+    #     if int(self.rect[1]) != int(new_rect[1]):
+    #         self.rect[1] = new_rect[1]
+    #         self.velocity.y = 0
+    #         self.accel.y = 0
+    #         self.pos.y = self.rect.center[1]
 
     def draw(self, window):
+        super().draw(window)
         window.blit(self.image, self.rect)

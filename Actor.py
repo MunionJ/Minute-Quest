@@ -19,9 +19,8 @@ class Actor(pygame.sprite.Sprite):
         self.accel = vec(0, 0)
         self.jump_vector = vec(0, -JUMP_VEC)
         self.max_speed = 10
-
-        self.rect = pygame.rect.Rect(self.pos.x, self.pos.y, 24, 24)
-        self.debug = False
+        self.rect = None
+        self.debug = True
         self.states = ["standing", "jumping", "running", "falling"]
         self.cur_state = self.states[0]
         self.jump_offset = 0
@@ -71,6 +70,19 @@ class Actor(pygame.sprite.Sprite):
                 self.velocity.x += 2*PLAYER_FRICTION
                 if self.velocity.x < 0:
                     self.velocity.x = 0
+
+    def set_pos(self, new_rect):
+        """ Sets the player's position."""
+        if int(self.rect[0]) != int(new_rect[0]):
+            self.rect[0] = new_rect[0]
+            self.velocity.x = 0
+            self.accel.x = 0
+            self.pos.x = self.rect.center[0]
+        if int(self.rect[1]) != int(new_rect[1]):
+            self.rect[1] = new_rect[1]
+            self.velocity.y = 0
+            self.accel.y = 0
+            self.pos.y = self.rect.center[1]
 
     def update(self, keys, dt):
         """Base update method. Will be filled

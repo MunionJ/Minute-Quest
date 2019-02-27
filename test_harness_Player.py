@@ -19,6 +19,7 @@ players = pygame.sprite.Group()
 players.add(player)
 
 manager.addGameObject(player)
+manager.addGameObject(enemy)
 screen_rect = window.get_rect()
 clock = pygame.time.Clock()
 running = True
@@ -34,6 +35,8 @@ while running:
             running = False
 
     updated_rect = player.rect.clamp(screen_rect)
+    enemy_updated_rect = enemy.rect.clamp(screen_rect)
+    enemy.set_pos(enemy_updated_rect)
     player.set_pos(updated_rect)
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:

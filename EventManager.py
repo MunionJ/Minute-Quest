@@ -50,7 +50,9 @@ class EventManager:
 
     def process_input(self, dt):
         """ This method processes user input."""
+        timer = 1
         keys = pygame.key.get_pressed()
+        timer -= dt
 
         if keys[pygame.K_ESCAPE]:
             return False

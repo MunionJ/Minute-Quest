@@ -7,8 +7,9 @@ class Enemy(Actor):
     def __init__(self, spawn_point, img):
         super().__init__(spawn_point)
         self.img = pygame.image.load(img + "/right1.png")
+        self.rect = self.img.get_rect()
 
-    def update(self, dt):
+    def update(self, keys, dt):
         """
         Updates enemy position and applies physics.
         :param dt: DeltaTime
@@ -20,5 +21,8 @@ class Enemy(Actor):
         self.pos += self.velocity
         self.rect.center = self.pos
 
+        print(self.pos, self.velocity, self.accel)
+
     def draw(self, window):
+        super().draw(window)
         window.blit(self.img, self.rect)
