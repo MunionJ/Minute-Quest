@@ -24,7 +24,7 @@ ROOMS = {
         # "AB_fight_map2.txt",
         "enemy room.txt",
         "map_enemy_daniel.txt",
-        "MinuteQuestRoom1.txt",
+        # "MinuteQuestRoom1.txt",
         # "MQ_test_map_battle.txt"
     ],
     "LootRooms": [
