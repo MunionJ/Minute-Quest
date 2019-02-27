@@ -27,49 +27,7 @@ class Actor(pygame.sprite.Sprite):
 
     def move(self, keys, dt):
         """Base movement method."""
-        # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
-        movedHorizontal = False
-        if keys[pygame.K_s]:
-            # Implement ability to crouch?
-            pass
-        if keys[pygame.K_d]:
-            if self.accel.x < MAX_X_ACC:
-                self.accel.x += PLAYER_ACC
-            movedHorizontal = True
-        if keys[pygame.K_a]:
-            if self.accel.x > -MAX_X_ACC:
-                self.accel.x -= PLAYER_ACC
-            movedHorizontal = True
-
-        if keys[pygame.K_F1]:
-            self.debug = not self.debug
-
-        # if the entity is not currently moving, decrease their velocity until it reaches 0
-        if movedHorizontal:
-            self.cur_state = self.states[2]     # running
-            self.prevPos = self.pos
-
-            # self.velocity.length() returns the Euclidean length of the vector
-            if self.velocity.length() > self.max_speed:
-                self.velocity.scale_to_length(self.max_speed)
-
-            self.pos += self.velocity
-            self.rect.center = (int(self.pos.x), int(self.pos.y))
-
-        if not keys[pygame.K_a]:
-            if self.accel.x < 0:
-                self.accel.x = 0
-            if self.velocity.x < 0:
-                self.velocity.x -= 2*PLAYER_FRICTION
-                if self.velocity.x > 0:
-                    self.velocity.x = 0
-        if not keys[pygame.K_d]:
-            if self.accel.x > 0:
-                self.accel.x = 0
-            if self.velocity.x > 0:
-                self.velocity.x += 2*PLAYER_FRICTION
-                if self.velocity.x < 0:
-                    self.velocity.x = 0
+        pass
 
     def set_pos(self, new_rect):
         """ Sets the player's position."""
@@ -91,14 +49,11 @@ class Actor(pygame.sprite.Sprite):
 
         # PLAYER JUMPING
         # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
-        self.apply_physics()
+        self.apply_physics(dt)
 
-        self.velocity += self.accel * dt
-        self.pos += self.velocity
-        self.rect.center = self.pos
         self.move(keys, dt)
 
-    def apply_physics(self):
+    def apply_physics(self, dt):
         """ Apply physics based on Actor's current state."""
         if self.rect.bottom < SCREEN_RES[1] - 30:   # If pos is larger than 30 px off the floor, set state to falling
             self.cur_state = self.states[3]
@@ -111,6 +66,10 @@ class Actor(pygame.sprite.Sprite):
 
         if self.cur_state == self.states[3]:   # If current state is falling, apply gravity
             self.accel += vec(0, PLAYER_GRAV)
+
+        self.velocity += self.accel * dt
+        self.pos += self.velocity
+        self.rect.center = self.pos
 
     def draw(self, window):
         """Base draw method. Will be filled

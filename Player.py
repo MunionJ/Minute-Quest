@@ -8,8 +8,6 @@ class Player(Actor):
 
     def __init__(self, start_pos, img):
         super().__init__(start_pos)
-        self.max_hp = 10
-        self.cur_hp = self.max_hp
         self.level = 1
         self.alive = True
         self.rframes = [ pygame.image.load(img + "/right1.png"),
@@ -30,15 +28,21 @@ class Player(Actor):
         self.rect = self.frames["right"].get_rect()
         self.image = self.frames["right"]
 
-
-        # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
         self.weapons = {}
         #self.cur_weapon = self.weapons["blah"]
         # figure out a time later
         self.invuln_timer = 3
-        # player stats: a dictionary or a Stats class?
+
+        # pass a list as constructor parameter to specialized character class to set defaults
+        self.stats = {
+            "MELEE": 0,
+            "RANGE": 0,
+            "MAGIC": 0,
+            "CUR_HP": 0,
+            "MAX_HP": 0
+        }
 
     def melee_attack(self):
         """ Generic melee attack method. Will be
@@ -75,6 +79,51 @@ class Player(Actor):
 
 
 
+    def move(self, keys, dt):
+        # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
+        movedHorizontal = False
+        if keys[pygame.K_s]:
+            # Implement ability to crouch?
+            pass
+        if keys[pygame.K_d]:
+            if self.accel.x < MAX_X_ACC:
+                self.accel.x += PLAYER_ACC
+            movedHorizontal = True
+        if keys[pygame.K_a]:
+            if self.accel.x > -MAX_X_ACC:
+                self.accel.x -= PLAYER_ACC
+            movedHorizontal = True
+
+        if keys[pygame.K_F1]:
+            self.debug = not self.debug
+
+        # if the entity is not currently moving, decrease their velocity until it reaches 0
+        if movedHorizontal:
+            self.cur_state = self.states[2]     # running
+            self.prevPos = self.pos
+
+            # self.velocity.length() returns the Euclidean length of the vector
+            if self.velocity.length() > self.max_speed:
+                self.velocity.scale_to_length(self.max_speed)
+
+            self.pos += self.velocity
+            self.rect.center = (int(self.pos.x), int(self.pos.y))
+
+        if not keys[pygame.K_a]:
+            if self.accel.x < 0:
+                self.accel.x = 0
+            if self.velocity.x < 0:
+                self.velocity.x -= 2*PLAYER_FRICTION
+                if self.velocity.x > 0:
+                    self.velocity.x = 0
+        if not keys[pygame.K_d]:
+            if self.accel.x > 0:
+                self.accel.x = 0
+            if self.velocity.x > 0:
+                self.velocity.x += 2*PLAYER_FRICTION
+                if self.velocity.x < 0:
+                    self.velocity.x = 0
+
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
@@ -105,19 +154,6 @@ class Player(Actor):
         """ Generic method for increasing
             player level."""
         pass
-
-    # def set_pos(self, new_rect):
-    #     """ Sets the player's position."""
-    #     if int(self.rect[0]) != int(new_rect[0]):
-    #         self.rect[0] = new_rect[0]
-    #         self.velocity.x = 0
-    #         self.accel.x = 0
-    #         self.pos.x = self.rect.center[0]
-    #     if int(self.rect[1]) != int(new_rect[1]):
-    #         self.rect[1] = new_rect[1]
-    #         self.velocity.y = 0
-    #         self.accel.y = 0
-    #         self.pos.y = self.rect.center[1]
 
     def draw(self, window):
         super().draw(window)

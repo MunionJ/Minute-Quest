@@ -9,19 +9,8 @@ class Enemy(Actor):
         self.img = pygame.image.load(img + "/right1.png")
         self.rect = self.img.get_rect()
 
-    def update(self, keys, dt):
-        """
-        Updates enemy position and applies physics.
-        :param dt: DeltaTime
-        :return: None
-        """
-        self.apply_physics()
-
-        self.velocity += self.accel * dt
-        self.pos += self.velocity
-        self.rect.center = self.pos
-
-        print(self.pos, self.velocity, self.accel)
+    def move(self, keys, dt):
+        pass
 
     def draw(self, window):
         super().draw(window)
