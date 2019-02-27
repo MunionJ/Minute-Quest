@@ -6,11 +6,11 @@ import math
 
 class Camera():
 
-    def __init__(self,map):
+    def __init__(self, dungeon):
+        self.dungeon = dungeon
         self.pos = (0,0)
         self.prevPos = (0,0)
-        self.dungeon = Dungeon(4)
-        self.boundary = pygame.Rect(0,0,self.dungeon.totalDungeonWidth,self.dungeon.totalDungeonHeight)
+        self.boundary = dungeon.boundary
         self.view = pygame.Surface(SCREEN_RES)
         self.rect = self.view.get_rect()
 

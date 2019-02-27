@@ -80,7 +80,7 @@ class GameMenu(pygame.sprite.Sprite):
                 self.buttons[self.current_index].select()
 
 
-        if self.buttonOptions[self.current_index] == "Enter the Dungon":
+        if self.buttonOptions[self.current_index] == "Enter the Dungeon":
             pass
         elif self.buttonOptions[self.current_index] == "Shop":
             pass
@@ -90,8 +90,10 @@ class GameMenu(pygame.sprite.Sprite):
             pass
 
         if key == pygame.K_RETURN:
-            if self.buttonOptions[self.current_index] == "Main Menu":
+            print(self.buttonOptions[self.current_index])
+            if self.buttonOptions[self.current_index] == "Main Menu" or self.buttonOptions[self.current_index] == "Enter Dungeon":
                 self.setMenuSelection()
+
 
     def getMenuSelection(self):
         return self.selectedOption

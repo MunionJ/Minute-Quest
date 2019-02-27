@@ -3,6 +3,7 @@ from MenuSystem.LandingMenu import *
 from MenuSystem.ControlsMenu import *
 from MenuSystem.GameMenu import *
 from EventManager import *
+from game import *
 
 class GameManager:
 
@@ -22,6 +23,7 @@ class GameManager:
         pygame.display.set_caption(GAME_NAME)
         self.gameWindow = pygame.display.set_mode(SCREEN_RES)
         self.bg_color = pygame.color.THECOLORS['black']
+
 
     def LoadMenu(self,menuOption):
         currentMenu = self.menuOptions[self.currentMenuState] if self.currentMenuState != None else menu.Main
@@ -50,6 +52,12 @@ class GameManager:
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
                 pygame.display.update()
 
+    def RunDungeon(self):
+        self.game = Game(self.eventmanager, self.gameWindow)
+        print("hhhh")
+        self.game.start_game()
+        self.game.launch_game()
+
     def determineState(self,currentMenu):
         if currentMenu == None:
             return
@@ -72,6 +80,8 @@ class GameManager:
         elif self.currentMenuState == menu.NewGame:
             if selected == "Main Menu":
                 newMenuOption = menu.Main
+            elif selected == "Enter Dungeon":
+                self.RunDungeon()
         elif self.currentMenuState == menu.Loading:
             if selected == "New Game":
                 newMenuOption = menu.NewGame

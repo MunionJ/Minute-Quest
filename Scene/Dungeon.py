@@ -15,7 +15,7 @@ class Dungeon:
 
             roomName = random.choice(ROOMS[roomType])
             tempChoices[roomType].remove(roomName)
-            dungeonName = "../maps/{0}/{1}".format(roomType,roomName)
+            dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
 
             sprite_sheet = self.assignSpriteSheet(roomName)
             if sprite_sheet == None:
@@ -68,6 +68,7 @@ class Dungeon:
 
         self.totalDungeonWidth = x_offset
         self.totalDungeonHeight = largest_y - smallest_y
+        self.boundary = pygame.Rect(0, smallest_y, self.totalDungeonWidth, self.totalDungeonHeight)
 
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
 
@@ -78,11 +79,11 @@ class Dungeon:
     def assignSpriteSheet(self, roomName):
         for name in WALLS_ONE:
             if name in roomName:
-                return "../images/walls1.png"
+                return "./images/walls1.png"
 
         for name in UTUMNO:
             if name in roomName:
-                return "../images/ProjectUtumno_full.png"
+                return "./images/ProjectUtumno_full.png"
 
         return None
 
