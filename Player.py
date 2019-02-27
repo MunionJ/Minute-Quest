@@ -13,12 +13,15 @@ class Player(Actor):
         self.alive = True
         self.t_anim = time.time() + 1 #timer used for animations
         self.anim = 0 #which frame animations are on. player move animations that update need same number of frames currently
-        self.rframes = [ pygame.image.load(img + "/right1.png"),
-                         pygame.image.load(img + "/right2.png"),
-                         pygame.image.load(img + "/right3.png"),
-                         pygame.image.load(img + "/right4.png"),
-                         pygame.image.load(img + "/right5.png")]
+        self.lframes = [ pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
+                         pygame.transform.flip(pygame.image.load(img + "/right2.png"), True, False),
+                         pygame.transform.flip(pygame.image.load(img + "/right3.png"), True, False),
+                         pygame.transform.flip(pygame.image.load(img + "/right2.png"), True, False)]
         # list of frames while moveing right.
+        self.rframes = [pygame.image.load(img + "/right1.png"),
+                        pygame.image.load(img + "/right2.png"),
+                        pygame.image.load(img + "/right3.png"),
+                        pygame.image.load(img + "/right2.png")]
         self.frames = {"right" : pygame.image.load(img + "/right1.png"),
                        "left" : pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
                        "rjump" : pygame.image.load(img + "/jump1.png"),
@@ -30,8 +33,14 @@ class Player(Actor):
             height = 64
             self.frames[i] = pygame.transform.scale(self.frames[i], (width, height))
             self.frames[i] = self.frames[i].convert_alpha()
-        for i in range(len(self.rframes)): #
-            rect = self.rframes[i].get_rect()
+        for i in range(len(self.lframes)):
+            rect = self.lframes[i].get_rect()
+            width = int(rect.w*(64/rect.h))
+            height = 64
+            self.lframes[i] = pygame.transform.scale(self.lframes[i], (width, height))
+            self.lframes[i] = self.lframes[i].convert_alpha()
+        for i in range(len(self.lframes)):
+            rect = self.lframes[i].get_rect()
             width = int(rect.w*(64/rect.h))
             height = 64
             self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
@@ -92,7 +101,8 @@ class Player(Actor):
             if self.anim > len(self.rframes)-1:
                 self.anim = 0
             self.frames["right"] = self.rframes[self.anim]
-            self.t_anim = time.time() + 1
+            self.frames["left"] = self.lframes[self.anim]
+            self.t_anim = time.time() + 0.25
 
 
 
