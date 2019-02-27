@@ -8,8 +8,6 @@ class Player(Actor):
 
     def __init__(self, start_pos, img):
         super().__init__(start_pos)
-        self.max_hp = 10
-        self.cur_hp = self.max_hp
         self.level = 1
         self.alive = True
         self.rframes = [ pygame.image.load(img + "/right1.png"),
@@ -30,15 +28,21 @@ class Player(Actor):
         self.rect = self.frames["right"].get_rect()
         self.image = self.frames["right"]
 
-
-        # need jump vector
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
         self.weapons = {}
         #self.cur_weapon = self.weapons["blah"]
         # figure out a time later
         self.invuln_timer = 3
-        # player stats: a dictionary or a Stats class?
+
+        # pass a list as constructor parameter to specialized character class to set defaults
+        self.stats = {
+            "MELEE": 0,
+            "RANGE": 0,
+            "MAGIC": 0,
+            "CUR_HP": 0,
+            "MAX_HP": 0
+        }
 
     def melee_attack(self):
         """ Generic melee attack method. Will be
