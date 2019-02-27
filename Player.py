@@ -12,15 +12,23 @@ class Player(Actor):
         self.cur_hp = self.max_hp
         self.level = 1
         self.alive = True
-        self.frames = [pygame.image.load(img + "/right1.png"), pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False), pygame.image.load(img + "/jump1.png")]
-        for i in range(len(self.frames)):
+        self.rframes = [ pygame.image.load(img + "/right1.png"),
+                         pygame.image.load(img + "/right2.png"),
+                         pygame.image.load(img + "/right3.png"),
+                         pygame.image.load(img + "/right4.png"),
+                         pygame.image.load(img + "/right5.png")]
+        self.frames = {"right" : pygame.image.load(img + "/right1.png"),
+                       "left" : pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
+                       "rjump" : pygame.image.load(img + "/jump1.png"),
+                       "ljump": pygame.transform.flip(pygame.image.load(img + "/jump1.png"), True, False), }
+        for i in self.frames:
             rect = self.frames[i].get_rect()
             width = int(rect.w*(64/rect.h))
             height = 64
             self.frames[i] = pygame.transform.scale(self.frames[i], (width, height))
             self.frames[i] = self.frames[i].convert_alpha()
-        self.rect = self.frames[0].get_rect()
-        self.image = self.frames[0]
+        self.rect = self.frames["right"].get_rect()
+        self.image = self.frames["right"]
 
 
         # need jump vector
@@ -53,13 +61,19 @@ class Player(Actor):
         super().update(keys, dt)
 
         if keys[pygame.K_d]:
-            self.image = self.frames[0]
+            self.image = self.frames["right"]
         if keys[pygame.K_a]:
-            self.image = self.frames[1]
+            self.image = self.frames["left"]
 
         if keys[pygame.K_SPACE] and self.cur_state != self.states[1]:
             self.cur_state = self.states[1]
-            self.image = self.frames[2]
+            if self.image == self.frames["right"] or self.image == self.frames["rjump"]:
+                self.image = self.frames["rjump"]
+            if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
+                self.image = self.frames["ljump"]
+
+
+
 
     def jump(self):
         """ Generic jump method. Can be
