@@ -82,6 +82,7 @@ class GameManager:
                 newMenuOption = menu.Main
             elif selected == "Enter Dungeon":
                 self.RunDungeon()
+                newMenuOption = menu.NewGame
         elif self.currentMenuState == menu.Loading:
             if selected == "New Game":
                 newMenuOption = menu.NewGame

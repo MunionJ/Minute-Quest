@@ -66,13 +66,13 @@ while running:
     running = manager.process_input(dt)
 
     #Move Player and Check for Collisions
-    player.moveX()
+    player.moveX(dt)
     collisions = pygame.sprite.spritecollide(player, tiles, False)
     if collisions:
         hit = collisions[0]
         player.handleXCollision(hit.rect)
 
-    player.moveY()
+    player.moveY(dt)
     collisions = pygame.sprite.spritecollide(player, tiles, False)
     y_boxes = []
     vertCollisions = False
@@ -113,8 +113,6 @@ while running:
 
     enemy_updated_rect = enemy.rect.clamp(screen_rect)
     enemy.set_pos(enemy_updated_rect)
-
-
 
     window.fill(bg_color)
     for obj in manager.game_objects["game_objects"]:

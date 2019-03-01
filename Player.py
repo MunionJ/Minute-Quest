@@ -65,7 +65,7 @@ class Player(Actor):
         }
 
         self.jumpFrameCount = 0
-        self.jumpFrames = 1
+        self.jumpFrames = 2
 
     def melee_attack(self):
         """ Generic melee attack method. Will be

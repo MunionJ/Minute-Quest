@@ -22,6 +22,11 @@ class Camera():
         """Updates camera position based on location of player"""
         topLeftX = playerPos[0] - (SCREEN_RES[0] / 2)
         topLeftY = playerPos[1] - (SCREEN_RES[1] / 2)
+
+        if topLeftX < 0:
+            topLeftX = 0
+
+
         # if topLeftX + SCREEN_RES[0] > self.map.totalMapWidth:
         #     topLeftX = self.map.totalMapWidth - SCREEN_RES[0]
         #
@@ -68,23 +73,26 @@ class Camera():
 
     def draw(self, screen, player):
         for map in self.dungeon.rooms:
-            screen.blit(
-                map.bgImage,
-                (int(map.bgImageRect.x - self.pos[0]),int(map.bgImageRect.y - self.pos[1]))
-            )
-
-            for wall in map.walls:
+            if self.dungeon.playerBounds.colliderect(map.bgImageRect):
                 screen.blit(
-                    wall.image,
-                    (int(wall.rect.x - self.pos[0]),int(wall.rect.y - self.pos[1]))
+                    map.bgImage,
+                    (int(map.bgImageRect.x - self.pos[0]),int(map.bgImageRect.y - self.pos[1]))
                 )
 
-            bg_rect = pygame.Rect(
-                int(map.bgImageRect.x - self.pos[0]),
-                int(map.bgImageRect.y - self.pos[1]),
-                map.bgImageRect.w,
-                map.bgImageRect.h
-            )
+                for wall in map.walls:
+                    screen.blit(
+                        wall.image,
+                        (int(wall.rect.x - self.pos[0]),int(wall.rect.y - self.pos[1]))
+                    )
+
+                bg_rect = pygame.Rect(
+                    int(map.bgImageRect.x - self.pos[0]),
+                    int(map.bgImageRect.y - self.pos[1]),
+                    map.bgImageRect.w,
+                    map.bgImageRect.h
+                )
+            else:
+                break
 
         screen.blit(
             player.image,

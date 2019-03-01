@@ -6,7 +6,7 @@ from Scene.DungeonRoom import *
 class Dungeon:
     def __init__(self, num_rooms):
         self.rooms = []
-        tempChoices = ROOMS.copy()
+        tempChoices = dict(ROOMS)
         for i in range(num_rooms):
 
             self.removeEmptyChoices(tempChoices)
@@ -14,7 +14,6 @@ class Dungeon:
             roomType = random.choice(list(tempChoices.keys()))
 
             roomName = random.choice(ROOMS[roomType])
-            print(roomName)
             tempChoices[roomType].remove(roomName)
 
             dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
@@ -26,7 +25,8 @@ class Dungeon:
             self.rooms.append(room)
 
         self.playerSpawn = self.rooms[0].playerSpawn
-        print("Dungeon.py: self.playerSpawn = ", self.playerSpawn)
+
+
 
         x_offset = self.rooms[0].totalMapWidth
 
@@ -71,7 +71,7 @@ class Dungeon:
         self.totalDungeonWidth = x_offset
         self.totalDungeonHeight = largest_y - smallest_y
         self.boundary = pygame.Rect(0, smallest_y, self.totalDungeonWidth, self.totalDungeonHeight)
-
+        self.playerBounds = self.boundary
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
 
     def draw(self,screen):

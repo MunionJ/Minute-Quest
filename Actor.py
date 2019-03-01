@@ -18,7 +18,7 @@ class Actor(pygame.sprite.Sprite):
         self.velocity = vec(0, 0)
         self.accel = vec(0, 0)
         self.jump_vector = vec(0, -JUMP_VEC)
-        self.max_speed = 12
+        self.max_speed = 7
         self.rect = None
         self.debug = True
         self.cur_state = states.Falling
@@ -47,17 +47,17 @@ class Actor(pygame.sprite.Sprite):
 
             self.onSurface = True
 
-    def moveX(self):
+    def moveX(self,dt):
         self.velocity.x += self.accel.x
 
         # self.velocity.length() returns the Euclidean length of the vector
         if abs(self.velocity.x) > self.max_speed:
-            self.velocity.x = self.max_speed * (self.velocity.x/abs(self.velocity.x))
+            self.velocity.x = self.max_speed * (-1 if self.velocity.x < 0 else 1)
 
         self.pos.x += self.velocity.x
         self.rect.center = (int(self.pos.x), int(self.pos.y))
 
-    def moveY(self):
+    def moveY(self,dt):
         self.velocity.y += self.accel.y
 
         # self.velocity.length() returns the Euclidean length of the vector
@@ -112,6 +112,8 @@ class Actor(pygame.sprite.Sprite):
         if not self.onSurface:
             self.changeState(states.Falling)
 
+        self.pos.x, self.pos.y = self.rect.center
+
 
     def isInAir(self):
         self.onSurface = False
@@ -128,7 +130,6 @@ class Actor(pygame.sprite.Sprite):
                 pass
             elif newState == states.Falling:  # falling
                 pass
-            print(self.cur_state)
 
     def handleXCollision(self,other_rect):
         if self.velocity.x > 0:
@@ -148,17 +149,15 @@ class Actor(pygame.sprite.Sprite):
                 self.velocity.y = 0
                 self.pos.y = self.rect.center[1]
                 self.onSurface = True
+                return True
         elif self.velocity.y < 0:
             if self.rect.bottom > other_rect.top:
+                self.rect.top = other_rect.bottom
                 self.accel.y = 0
                 self.velocity.y = 0
                 self.pos.y = self.rect.center[1]
-        else:
-            if self.rect.bottom != other_rect.top:
-                self.rect.bottom = other_rect.top
-                self.accel.y = 0
-                self.velocity.y = 0
-                self.pos.y = self.rect.center[1]
+
+        return False
 
 
     def hitVerticalWall(self):
