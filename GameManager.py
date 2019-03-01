@@ -54,7 +54,7 @@ class GameManager:
 
     def RunDungeon(self):
         self.game = Game(self.eventmanager, self.gameWindow)
-        print("hhhh")
+        #print("hhhh")
         self.game.start_game()
         self.game.launch_game()
 

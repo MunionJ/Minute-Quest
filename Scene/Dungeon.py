@@ -14,6 +14,7 @@ class Dungeon:
             roomType = random.choice(list(tempChoices.keys()))
 
             roomName = random.choice(ROOMS[roomType])
+            print(roomName)
             tempChoices[roomType].remove(roomName)
 
             dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
@@ -25,6 +26,7 @@ class Dungeon:
             self.rooms.append(room)
 
         self.playerSpawn = self.rooms[0].playerSpawn
+        print("Dungeon.py: self.playerSpawn = ", self.playerSpawn)
 
         x_offset = self.rooms[0].totalMapWidth
 

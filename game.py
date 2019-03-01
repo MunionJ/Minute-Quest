@@ -11,6 +11,7 @@ class Game:
         self.running = False
         self.dungeon = Dungeon(4)
         self.player = Player(self.dungeon.playerSpawn, "images/character1")
+        self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
         self.camera.setCameraPosition(self.player.rect.center)
         self.manager.addGameObject(self.player)
@@ -39,7 +40,7 @@ class Game:
             # enemy.set_pos(enemy_updated_rect)
             self.player.set_pos(updated_rect)
             self.camera.setCameraPosition(self.player.rect.center)
-            print(self.player.rect.center, self.player.pos)
+            # print(self.player.rect.center, self.player.pos)
             pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
 
             self.window.fill(self.bg_color)

@@ -77,4 +77,5 @@ class DungeonRoom:
                             elif tilecode in PLAYER_EXITS:
                                 self.exitPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             elif tilecode in PLAYER_SPAWNS:
-                                self.playerSpawn = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
+                                self.playerSpawn = pygame.Rect(3 * tilewidth, y * tileheight, tilewidth, tileheight)
+                                print("DungeonRoom.py: self.playerSpawn = ", self.playerSpawn)

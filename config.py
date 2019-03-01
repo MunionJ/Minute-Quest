@@ -25,7 +25,7 @@ WALLS_ONE = [
 
 UTUMNO = [
     "map_enemy_daniel", "map_platformer_daniel", "MinuteQuestRoom2",
-    "map_puzzle_daniel", "map_loot_daniel"
+    "map_puzzle_daniel", "map_loot_daniel", "MinuteQuestRoom3"
 ]
 
 # MAP FILES
