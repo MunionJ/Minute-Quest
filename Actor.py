@@ -18,7 +18,7 @@ class Actor(pygame.sprite.Sprite):
         self.velocity = vec(0, 0)
         self.accel = vec(0, 0)
         self.jump_vector = vec(0, -JUMP_VEC)
-        self.max_speed = 10
+        self.max_speed = 12
         self.rect = None
         self.debug = True
         self.cur_state = states.Falling
@@ -51,8 +51,8 @@ class Actor(pygame.sprite.Sprite):
         self.velocity.x += self.accel.x
 
         # self.velocity.length() returns the Euclidean length of the vector
-        if self.velocity.length() > self.max_speed:
-            self.velocity.scale_to_length(self.max_speed)
+        if abs(self.velocity.x) > self.max_speed:
+            self.velocity.x = self.max_speed * (self.velocity.x/abs(self.velocity.x))
 
         self.pos.x += self.velocity.x
         self.rect.center = (int(self.pos.x), int(self.pos.y))
@@ -61,8 +61,8 @@ class Actor(pygame.sprite.Sprite):
         self.velocity.y += self.accel.y
 
         # self.velocity.length() returns the Euclidean length of the vector
-        if self.velocity.length() > self.max_speed:
-            self.velocity.scale_to_length(self.max_speed)
+        #if self.velocity.length() > self.max_speed:
+        #    self.velocity.scale_to_length(self.max_speed)
 
         self.pos.y += self.velocity.y
         self.rect.center = (int(self.pos.x), int(self.pos.y))
@@ -80,7 +80,8 @@ class Actor(pygame.sprite.Sprite):
     def apply_physics(self, dt):
         """ Apply physics based on Actor's current state."""
         if self.cur_state == states.Standing:   # If current state is standing or running, do not apply gravity
-            self.accel = vec(0, 0)
+            if self.accel.y != 0:
+                self.accel = vec(0, 0)
         elif self.cur_state == states.Running:# If current state is standing or running, do not apply gravity
             self.accel = vec(self.accel.x, 0)
 
@@ -120,13 +121,13 @@ class Actor(pygame.sprite.Sprite):
         if self.cur_state != newState:
             self.cur_state = newState
             if newState == states.Standing:  # standing
-                self.accel.y = 0
+                pass
             elif newState == states.Jumping:  # jumping
                 pass
             elif newState == states.Running:  # running
                 pass
             elif newState == states.Falling:  # falling
-                self.accel.y += PLAYER_GRAV
+                pass
             print(self.cur_state)
 
     def handleXCollision(self,other_rect):
