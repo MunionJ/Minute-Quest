@@ -102,7 +102,6 @@ while running:
         player.isInAir()
 
     player.determineState()
-    print(player.cur_state)
 
     #END COLLISION HANDLING
 

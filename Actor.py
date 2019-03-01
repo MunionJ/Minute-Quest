@@ -81,12 +81,14 @@ class Actor(pygame.sprite.Sprite):
         """ Apply physics based on Actor's current state."""
         if self.cur_state == states.Standing:   # If current state is standing or running, do not apply gravity
             self.accel = vec(0, 0)
+        elif self.cur_state == states.Running:# If current state is standing or running, do not apply gravity
+            self.accel = vec(self.accel.x, 0)
 
         if self.cur_state == states.Jumping:   # If current state is jumping, add the jump vector
             self.velocity += self.jump_vector
 
         if self.cur_state == states.Falling:   # If current state is falling, apply gravity
-            self.accel += vec(0, PLAYER_GRAV)
+            self.velocity += vec(0, PLAYER_GRAV)
 
 
     def determineState(self):
@@ -125,6 +127,7 @@ class Actor(pygame.sprite.Sprite):
                 pass
             elif newState == states.Falling:  # falling
                 self.accel.y += PLAYER_GRAV
+            print(self.cur_state)
 
     def handleXCollision(self,other_rect):
         if self.velocity.x > 0:
