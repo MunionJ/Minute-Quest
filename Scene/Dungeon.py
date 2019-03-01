@@ -8,13 +8,14 @@ class Dungeon:
         self.rooms = []
         tempChoices = ROOMS.copy()
         for i in range(num_rooms):
+
+            self.removeEmptyChoices(tempChoices)
+
             roomType = random.choice(list(tempChoices.keys()))
-            while len(tempChoices[roomType]) == 0:
-                del tempChoices[roomType]
-                roomType = random.choice(list(tempChoices.keys()))
 
             roomName = random.choice(ROOMS[roomType])
             tempChoices[roomType].remove(roomName)
+
             dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
 
             sprite_sheet = self.assignSpriteSheet(roomName)
@@ -23,7 +24,6 @@ class Dungeon:
             room = DungeonRoom(dungeonName, sprite_sheet)
             self.rooms.append(room)
 
-        print(roomName)
         self.playerSpawn = self.rooms[0].playerSpawn
 
         x_offset = self.rooms[0].totalMapWidth
@@ -75,6 +75,18 @@ class Dungeon:
     def draw(self,screen):
         for room in self.rooms:
             room.draw(screen)
+
+    def removeEmptyChoices(self, choices):
+        badChoices = []
+        for key in choices.keys():
+            if len(choices[key]) == 0:
+                badChoices.append(key)
+
+        r = dict(choices)
+        for bc in badChoices:
+            del r[bc]
+
+        choices = r
 
     def assignSpriteSheet(self, roomName):
         for name in WALLS_ONE:

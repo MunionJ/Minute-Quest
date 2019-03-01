@@ -8,10 +8,13 @@ POSSIBLE_KEYS = [94]
 
 # Player Variables
 PLAYER_GRAV = 1.2
-PLAYER_ACC = 9
-MAX_X_ACC = 5
+PLAYER_ACC = 2
+MAX_X_ACC = 2
 PLAYER_FRICTION = -0.24
 JUMP_VEC = 1.5
+
+#Maximum offset of pixels between an actor on a surface to determine if a player is on a surface
+PIXEL_DIFFERENCE = 2
 
 WALLS_ONE = [
     "MQ_test_map_battle", "AB_fight_map1", "AB_fight_map2",

@@ -36,7 +36,6 @@ class Actor(pygame.sprite.Sprite):
             self.velocity.x = 0
             self.accel.x = 0
             self.pos.x = self.rect.center[0]
-            self.changeState(states.Standing)
 
         if int(self.rect[1]) != int(new_rect[1]):
             dy = self.rect[1] - new_rect[1]
@@ -44,10 +43,7 @@ class Actor(pygame.sprite.Sprite):
             self.velocity.y = 0
             self.accel.y = 0
             self.pos.y = self.rect.center[1]
-            if dy < 0:
-                self.changeState(states.Falling)
-            else:
-                self.changeState(states.Standing)
+
 
             self.onSurface = True
 
@@ -83,7 +79,6 @@ class Actor(pygame.sprite.Sprite):
 
     def apply_physics(self, dt):
         """ Apply physics based on Actor's current state."""
-        print(self.cur_state)
         if self.cur_state == states.Standing:   # If current state is standing or running, do not apply gravity
             self.accel = vec(0, 0)
 
@@ -115,7 +110,7 @@ class Actor(pygame.sprite.Sprite):
             self.changeState(states.Falling)
 
 
-    def isFalling(self):
+    def isInAir(self):
         self.onSurface = False
 
     def changeState(self, newState):
@@ -149,30 +144,23 @@ class Actor(pygame.sprite.Sprite):
                 self.velocity.y = 0
                 self.pos.y = self.rect.center[1]
                 self.onSurface = True
-                self.changeState(states.Standing)
         elif self.velocity.y < 0:
             if self.rect.bottom > other_rect.top:
                 self.accel.y = 0
                 self.velocity.y = 0
                 self.pos.y = self.rect.center[1]
-                self.changeState(states.Falling)
         else:
             if self.rect.bottom != other_rect.top:
                 self.rect.bottom = other_rect.top
                 self.accel.y = 0
                 self.velocity.y = 0
                 self.pos.y = self.rect.center[1]
-                if self.velocity.x == 0:
-                    self.changeState(states.Standing)
-                else:
-                    self.changeState(states.Running)
+
 
     def hitVerticalWall(self):
         self.accel.x = 0
         self.velocity.x = 0
         self.pos.x = self.rect.center[0]
-        if self.cur_state == states.Running:
-            self.changeState(states.Standing)
 
     def draw(self, window):
         """Base draw method. Will be filled

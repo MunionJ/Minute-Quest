@@ -65,7 +65,7 @@ class Player(Actor):
         }
 
         self.jumpFrameCount = 0
-        self.jumpFrames = 2
+        self.jumpFrames = 20
 
     def melee_attack(self):
         """ Generic melee attack method. Will be
@@ -87,6 +87,10 @@ class Player(Actor):
         """ Testing Player jumping."""
         super().update(keys, dt)
 
+        if self.jumpFrameCount > 0:
+            self.jumpFrameCount -= 1
+            self.velocity += self.jump_vector
+
         if keys[pygame.K_d]:
             self.image = self.frames["right"]
         if keys[pygame.K_a]:
@@ -103,12 +107,30 @@ class Player(Actor):
             self.frames["left"] = self.lframes[self.anim]
             self.t_anim = time.time() + 0.25
 
-    def isFalling(self):
+    def isInAir(self):
         if self.jumpFrameCount <= 0:
-            super().isFalling()
-        else:
-            self.jumpFrameCount -= 1
-            self.velocity += self.jump_vector
+            super().isInAir()
+
+    def determineState(self):
+        if not self.onSurface and self.jumpFrameCount <= 0:
+            self.changeState(states.Falling)
+            return
+
+        if self.velocity.y > 0:
+            self.changeState(states.Falling)
+            return
+
+        if self.velocity.y < 0:
+            self.changeState(states.Jumping)
+            return
+
+        if self.cur_state != states.Jumping or self.cur_state != states.Falling:
+            if self.velocity.x != 0:
+                self.changeState(states.Running)
+                return
+            elif self.onSurface:
+                self.changeState(states.Standing)
+                return
 
     def move(self, keys, dt):
         # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
@@ -129,11 +151,6 @@ class Player(Actor):
             self.debug = not self.debug
 
         # if the entity is not currently moving, decrease their velocity until it reaches 0
-        if movedHorizontal:
-            if self.accel.y == 0:
-                if self.cur_state != states.Running:     # running
-                    self.changeState(states.Running)
-
         if not keys[pygame.K_a]:
             if self.accel.x < 0:
                 self.accel.x = 0
@@ -149,8 +166,6 @@ class Player(Actor):
                 if self.velocity.x < 0:
                     self.velocity.x = 0
 
-        self.determineState()
-
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
@@ -160,8 +175,7 @@ class Player(Actor):
         if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
             self.image = self.frames["ljump"]
         # TODO Apply Jump vector
-        self.changeState(states.Jumping)
-        self.velocity += self.jump_vector
+        self.velocity += 10*self.jump_vector
         self.jumpFrameCount = self.jumpFrames
 
     def use_ability(self):
