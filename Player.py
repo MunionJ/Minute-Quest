@@ -14,18 +14,12 @@ class Player(Actor):
         self.alive = True
         self.t_anim = time.time() + 1 #timer used for animations
         self.anim = 0 #which frame of animations are active.
-        self.lframes = [ pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
-                         pygame.transform.flip(pygame.image.load(img + "/right2.png"), True, False),
-                         pygame.transform.flip(pygame.image.load(img + "/right3.png"), True, False),
-                         pygame.transform.flip(pygame.image.load(img + "/right2.png"), True, False)]
         self.rframes = [pygame.image.load(img + "/right1.png"),
                         pygame.image.load(img + "/right2.png"),
                         pygame.image.load(img + "/right3.png"),
                         pygame.image.load(img + "/right2.png")]
-        self.frames = {"right" : pygame.image.load(img + "/right1.png"),
-                       "left" : pygame.transform.flip(pygame.image.load(img + "/right1.png"), True, False),
-                       "rjump" : pygame.image.load(img + "/jump1.png"),
-                       "ljump": pygame.transform.flip(pygame.image.load(img + "/jump1.png"), True, False), }
+        self.frames = {"right": pygame.image.load(img + "/right1.png"),
+                       "rjump": pygame.image.load(img + "/jump1.png"),}
         # dictionary of frames.  the values will be updating to make animations
         for i in self.frames:
             rect = self.frames[i].get_rect()
@@ -33,20 +27,15 @@ class Player(Actor):
             height = self.playerHeight
             self.frames[i] = pygame.transform.scale(self.frames[i], (width, height))
             self.frames[i] = self.frames[i].convert_alpha()
-        for i in range(len(self.lframes)):
-            rect = self.lframes[i].get_rect()
-            width = int(rect.w*(self.playerHeight/rect.h))
-            height = self.playerHeight
-            self.lframes[i] = pygame.transform.scale(self.lframes[i], (width, height))
-            self.lframes[i] = self.lframes[i].convert_alpha()
-        for i in range(len(self.lframes)):
-            rect = self.lframes[i].get_rect()
+        for i in range(len(self.rframes)):
+            rect = self.rframes[i].get_rect()
             width = int(rect.w*(self.playerHeight/rect.h))
             height = self.playerHeight
             self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
             self.rframes[i] = self.rframes[i].convert_alpha()
         self.rect = self.frames["right"].get_rect()
         self.image = self.frames["right"]
+        self.facing_right = True
 
         # weapon dictionary with weapon name as key,
         # weapon sprite as value
@@ -92,9 +81,11 @@ class Player(Actor):
             self.velocity += self.jump_vector
 
         if keys[pygame.K_d]:
+            self.facing_right = True
             self.image = self.frames["right"]
         if keys[pygame.K_a]:
-            self.image = self.frames["left"]
+            self.facing_right = False
+            self.image = pygame.transform.flip((self.frames["right"]), True, False)
 
         if keys[pygame.K_SPACE] and (self.cur_state == states.Standing or self.cur_state == states.Running):
             self.jump()
@@ -104,7 +95,6 @@ class Player(Actor):
             if self.anim > len(self.rframes)-1:
                 self.anim = 0
             self.frames["right"] = self.rframes[self.anim]
-            self.frames["left"] = self.lframes[self.anim]
             self.t_anim = time.time() + 0.25
 
     def isInAir(self):
@@ -170,10 +160,10 @@ class Player(Actor):
         """ Generic jump method. Can be
             overridden later."""
 
-        if self.image == self.frames["right"] or self.image == self.frames["rjump"]:
+        if self.facing_right:
             self.image = self.frames["rjump"]
-        if self.image == self.frames["left"] or self.image == self.frames["ljump"]:
-            self.image = self.frames["ljump"]
+        if not self.facing_right:
+            self.image = pygame.transform.flip(pygame.image.load("rjump"), True, False)
         # TODO Apply Jump vector
         self.velocity += 10*self.jump_vector
         self.jumpFrameCount = self.jumpFrames

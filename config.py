@@ -33,7 +33,7 @@ ROOMS = {
     "EnemyRooms": [
         "AB_fight_map1.txt",
         "AB_fight_map2.txt",
-        "enemy room.txt",        #TODO Fix holes
+        "enemy room.txt",
         "map_enemy_daniel.txt",
         "MinuteQuestRoom1.txt",
         "MQ_test_map_battle.txt"
