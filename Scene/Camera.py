@@ -23,25 +23,30 @@ class Camera():
         topLeftX = playerPos[0] - (SCREEN_RES[0] / 2)
         topLeftY = playerPos[1] - (SCREEN_RES[1] / 2)
 
-        if topLeftX < 0:
-            topLeftX = 0
+        roomIndex = self.getRoomIndex(playerPos)
+        #currentRoom = self.dungeon.rooms[roomIndex].bgImageRect
 
-
-        # if topLeftX + SCREEN_RES[0] > self.map.totalMapWidth:
-        #     topLeftX = self.map.totalMapWidth - SCREEN_RES[0]
-        #
         # if topLeftX < 0:
         #     topLeftX = 0
+        # elif topLeftX + SCREEN_RES[0] >= self.dungeon.playerBounds.w:
+        #     topLeftX = self.dungeon.playerBounds.w - SCREEN_RES[0]
         #
-        # if topLeftY + SCREEN_RES[1]  > self.map.totalMapHeight:
-        #     topLeftY = self.map.totalMapHeight - SCREEN_RES[1]
-        #
-        # if topLeftY < 0:
-        #     topLeftY = 0
+        # if topLeftY <= self.dungeon.playerBounds.y:
+        #     topLeftY = self.dungeon.playerBounds.y
+        # elif topLeftY + SCREEN_RES[1] >= self.dungeon.playerBounds.y + self.dungeon.playerBounds.h:
+        #     topLeftY = self.dungeon.playerBounds.y + self.dungeon.playerBounds.h - SCREEN_RES[1]
 
         self.pos = (topLeftX, topLeftY)
+
         #possibly only call this when the player has moved enough to scroll
         self.updateMapView()
+
+    def getRoomIndex(self,playerPos):
+        for i in range(len(self.dungeon.rooms)):
+            room = self.dungeon.rooms[i].bgImageRect
+            if playerPos[0] in range(room.x, room.x + room.w):
+                return i
+        return None
 
     def updateMapView(self):
         """Grabs tiles out of map and blits them to the camera viewing surface"""

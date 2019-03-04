@@ -1,21 +1,19 @@
 import pygame
 import random
 from Scene.DungeonRoom import *
-
+import copy
 
 class Dungeon:
     def __init__(self, num_rooms):
         self.rooms = []
-        tempChoices = dict(ROOMS)
+        tempChoices = copy.deepcopy(ROOMS)
         for i in range(num_rooms):
 
-            self.removeEmptyChoices(tempChoices)
+            tempChoices = self.removeEmptyChoices(tempChoices)
 
             roomType = random.choice(list(tempChoices.keys()))
-
-            roomName = random.choice(ROOMS[roomType])
+            roomName = random.choice(tempChoices[roomType])
             tempChoices[roomType].remove(roomName)
-
             dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
 
             sprite_sheet = self.assignSpriteSheet(roomName)
@@ -88,7 +86,7 @@ class Dungeon:
         for bc in badChoices:
             del r[bc]
 
-        choices = r
+        return r
 
     def assignSpriteSheet(self, roomName):
         for name in WALLS_ONE:

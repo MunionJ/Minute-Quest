@@ -35,10 +35,14 @@ class Game:
 
             self.collisionHandling(dt)
 
+            print(self.player.cur_state)
             #Win Condition
             if self.player.pos.x >= self.dungeon.dungeonExit.left:
                 self.gameWin()
 
+            #Lose Condition
+            if self.outOfBounds(self.player.rect.center):
+                self.gameOver()
 
             self.camera.setCameraPosition(self.player.rect.center)
             # print(self.player.rect.center, self.player.pos)
@@ -50,6 +54,12 @@ class Game:
             self.camera.draw(self.window, self.player)
             pygame.display.flip()
 
+    def outOfBounds(self,playerPos):
+        for room in self.camera.dungeon.rooms:
+            bounds = room.bgImageRect
+            if bounds.collidepoint(playerPos):
+                return False
+        return True
 
     def collisionHandling(self,dt):
         """ Move Player and Check for Collisions"""
