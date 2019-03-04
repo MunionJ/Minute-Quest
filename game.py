@@ -35,7 +35,6 @@ class Game:
 
             self.collisionHandling(dt)
 
-            print(self.player.cur_state)
             #Win Condition
             if self.player.pos.x >= self.dungeon.dungeonExit.left:
                 self.gameWin()
