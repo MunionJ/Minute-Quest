@@ -49,7 +49,7 @@ ROOMS = {
         "map_platformer_daniel.txt",
         "MinuteQuestRoom2.txt",
         "MQ_test_map_platforming.txt",
-        "project platform room.txt"
+        #"project platform room.txt"
     ],
     "PuzzleRooms": [
         "map_puzzle_daniel.txt",

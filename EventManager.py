@@ -14,6 +14,7 @@ class EventManager:
             'game_objects':[],
             'game_windows':[],
             'game_menus':[],
+            'party_objects':[],
         }
         self.joySticks = []
 
@@ -28,6 +29,9 @@ class EventManager:
 
     def addGameObject(self, obj):
         self.game_objects['game_objects'].append(obj)
+
+    def addParty(self,obj):
+        self.game_objects['party_objects'].append(obj)
 
     def removeGameObject(self,obj):
         self.game_objects['game_objects'].remove(obj)
@@ -129,6 +133,22 @@ class EventManager:
                 obj.update(keys, dt)
 
         #pygame.event.pump()
+        return True
+
+    def poll_input(self,dt):
+        e = pygame.event.poll()
+
+        if e.type == pygame.QUIT:
+            return False
+        elif e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_ESCAPE:
+                return False
+            elif e.key == pygame.K_F1:
+                self.turnOnDebugMode()
+            else:
+                for obj in self.game_objects['party_objects']:
+                    obj.update(e.key, dt)
+
         return True
 
     def process_menu_input(self):

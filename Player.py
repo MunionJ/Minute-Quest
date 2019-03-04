@@ -95,7 +95,7 @@ class Player(Actor):
             if self.anim > len(self.rframes)-1:
                 self.anim = 0
             self.frames["right"] = self.rframes[self.anim]
-            self.t_anim = time.time() + 0.125
+            self.t_anim = time.time() + 0.25
 
     def isInAir(self):
         if self.jumpFrameCount <= 0:
@@ -163,7 +163,7 @@ class Player(Actor):
         if self.facing_right:
             self.image = self.frames["rjump"]
         if not self.facing_right:
-            self.image = pygame.transform.flip((self.frames["rjump"]), True, False)
+            self.image = pygame.transform.flip(pygame.image.load("rjump"), True, False)
         # TODO Apply Jump vector
         self.velocity += 10*self.jump_vector
         self.jumpFrameCount = self.jumpFrames
