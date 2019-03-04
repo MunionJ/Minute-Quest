@@ -21,6 +21,7 @@ class Game:
         self.manager.addGameObject(self.player)
         self.manager.addParty(self.party_list)
         self.HUD = GameHUD(self.window)
+        self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
         self.bg_color = pygame.color.THECOLORS["black"]
         for room in self.dungeon.rooms:
