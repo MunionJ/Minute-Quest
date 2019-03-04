@@ -15,9 +15,8 @@ pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
                 "images/character1")
-enemy = Enemy((0, 0), "images/character1")
-players = pygame.sprite.Group()
-players.add(player)
+enemy = Enemy((window.get_width() // 2, window.get_height() // 2),
+                "images/enemy1")
 
 tiles = pygame.sprite.Group()
 
@@ -54,7 +53,7 @@ for i in range(int(SCREEN_RES[0]/32)):
 #     tiles.add(newTile)
 
 manager.addGameObject(player)
-#manager.addGameObject(enemy)
+manager.addGameObject(enemy)
 screen_rect = window.get_rect()
 clock = pygame.time.Clock()
 running = True
@@ -118,7 +117,6 @@ while running:
     for obj in manager.game_objects["game_objects"]:
         obj.draw(window)
 
-    players.draw(window)
     for tile in tiles.sprites():
         tile.draw(window)
 
