@@ -12,7 +12,7 @@ class Player(Actor):
         self.playerHeight = 48
         self.level = 1
         self.alive = True
-        self.t_anim = time.time() + 1 #timer used for animations
+        self.t_anim = time.time() + 0.125 #timer used for animations
         self.anim = 0 #which frame of animations are active.
         self.rframes = [pygame.image.load(img + "/right1.png"),
                         pygame.image.load(img + "/right2.png"),
@@ -95,7 +95,7 @@ class Player(Actor):
             if self.anim > len(self.rframes)-1:
                 self.anim = 0
             self.frames["right"] = self.rframes[self.anim]
-            self.t_anim = time.time() + 0.25
+            self.t_anim = time.time() + 0.125
 
     def isInAir(self):
         if self.jumpFrameCount <= 0:
@@ -163,7 +163,7 @@ class Player(Actor):
         if self.facing_right:
             self.image = self.frames["rjump"]
         if not self.facing_right:
-            self.image = pygame.transform.flip(pygame.image.load("rjump"), True, False)
+            self.image = pygame.transform.flip((self.frames["rjump"]), True, False)
         # TODO Apply Jump vector
         self.velocity += 10*self.jump_vector
         self.jumpFrameCount = self.jumpFrames
