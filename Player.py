@@ -163,7 +163,7 @@ class Player(Actor):
         if self.facing_right:
             self.image = self.frames["rjump"]
         if not self.facing_right:
-            self.image = pygame.transform.flip(pygame.image.load("rjump"), True, False)
+            self.image = pygame.transform.flip(self.frames['rjump'], True, False)
         # TODO Apply Jump vector
         self.velocity += 10*self.jump_vector
         self.jumpFrameCount = self.jumpFrames
