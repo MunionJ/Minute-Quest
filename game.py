@@ -1,5 +1,8 @@
 from Player import *
 from Scene.Camera import *
+from GameHUD import *
+from Party import *
+
 
 class Game:
 
@@ -8,11 +11,16 @@ class Game:
         self.manager = event_mgr
         self.running = False
         self.dungeon = Dungeon(4)
-        self.player = Player(self.dungeon.playerSpawn, "images/character1")
+        #self.player = Player(self.dungeon.playerSpawn, "images/character1")
+        self.party_list = Party(self.dungeon.playerSpawn,
+                                ["images/character1"])
+        self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
         self.camera.setCameraPosition(self.player.rect.center)
         self.manager.addGameObject(self.player)
+        self.manager.addParty(self.party_list)
+        self.HUD = GameHUD(self.window)
         self.clock = pygame.time.Clock()
         self.bg_color = pygame.color.THECOLORS["black"]
         for room in self.dungeon.rooms:
@@ -27,11 +35,18 @@ class Game:
             dt = self.clock.tick(60) / 1000
 
             self.running = self.manager.process_input(dt)
+            self.running = self.manager.poll_input(dt)
+            self.player_swap_cd(dt)
+            cur_pos = self.player.rect
+            self.manager.removeGameObject(self.player)
+            self.player = self.party_list.active_member
+            self.manager.addGameObject(self.player)
+            self.player.set_pos(cur_pos)
 
-            events = pygame.event.get()
-            for event in events:
-                if event.type == pygame.QUIT:
-                    self.running = False
+            # events = pygame.event.get()
+            # for event in events:
+            #     if event.type == pygame.QUIT:
+            #         self.running = False
 
             self.collisionHandling(dt)
 
@@ -51,7 +66,14 @@ class Game:
 
             self.window.fill(self.bg_color)
             self.camera.draw(self.window, self.player)
+            self.HUD.draw(self.window, self.party_list)
             pygame.display.flip()
+
+    def player_swap_cd(self, dt):
+        """ 3 second cooldown on switching
+            active party member."""
+        self.party_list.last_active += dt
+        #print(self.party_list.last_active)
 
     def outOfBounds(self,playerPos):
         for room in self.camera.dungeon.rooms:
