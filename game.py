@@ -48,6 +48,7 @@ class Game:
                 fontrect.center = (SCREEN_RES[0]>>1,SCREEN_RES[1]>>1)
                 self.window.fill(pygame.color.THECOLORS['black'])
                 self.window.blit(fontSurface,fontrect)
+                self.manager.poll_input(dt)
             else:
                 if self.postTime <= 0:
                     self.gameOver()

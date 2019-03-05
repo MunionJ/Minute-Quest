@@ -45,9 +45,9 @@ ROOMS = {
         "project loot room.txt"
     ],
     "PlatformRooms": [
-        #"AB_plat_map1.txt",
+        "AB_plat_map1.txt",
         "map_platformer_daniel.txt",
-        "MinuteQuestRoom2.txt",
+        #"MinuteQuestRoom2.txt",
         "MQ_test_map_platforming.txt",
         "project platform room.txt"
     ],
