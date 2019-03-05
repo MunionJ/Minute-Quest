@@ -86,9 +86,9 @@ class EventManager:
 
                 D_PAD = game_pad.get_hat(0)
 
-                if game_pad.get_axis(0) < -0.25< 0:
+                if game_pad.get_axis(0) < -0.25:
                     temp[pygame.K_a] = True
-                elif game_pad.get_axis(0) > 0.25> 0:
+                elif game_pad.get_axis(0) > 0.25:
                     temp[pygame.K_d] = True
 
                 #for axis in range(game_pad.get_numaxes()):
