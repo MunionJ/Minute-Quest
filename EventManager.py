@@ -185,6 +185,7 @@ class EventManager:
                 elif game_pad.get_axis(0) > 0.25:
                     e.key = pygame.K_d
 
+                print(D_PAD, game_pad.get_axis(0))
                 #for axis in range(game_pad.get_numaxes()):
                     #print(axis, " ", game_pad.get_axis(axis))
 
