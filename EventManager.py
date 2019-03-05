@@ -158,7 +158,7 @@ class EventManager:
         e = pygame.event.poll()
 
 
-
+        buttonInput = None
         if len(self.joySticks):
             # 360 pad buttons: 0 = 'A', 1 = 'B', 2 = 'X', 3 = 'Y'
             #                : 4 = 'LB', 5 = 'RB', 6 = 'Back', 7 = 'Start'
@@ -182,9 +182,9 @@ class EventManager:
                 D_PAD = game_pad.get_hat(0)
 
                 if game_pad.get_axis(0) < -0.25:
-                    self.updateMenus(pygame.K_a)
+                    buttonInput = pygame.K_a
                 elif game_pad.get_axis(0) > 0.25:
-                    self.updateMenus(pygame.K_d)
+                    buttonInput = pygame.K_d
 
                 #for axis in range(game_pad.get_numaxes()):
                     #print(axis, " ", game_pad.get_axis(axis))
@@ -196,20 +196,20 @@ class EventManager:
 
                 # check vertical axis on left analog stick
                 if D_PAD[1] > 0:
-                    self.updateMenus(pygame.K_w)
+                    buttonInput = pygame.K_w
                 elif D_PAD[1] < 0:
-                    self.updateMenus(pygame.K_s)
+                    buttonInput = pygame.K_s
 
                 for i in range(game_pad.get_numbuttons()):
                     if(game_pad.get_button(i)):
                         print(str(i) + " Pressed")
                 # check status of buttons
                 if game_pad.get_button(0):
-                    self.updateMenus(pygame.K_SPACE)
+                    buttonInput = pygame.K_SPACE
                 if game_pad.get_button(1):
                     pass
                 if game_pad.get_button(2):
-                    self.updateMenus(pygame.K_RETURN)
+                    buttonInput = pygame.K_RETURN
                 if game_pad.get_button(3):
                     pass
                 if game_pad.get_button(5):
@@ -232,6 +232,8 @@ class EventManager:
                 self.turnOnDebugMode()
             elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
                 self.updateMenus(e.key)
+        elif buttonInput:
+            self.updateMenus(buttonInput)
 
 
         return True
