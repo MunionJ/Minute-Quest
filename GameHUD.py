@@ -25,18 +25,24 @@ class GameHUD:
             if char == party_list.active_member:
                 pygame.draw.rect(self.hud_surf,
                                  pygame.color.THECOLORS["red"],
-                                 (x - 5, y - 20, bar_width + 10, window.get_height() // 4),
+                                 (x - 5, y - 15, bar_width + 15, window.get_height() // 4),
                                  1)
                 # draw actual hp bar first
                 pygame.draw.rect(self.hud_surf,
                                  pygame.color.THECOLORS["blue"],
-                                 (x, y, bar_width, bar_height)
+                                 (x,
+                                  y,
+                                  (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
+                                  bar_height)
                                  )
             else:
                 # gray out hp bar for inactive members
                 pygame.draw.rect(self.hud_surf,
                                  pygame.color.THECOLORS["gray"],
-                                 (x, y, bar_width, bar_height)
+                                 (x,
+                                  y,
+                                  (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
+                                  bar_height)
                                  )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
@@ -52,10 +58,16 @@ class GameHUD:
                     (0, 0)
                     )
         # blit timer onto main game window
-        font_surf = self.font.render(str(round(self.timer, 1)),
-                                     False,
-                                     (pygame.color.THECOLORS["white"])
-                                     )
+        if self.timer > 0:
+            font_surf = self.font.render(str(round(self.timer, 1)),
+                                         False,
+                                         (pygame.color.THECOLORS["white"])
+                                         )
+        else:
+            font_surf = self.font.render("TIME UP",
+                                         False,
+                                         (pygame.color.THECOLORS["white"])
+                                         )
         window.blit(font_surf,
                     (window.get_width() // 2, 30)
                     )
