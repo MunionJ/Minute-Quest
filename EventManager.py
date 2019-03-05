@@ -168,19 +168,13 @@ class EventManager:
                 print(e)
                 for menu in self.game_objects['game_menus']:
                     menu.update(e.key)
-        elif e.type == pygame.JOYAXISMOTION:
-            if abs(e.value) > 0.25:
-                if e.value > 0:
-                    self.updateMenus(pygame.K_d)
-                elif e.value < 0:
-                    self.updateMenus(pygame.K_a)
         elif e.type == pygame.JOYHATMOTION:
-            if e.value[1]:
+            if e.value[1] > 0:
                 self.updateMenus(pygame.K_w)
-            elif e.value[0]:
+            elif e.value[1] < 0:
                 self.updateMenus(pygame.K_s)
         elif e.type == pygame.JOYBUTTONDOWN:
-            if e.value == 2:
+            if e.button == 2:
                 self.updateMenus(pygame.K_RETURN)
 
         return True
