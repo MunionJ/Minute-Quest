@@ -86,9 +86,9 @@ class EventManager:
 
                 D_PAD = game_pad.get_hat(0)
 
-                if game_pad.get_axis(0) < -0.25 or D_PAD[0] < 0:
+                if game_pad.get_axis(0) < -0.25< 0:
                     temp[pygame.K_a] = True
-                elif game_pad.get_axis(0) > 0.25 or D_PAD[0] > 0:
+                elif game_pad.get_axis(0) > 0.25> 0:
                     temp[pygame.K_d] = True
 
                 #for axis in range(game_pad.get_numaxes()):
@@ -100,9 +100,9 @@ class EventManager:
                     #print(hat, " ", game_pad.get_hat(hat))
 
                 # check vertical axis on left analog stick
-                if game_pad.get_axis(1) < -0.25 or D_PAD[1] > 0:
+                if D_PAD[1] > 0:
                     temp[pygame.K_w] = True
-                elif game_pad.get_axis(1) > 0.25 or D_PAD[1] < 0:
+                elif D_PAD[1] < 0:
                     temp[pygame.K_s] = True
 
                 for i in range(game_pad.get_numbuttons()):
@@ -111,7 +111,7 @@ class EventManager:
                 # check status of buttons
                 if game_pad.get_button(0):
                     # fill out later
-                    pass
+                    temp[pygame.K_SPACE] = True
                 if game_pad.get_button(1):
                     pass
                 if game_pad.get_button(2):
