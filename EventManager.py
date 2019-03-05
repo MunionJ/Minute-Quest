@@ -115,7 +115,8 @@ class EventManager:
                 if game_pad.get_button(1):
                     pass
                 if game_pad.get_button(2):
-                    pass
+                    temp[pygame.K_KP_ENTER] = True
+                    temp[pygame.K_RETURN] = True
                 if game_pad.get_button(3):
                     pass
                 if game_pad.get_button(5):
