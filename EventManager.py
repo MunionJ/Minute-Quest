@@ -157,72 +157,6 @@ class EventManager:
     def process_menu_input(self):
         e = pygame.event.poll()
 
-
-        buttonInput = None
-        if len(self.joySticks):
-            # 360 pad buttons: 0 = 'A', 1 = 'B', 2 = 'X', 3 = 'Y'
-            #                : 4 = 'LB', 5 = 'RB', 6 = 'Back', 7 = 'Start'
-            #                : 8 = 'L3', 9 = 'R3'
-            #   Axes:
-            #               0 - left joystick x axis    (1 = right, -1 = left)
-            #               1 - left joystick y axis    (1 = right, -1 = left)
-            #               2 - right joystick x axis   (1 = right, -1 = left)
-            #               3 - right joystick y axis   (1 = right, -1 = left)
-            #               4 - right trigger           (1 is pressed, -1 released) Initialized to 0
-            #               5 - left trigger            (1 is pressed, -1 released) Initialized to 0
-            #
-            #   D-Pad:
-            #         game_pad.get_hat(0) Tuple: (horizontal,vertical)
-            #          (1,0) Right, (-1,0) Left
-            #          (0,1) Up,    (0,-1) Down
-
-            for game_pad in self.joySticks:     #Maybe Handle Multiplayer in the future...
-
-
-                D_PAD = game_pad.get_hat(0)
-
-                if game_pad.get_axis(0) < -0.25:
-                    buttonInput = pygame.K_a
-                elif game_pad.get_axis(0) > 0.25:
-                    buttonInput = pygame.K_d
-
-                #for axis in range(game_pad.get_numaxes()):
-                    #print(axis, " ", game_pad.get_axis(axis))
-
-                for hat in range(game_pad.get_numhats()):
-                    # PASSING FOR NOW UNTIL WE START ACTUALLY TESTING GAMEPAD
-                    pass
-                    #print(hat, " ", game_pad.get_hat(hat))
-
-                # check vertical axis on left analog stick
-                if D_PAD[1] > 0:
-                    buttonInput = pygame.K_w
-                elif D_PAD[1] < 0:
-                    buttonInput = pygame.K_s
-
-                for i in range(game_pad.get_numbuttons()):
-                    if(game_pad.get_button(i)):
-                        print(str(i) + " Pressed")
-                # check status of buttons
-                if game_pad.get_button(0):
-                    buttonInput = pygame.K_SPACE
-                if game_pad.get_button(1):
-                    pass
-                if game_pad.get_button(2):
-                    buttonInput = pygame.K_RETURN
-                if game_pad.get_button(3):
-                    pass
-                if game_pad.get_button(5):
-                    pass
-                if game_pad.get_button(6):
-                    pass
-                if game_pad.get_button(7):
-                    pass
-                if game_pad.get_button(8):
-                    pass
-                if game_pad.get_button(9):
-                    pass
-
         if e.type == pygame.QUIT:
             return False
         elif e.type == pygame.KEYDOWN:
@@ -231,10 +165,23 @@ class EventManager:
             elif e.key == pygame.K_F1:
                 self.turnOnDebugMode()
             elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
-                self.updateMenus(e.key)
-        elif buttonInput:
-            self.updateMenus(buttonInput)
-
+                print(e)
+                for menu in self.game_objects['game_menus']:
+                    menu.update(e.key)
+        elif e.type == pygame.JOYAXISMOTION:
+            if abs(e.value) > 0.25:
+                if e.value > 0:
+                    self.updateMenus(pygame.K_d)
+                elif e.value < 0:
+                    self.updateMenus(pygame.K_a)
+        elif e.type == pygame.JOYHATMOTION:
+            if e.value[1]:
+                self.updateMenus(pygame.K_w)
+            elif e.value[0]:
+                self.updateMenus(pygame.K_s)
+        elif e.type == pygame.JOYBUTTONDOWN:
+            if e.value == 2:
+                self.updateMenus(pygame.K_RETURN)
 
         return True
 
