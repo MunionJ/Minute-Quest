@@ -55,8 +55,11 @@ class Game:
             if self.player.pos.x >= self.dungeon.dungeonExit.left:
                 self.gameWin()
 
-            #Lose Condition
+            #Lose Conditions
             if self.outOfBounds(self.player.rect.center):
+                self.gameOver()
+
+            if self.HUD.getTime() <=0:
                 self.gameOver()
 
             self.camera.setCameraPosition(self.player.rect.center)

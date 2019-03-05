@@ -82,3 +82,6 @@ class GameHUD:
         """ Updates remaining time for given playable
             segment ( dungeon, town, etc. )"""
         self.timer -= dt
+
+    def getTime(self):
+        return self.timer
