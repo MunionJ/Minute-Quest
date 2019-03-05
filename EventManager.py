@@ -182,9 +182,9 @@ class EventManager:
                 D_PAD = game_pad.get_hat(0)
 
                 if game_pad.get_axis(0) < -0.25:
-                    e.key = pygame.K_a
+                    self.updateMenus(pygame.K_a)
                 elif game_pad.get_axis(0) > 0.25:
-                    e.key = pygame.K_d
+                    self.updateMenus(pygame.K_d)
 
                 #for axis in range(game_pad.get_numaxes()):
                     #print(axis, " ", game_pad.get_axis(axis))
@@ -196,21 +196,20 @@ class EventManager:
 
                 # check vertical axis on left analog stick
                 if D_PAD[1] > 0:
-                    e.key = pygame.K_w
+                    self.updateMenus(pygame.K_w)
                 elif D_PAD[1] < 0:
-                    e.key = pygame.K_s
+                    self.updateMenus(pygame.K_s)
 
                 for i in range(game_pad.get_numbuttons()):
                     if(game_pad.get_button(i)):
                         print(str(i) + " Pressed")
                 # check status of buttons
                 if game_pad.get_button(0):
-                    # fill out later
-                    pass
+                    self.updateMenus(pygame.K_SPACE)
                 if game_pad.get_button(1):
                     pass
                 if game_pad.get_button(2):
-                    e.key = pygame.K_RETURN
+                    self.updateMenus(pygame.K_RETURN)
                 if game_pad.get_button(3):
                     pass
                 if game_pad.get_button(5):
@@ -232,8 +231,11 @@ class EventManager:
             elif e.key == pygame.K_F1:
                 self.turnOnDebugMode()
             elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
-                print(e)
-                for menu in self.game_objects['game_menus']:
-                    menu.update(e.key)
+                self.updateMenus(e.key)
+
 
         return True
+
+    def updateMenus(self,key):
+        for menu in self.game_objects['game_menus']:
+            menu.update(key)
