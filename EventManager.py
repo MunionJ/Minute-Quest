@@ -185,7 +185,6 @@ class EventManager:
                 elif game_pad.get_axis(0) > 0.25:
                     e.key = pygame.K_d
 
-                print(D_PAD, game_pad.get_axis(0))
                 #for axis in range(game_pad.get_numaxes()):
                     #print(axis, " ", game_pad.get_axis(axis))
 
@@ -232,6 +231,7 @@ class EventManager:
             elif e.key == pygame.K_F1:
                 self.turnOnDebugMode()
             elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
+                print(e.key)
                 for menu in self.game_objects['game_menus']:
                     menu.update(e.key)
 
