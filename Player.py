@@ -70,7 +70,8 @@ class Player(Actor):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
-        pass
+        if self.stats["CUR_HP"] > 0:    # testing with this for now - Jon
+            self.stats["CUR_HP"] -= 1
 
     def update(self, keys, dt):
         """ Testing Player jumping."""

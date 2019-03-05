@@ -23,13 +23,19 @@ class GameHUD:
         self.hud_surf.fill((0, 0, 0))
         for char in party_list.party_members:
             if char == party_list.active_member:
-                pygame.draw.rect(self.hud_surf,
-                                 pygame.color.THECOLORS["red"],
-                                 (x - 5, y - 15, bar_width + 15, window.get_height() // 4),
-                                 1)
+                # determine what color the active party member's HP bar should be
+                color = None
+                hp_percentage = (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * 100
+                if hp_percentage <= 25:
+                    color = pygame.color.THECOLORS["red"]
+                elif hp_percentage <= 50:
+                    color = pygame.color.THECOLORS["yellow"]
+                else:
+                    color = pygame.color.THECOLORS["blue"]
+
                 # draw actual hp bar first
                 pygame.draw.rect(self.hud_surf,
-                                 pygame.color.THECOLORS["blue"],
+                                 color,
                                  (x,
                                   y,
                                   (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,

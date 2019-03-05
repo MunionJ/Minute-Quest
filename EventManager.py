@@ -95,7 +95,9 @@ class EventManager:
                     #print(axis, " ", game_pad.get_axis(axis))
 
                 for hat in range(game_pad.get_numhats()):
-                    print(hat, " ", game_pad.get_hat(hat))
+                    # PASSING FOR NOW UNTIL WE START ACTUALLY TESTING GAMEPAD
+                    pass
+                    #print(hat, " ", game_pad.get_hat(hat))
 
                 # check vertical axis on left analog stick
                 if game_pad.get_axis(1) < -0.25 or D_PAD[1] > 0:
