@@ -9,8 +9,8 @@ class GameHUD:
     def __init__(self, window):
         self.timer = 60     # seconds
         self.hud_surf = pygame.Surface((100, window.get_height()))
-        self.font = pygame.font.SysFont("Times New Roman",
-                                        30)
+        self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',60)
+        self.font_color = pygame.color.THECOLORS['green']
 
     def draw(self, window, party_list):
         """ Draw pertinent information
@@ -67,12 +67,12 @@ class GameHUD:
         if self.timer > 0:
             font_surf = self.font.render(str(round(self.timer, 1)),
                                          False,
-                                         (pygame.color.THECOLORS["white"])
+                                         (self.font_color)
                                          )
         else:
             font_surf = self.font.render("TIME UP",
                                          False,
-                                         (pygame.color.THECOLORS["white"])
+                                         (self.font_color)
                                          )
         window.blit(font_surf,
                     (window.get_width() // 2, 30)
@@ -82,6 +82,13 @@ class GameHUD:
         """ Updates remaining time for given playable
             segment ( dungeon, town, etc. )"""
         self.timer -= dt
+
+        if self.timer < 10:
+            self.font_color = pygame.color.THECOLORS['red']
+        elif self.timer < 30:
+            self.font_color = pygame.color.THECOLORS['yellow']
+        else:
+            self.font_color = pygame.color.THECOLORS['green']
 
     def getTime(self):
         return self.timer

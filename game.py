@@ -28,49 +28,63 @@ class Game:
             for wall in room.walls.sprites():
                 self.manager.addGameObject(wall)
 
+        self.gameOverScreen = pygame.Surface(SCREEN_RES)
+        self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',100)
+        self.gameOverCondition = None
+        self.fontSurface = None
+        self.font_color = pygame.color.THECOLORS['red']
+        self.postTime = 3
+
     def start_game(self):
         self.running = True
 
     def launch_game(self):
         while self.running:
             dt = self.clock.tick(60) / 1000
+            if self.gameOverCondition and self.postTime > 0:
+                self.postTime -= dt
+                fontSurface = self.font.render(self.gameOverCondition,False,self.font_color)
+                fontrect = fontSurface.get_rect()
+                fontrect.center = (SCREEN_RES[0]>>1,SCREEN_RES[1]>>1)
+                self.window.fill(pygame.color.THECOLORS['black'])
+                self.window.blit(fontSurface,fontrect)
+            else:
+                if self.postTime <= 0:
+                    self.gameOver()
+                    break
 
-            self.running = self.manager.process_input(dt)
-            self.running = self.manager.poll_input(dt)
-            self.player_swap_cd(dt)
-            cur_pos = self.player.rect
-            self.manager.removeGameObject(self.player)
-            self.player = self.party_list.active_member
-            self.manager.addGameObject(self.player)
-            self.player.set_pos(cur_pos)
+                self.running = self.manager.process_input(dt)
+                self.running = self.manager.poll_input(dt)
+                self.player_swap_cd(dt)
+                cur_pos = self.player.rect
+                self.manager.removeGameObject(self.player)
+                self.player = self.party_list.active_member
+                self.manager.addGameObject(self.player)
+                self.player.set_pos(cur_pos)
 
-            # events = pygame.event.get()
-            # for event in events:
-            #     if event.type == pygame.QUIT:
-            #         self.running = False
+                # events = pygame.event.get()
+                # for event in events:
+                #     if event.type == pygame.QUIT:
+                #         self.running = False
 
-            self.collisionHandling(dt)
+                self.collisionHandling(dt)
 
-            #Win Condition
-            if self.player.pos.x >= self.dungeon.dungeonExit.left:
-                self.gameWin()
+                #Win Condition
+                if self.player.pos.x >= self.dungeon.dungeonExit.left:
+                    self.gameWin()
 
-            #Lose Conditions
-            if self.outOfBounds(self.player.rect.center):
-                self.gameOver()
+                #Lose Conditions
+                if self.outOfBounds(self.player.rect.center) or self.allPlayersDead():
+                    self.gameOverCondition = "You Died!"
 
-            if self.HUD.getTime() <=0:
-                self.gameOver()
+                if self.HUD.getTime() <=0:
+                    self.gameOverCondition = "Times Up!"
 
-            self.camera.setCameraPosition(self.player.rect.center)
-            # print(self.player.rect.center, self.player.pos)
-            pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
-
-
-
-            self.window.fill(self.bg_color)
-            self.camera.draw(self.window, self.player)
-            self.HUD.draw(self.window, self.party_list)
+                self.camera.setCameraPosition(self.player.rect.center)
+                pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
+                self.window.fill(self.bg_color)
+                self.camera.draw(self.window, self.player)
+                self.HUD.draw(self.window, self.party_list)
             pygame.display.flip()
 
     def player_swap_cd(self, dt):
@@ -78,6 +92,12 @@ class Game:
             active party member."""
         self.party_list.last_active += dt
         #print(self.party_list.last_active)
+
+    def allPlayersDead(self):
+        for player in self.party_list.party_members:
+            if player.stats['CUR_HP'] > 0:
+                return False
+        return True
 
     def outOfBounds(self,playerPos):
         for room in self.camera.dungeon.rooms:
