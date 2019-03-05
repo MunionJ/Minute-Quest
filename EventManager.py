@@ -158,6 +158,7 @@ class EventManager:
         e = pygame.event.poll()
 
 
+
         if len(self.joySticks):
             # 360 pad buttons: 0 = 'A', 1 = 'B', 2 = 'X', 3 = 'Y'
             #                : 4 = 'LB', 5 = 'RB', 6 = 'Back', 7 = 'Start'
@@ -231,7 +232,7 @@ class EventManager:
             elif e.key == pygame.K_F1:
                 self.turnOnDebugMode()
             elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
-                print(e.key)
+                print(e)
                 for menu in self.game_objects['game_menus']:
                     menu.update(e.key)
 
