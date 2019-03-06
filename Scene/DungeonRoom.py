@@ -78,3 +78,11 @@ class DungeonRoom:
                                 self.exitPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             elif tilecode in PLAYER_SPAWNS:
                                 self.playerSpawn = pygame.Rect(3 * tilewidth, y * tileheight, tilewidth, tileheight)
+
+    def determineObj(self, room_name):
+        """
+        Determines the objective for a specific room.
+        :param room_name: Filename as string
+        :return: String describing objective
+        """
+        pass
