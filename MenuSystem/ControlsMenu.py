@@ -57,7 +57,7 @@ class ControlsMenu(pygame.sprite.Sprite):
 
         self.keyboardControls.fill((0, 0, 0))
         text = pygame.font.Font.render(self.font,
-                                       "The ad keys move the character while ws will go through the party, ", 12,
+                                       "The ad keys move the character while ws keys will go through the party, ", 12,
                                        (255, 255, 255))
         text2 = pygame.font.Font.render(self.font,
                                        "and space is jump ", 12,
