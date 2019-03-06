@@ -20,7 +20,7 @@ class Actor(pygame.sprite.Sprite):
         self.jump_vector = vec(0, -JUMP_VEC)
         self.max_speed = 7
         self.rect = None
-        self.debug = True
+        self.debug = False
         self.cur_state = states.Falling
         self.jump_offset = 0
         self.onSurface = False
@@ -178,3 +178,6 @@ class Actor(pygame.sprite.Sprite):
                              (255, 0, 0),
                              self.rect,
                              2)
+
+    def toggleDebug(self):
+        self.debug = not self.debug

@@ -1,4 +1,5 @@
-from Warrior import *
+from PlayerClasses.Warrior import *
+from PlayerClasses.Ranger import *
 import pygame
 
 
@@ -11,10 +12,10 @@ class Party:
         # mem1, mem2, mem3, mem4: Each one of these is an
         # individual party member
 
-        self.party_members = [Warrior(start_pos, img_list[0], [3, 1, 1, 20]),
-                              Warrior(start_pos, img_list[0], [3, 1, 1, 20]),
-                              Warrior(start_pos, img_list[0], [3, 1, 1, 20]),
-                              Warrior(start_pos, img_list[0], [3, 1, 1, 20])
+        self.party_members = [Warrior(start_pos),
+                              Ranger(start_pos),
+                              Warrior(start_pos),
+                              Warrior(start_pos)
                               ]
         self.party_index = 0
         self.active_member = self.party_members[self.party_index]

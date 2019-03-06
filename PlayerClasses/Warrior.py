@@ -1,4 +1,3 @@
-
 from Player import Player
 
 
@@ -6,7 +5,7 @@ class Warrior(Player):
     """ The playable Warrior character class. This
         character will be the melee damage specialist."""
 
-    def __init__(self, start_pos, img, stats):
+    def __init__(self, start_pos, img="images/character1", stats=[3, 1, 1, 20]):
         super().__init__(start_pos, img)
         # CONSTRUCTOR PARAMETERS #
         # stats: a list of initial stats in the order [MELEE, RANGE, MAGIC, MAX_HP]

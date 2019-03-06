@@ -92,3 +92,6 @@ class GameHUD:
 
     def getTime(self):
         return self.timer
+
+    def toggleDebug(self):
+        pass

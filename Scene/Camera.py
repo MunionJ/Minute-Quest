@@ -85,10 +85,12 @@ class Camera():
                 )
 
                 for wall in map.walls:
+                    # TODO Fix tile draw code
                     screen.blit(
                         wall.image,
                         (int(wall.rect.x - self.pos[0]),int(wall.rect.y - self.pos[1]))
                     )
+
 
                 bg_rect = pygame.Rect(
                     int(map.bgImageRect.x - self.pos[0]),
