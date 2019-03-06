@@ -2,6 +2,7 @@ from Player import *
 from Scene.Camera import *
 from GameHUD import *
 from Party import *
+from Enemies import *
 
 
 class Game:
@@ -24,16 +25,22 @@ class Game:
         self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
         self.bg_color = pygame.color.THECOLORS["black"]
+        self.enemy_list = []
         for room in self.dungeon.rooms:
             for wall in room.walls.sprites():
                 self.manager.addGameObject(wall)
-
+        for room in self.dungeon.rooms:
+            for enemyspawnpoint in room.enemySpawnPoints:
+                enemy = Enemy(enemyspawnpoint.center, "images/enemy1")
+                self.enemy_list.append(enemy)
+                self.manager.addGameObject(enemy)
         self.gameOverScreen = pygame.Surface(SCREEN_RES)
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',100)
         self.gameOverCondition = None
         self.fontSurface = None
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
+
 
     def start_game(self):
         self.running = True
@@ -84,7 +91,7 @@ class Game:
                 self.camera.setCameraPosition(self.player.rect.center)
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player)
+                self.camera.draw(self.window, self.player, self.enemy_list)
                 self.HUD.draw(self.window, self.party_list)
             pygame.display.flip()
 

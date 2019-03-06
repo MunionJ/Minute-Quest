@@ -76,7 +76,7 @@ class Camera():
             the game screen."""
         self.debug = not self.debug
 
-    def draw(self, screen, player):
+    def draw(self, screen, player, enemy_list):
         for map in self.dungeon.rooms:
             if self.dungeon.playerBounds.colliderect(map.bgImageRect):
                 screen.blit(
@@ -98,7 +98,9 @@ class Camera():
                 )
             else:
                 break
-
+        for enemy in enemy_list:
+            screen.blit(enemy.img,
+                        (int(enemy.rect.x - self.pos[0]), int(enemy.rect.y - self.pos[1])))
         screen.blit(
             player.image,
             (player.rect.x - self.pos[0], player.rect.y - self.pos[1])
