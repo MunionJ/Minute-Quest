@@ -27,6 +27,9 @@ class EventManager:
 
         self.possibleNumberOfPlayers = pygame.joystick.get_count() + 1
 
+    def hasReferenceToGameObject(self,obj):
+        return obj in self.game_objects['game_objects']
+
     def addGameObject(self, obj):
         self.game_objects['game_objects'].append(obj)
 

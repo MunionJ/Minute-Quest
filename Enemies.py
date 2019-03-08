@@ -38,22 +38,25 @@ class Enemy(Actor):
         self.move_time = time.time() + 2 #temporary variable for moving enemies
         self.change_move = True  #temporary variable for moving enemies
         self.rect = self.img.get_rect()
+        self.rect.midbottom = spawn_point
+        self.pos.x, self.pos.y = self.rect.center
         self.alive = True
+        self.cur_state = states.Falling
+        self.onSurface = False
 
     def move(self, keys, dt):
-        pass
-        #if self.change_move:  uncommenting this makes enemies walke left and right
-        #    while time.time() > self.move_time:
-        #        if self.accel.x < MAX_X_ACC:
-        #            self.accel.x += PLAYER_ACC
-        #        self.change_move = False
-        #        self.move_time = time.time() + 2
-        #elif not self.change_move:
-        #    while time.time() > self.move_time:
-        #        if self.accel.x > -MAX_X_ACC:
-        #            self.accel.x -= PLAYER_ACC
-        #        self.change_move = True
-        #        self.move_time = time.time() + 2
+        if self.change_move:  #uncommenting this makes enemies walk left and right
+           while time.time() > self.move_time:
+               if self.accel.x < MAX_X_ACC:
+                   self.accel.x += PLAYER_ACC
+               self.change_move = False
+               self.move_time = time.time() + 2
+        elif not self.change_move:
+           while time.time() > self.move_time:
+               if self.accel.x > -MAX_X_ACC:
+                   self.accel.x -= PLAYER_ACC
+               self.change_move = True
+               self.move_time = time.time() + 2
 
     def determineState(self):
         if self.velocity.x < 0:
@@ -70,11 +73,11 @@ class Enemy(Actor):
         if self.cur_state == states.Standing and self.facing_right:
             self.img = self.rframes[0]
         if self.cur_state == states.Standing and not self.facing_right:
-            self.img = pygame.transform.flip(self.frames[0], True, False)
+            self.img = pygame.transform.flip(self.frames['right'], True, False)
         if self.cur_state == states.Running and self.facing_right:
-            self.img = self.rframes["right"]
+            self.img = self.rframes[0]
         if self.cur_state == states.Running and not self.facing_right:
-            self.img = pygame.transform.flip(self.frames["right"], True, False)
+            self.img = pygame.transform.flip(self.frames['right'], True, False)
 
         while time.time() > self.t_anim:
             self.anim += 1
@@ -82,6 +85,7 @@ class Enemy(Actor):
                 self.anim = 0
             self.frames["right"] = self.rframes[self.anim]
             self.t_anim = time.time() + 0.125
+
 
     def set_dead(self):
         """ Generic method for setting

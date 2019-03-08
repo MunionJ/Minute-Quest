@@ -48,10 +48,8 @@ class Dungeon:
                 wall.rect.y -= y_offset
 
             for point in currentRoom.enemySpawnPoints:
-                x,y = point.topleft
-                x += x_offset
-                y += y_offset
-                point.topleft = (x, y)
+                point.x += x_offset
+                point.y -= y_offset
 
             x, y = currentRoom.exitPoint.topleft
             x += x_offset

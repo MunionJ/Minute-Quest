@@ -91,6 +91,11 @@ class Camera():
                         (int(wall.rect.x - self.pos[0]),int(wall.rect.y - self.pos[1]))
                     )
 
+                for enemy in map.enemies:
+                    screen.blit(
+                        enemy.img,
+                        (enemy.rect.x - self.pos[0], enemy.rect.y - self.pos[1])
+                    )
 
                 bg_rect = pygame.Rect(
                     int(map.bgImageRect.x - self.pos[0]),
@@ -100,9 +105,8 @@ class Camera():
                 )
             else:
                 break
-        for enemy in enemy_list:
-            screen.blit(enemy.img,
-                        (int(enemy.rect.x - self.pos[0]), int(enemy.rect.y - self.pos[1])))
+
+
         screen.blit(
             player.image,
             (player.rect.x - self.pos[0], player.rect.y - self.pos[1])

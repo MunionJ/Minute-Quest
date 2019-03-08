@@ -72,8 +72,6 @@ class Actor(pygame.sprite.Sprite):
             out later."""
         # Gravity and Player Movement
 
-        # PLAYER JUMPING
-        # TODO Update code to apply this if statement to check for all tiles rather than the bottom of the screen.
         self.apply_physics(dt)
         self.move(keys, dt)
 

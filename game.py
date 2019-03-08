@@ -25,15 +25,18 @@ class Game:
         self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
         self.bg_color = pygame.color.THECOLORS["black"]
-        self.enemy_list = []
         for room in self.dungeon.rooms:
             for wall in room.walls.sprites():
                 self.manager.addGameObject(wall)
+        self.enemiesByRoom = []
         for room in self.dungeon.rooms:
+            enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
-                enemy = Enemy(enemyspawnpoint.center, "images/enemy1")
-                self.enemy_list.append(enemy)
+                enemy = Enemy(enemyspawnpoint.midbottom, "images/enemy1")
+                enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
+            room.enemies = enemy_list
+            self.enemiesByRoom.append(enemy_list)
         self.gameOverScreen = pygame.Surface(SCREEN_RES)
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',100)
         self.gameOverCondition = None
@@ -91,7 +94,7 @@ class Game:
                 self.camera.setCameraPosition(self.player.rect.center)
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player, self.enemy_list)
+                self.camera.draw(self.window, self.player, self.enemiesByRoom)
                 self.HUD.draw(self.window, self.party_list)
             pygame.display.flip()
 
@@ -168,6 +171,50 @@ class Game:
             self.player.isInAir()
 
         self.player.determineState()
+
+        for room in self.dungeon.rooms:
+            if self.player.rect.colliderect(room.bgImageRect):
+                for enemy in room.enemies:
+                    if(not self.manager.hasReferenceToGameObject(enemy)):
+                        self.manager.addGameObject(enemy)
+                    enemy.moveX(dt)
+                    collisions = pygame.sprite.spritecollide(enemy, tiles, False)
+                    if collisions:
+                        hit = collisions[0]
+                        enemy.handleXCollision(hit.rect)
+
+                    enemy.moveY(dt)
+                    collisions = pygame.sprite.spritecollide(enemy, tiles, False)
+
+                    vertCollisions = False
+                    if collisions:
+                        hit = collisions[0]
+                        vertCollisions = enemy.handleYCollision(hit.rect)
+
+                    rect = enemy.rect.copy()
+
+                    if not vertCollisions:
+                        for i in range(PIXEL_DIFFERENCE):
+                            rect.move_ip(0, 1)
+                            for wall in tiles.sprites():
+                                if rect.colliderect(wall.rect) and enemy.velocity.y >= 0:
+                                    enemy.handleYCollision(wall.rect)
+                                    vertCollisions = True
+                                    break
+                            if vertCollisions:
+                                break
+
+                    if not vertCollisions:
+                        enemy.isInAir()
+
+                    rect = enemy.rect.clamp(room.bgImageRect)
+                    enemy.set_pos(rect)
+
+                    enemy.determineState()
+            else:
+                for enemy in room.enemies:
+                    if self.manager.hasReferenceToGameObject(enemy):
+                        self.manager.removeGameObject(enemy)
 
     def gameWin(self):
         "Award Experience and level up"

@@ -38,7 +38,7 @@ class DungeonRoom:
         self.enemySpawnPoints = []
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
-
+        self.enemies = []
 
         for i in range(len(self.layer_data)):
             layer = self.layer_data[i]
