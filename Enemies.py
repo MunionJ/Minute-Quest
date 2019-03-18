@@ -86,7 +86,6 @@ class Enemy(Actor):
             self.frames["right"] = self.rframes[self.anim]
             self.t_anim = time.time() + 0.125
 
-
     def set_dead(self):
         """ Generic method for setting
             a enemy status to dead."""

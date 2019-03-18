@@ -24,7 +24,6 @@ class GameManager:
         self.gameWindow = pygame.display.set_mode(SCREEN_RES)
         self.bg_color = pygame.color.THECOLORS['black']
 
-
     def LoadMenu(self,menuOption):
         currentMenu = self.menuOptions[self.currentMenuState] if self.currentMenuState != None else menu.Main
         newMenu = self.menuOptions[menuOption]

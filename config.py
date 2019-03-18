@@ -39,21 +39,21 @@ ROOMS = {
         "MQ_test_map_battle.txt"
     ],
     "LootRooms": [
-        #"AB_loot_map1.txt",
-        #"map_loot_daniel.txt",
-        #"MQ_test_map_loot.txt",
-        #"project loot room.txt"
+        "AB_loot_map1.txt",
+        "map_loot_daniel.txt",
+        "MQ_test_map_loot.txt",
+        "project loot room.txt"
     ],
     "PlatformRooms": [
-        #"AB_plat_map1.txt",
-        #"map_platformer_daniel.txt",
-        #"MinuteQuestRoom2.txt",
-        #"MQ_test_map_platforming.txt",
-        #"project platform room.txt"
+        "AB_plat_map1.txt",
+        "map_platformer_daniel.txt",
+        "MinuteQuestRoom2.txt",
+        "MQ_test_map_platforming.txt",
+        "project platform room.txt"
     ],
     "PuzzleRooms": [
-        #"map_puzzle_daniel.txt",
-        #"project puzzle room.txt",
-        #"MinuteQuestRoom3.txt"
+        "map_puzzle_daniel.txt",
+        "project puzzle room.txt",
+        "MinuteQuestRoom3.txt"
     ]
 }
