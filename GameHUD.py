@@ -81,7 +81,6 @@ class GameHUD:
         # blit the room objective
         # TODO Make the announcement only last for a few seconds
         # TODO Make the announcement fit better if the rect goes off-screen
-        print(self.room_objective)
         announcement = self.font.render(self.room_objective, False, self.font_color)
         text_offset = announcement.get_width() // 2
         window.blit(announcement,
