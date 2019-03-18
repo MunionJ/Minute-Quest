@@ -124,7 +124,8 @@ class Game:
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
                 hasCollided = True
-                room.determineObj()
+                objective = room.determineObj()
+                self.HUD.getRoomObj(objective)
                 break
 
         if not hasCollided:

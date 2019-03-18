@@ -11,6 +11,7 @@ class GameHUD:
         self.hud_surf = pygame.Surface((100, window.get_height()))
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',60)
         self.font_color = pygame.color.THECOLORS['green']
+        self.room_objective = None
 
     def draw(self, window, party_list):
         """ Draw pertinent information
@@ -77,6 +78,15 @@ class GameHUD:
         window.blit(font_surf,
                     (window.get_width() // 2, 30)
                     )
+        # blit the room objective
+        # TODO Make the announcement only last for a few seconds
+        # TODO Make the announcement fit better if the rect goes off-screen
+        print(self.room_objective)
+        announcement = self.font.render(self.room_objective, False, self.font_color)
+        text_offset = announcement.get_width() // 2
+        window.blit(announcement,
+                    ((window.get_width() // 2) - text_offset, 525)
+                    )
 
     def update(self, keys, dt):
         """ Updates remaining time for given playable
@@ -94,7 +104,7 @@ class GameHUD:
         return self.timer
 
     def getRoomObj(self, str):
-        pass
+        self.room_objective = str
 
     def toggleDebug(self):
         pass

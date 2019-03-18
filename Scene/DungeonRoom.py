@@ -90,16 +90,16 @@ class DungeonRoom:
         room_type = self.file_name.split("/")
         room_type = room_type[2:]
         if room_type[0] == "EnemyRooms":
-            print("Kill All Enemies!")
+            return "Kill All Enemies!"
         elif room_type[0] == "LootRooms":
-            print("Loot!")
+            return "Loot!"
         elif room_type[0] == "PlatformRooms":
-            print("Platform!")
+            return "Platform!"
         elif room_type[0] == "PuzzleRooms":
             type = "Puzzle: "
             if room_type[1] == "map_puzzle_daniel.txt":
-                print(type + "Combination Key Press")
+                return type + "Combination Key Press"
             elif room_type[1] == "MinuteQuestRoom3.txt":
-                print(type + "Find the Key to the Exit")
+                return type + "Find the Key to the Exit"
             elif room_type[1] == "project puzzle room.txt":
-                print(type + "???")
+                return type + "???"
