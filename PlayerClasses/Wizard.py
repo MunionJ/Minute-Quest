@@ -46,6 +46,6 @@ class Wizard(Player):
         self.TimeStop_timer = 10
 
     def update(self, keys, dt):
-        super().update(keys,dt)
+        super().update(keys, dt)
         if self.use_ability:
             self.ability_timer(dt)
