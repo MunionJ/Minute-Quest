@@ -3,7 +3,7 @@ from Player import Player
 
 class Wizard(Player):
     """
-    Wizard class, specializes in ranged attacks.
+    Wizard class, specializes in magic attacks.
     """
 
     def __init__(self, start_pos, img="images/enemy1", stats=[1, 1, 10, 15]):
