@@ -15,20 +15,30 @@ class Wizard(Player):
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
         self.TimeStop = False
-        self.delay_timer = 60
+        self.NumAbility = 1
+        self.DelayTimer = 60
         self.TimeStop_timer = 10
 
     def use_ability(self):
         """Gives the Wizard the power to use his abilities"""
-        self.TimeStop = True
+        if self.NumAbility > 0:
+            self.TimeStop = True
+        else:
+            self.TimeStop = False
 
     def ability_timer(self, dt):
+        """Does the timer for both the ability itself and the cool down timer for using it again"""
         if self.TimeStop:
             while self.TimeStop_timer >= 0:
-                self.TimeStop_timer -= dt
-            while self.delay_timer >=0:
-                self.delay_timer -= dt
-                self.TimeStop = False
+                self.update(dt)
         else:
             pass
 
+    def update(self, dt):
+        """updates all of the timers"""
+        self.TimeStop_timer -= dt
+        if self.TimeStop_timer <= 0:
+            self.NumAbility -= 1
+            self.DelayTimer -= dt
+            if self.DelayTimer <= 0:
+                self.NumAbility += 1
