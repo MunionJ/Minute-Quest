@@ -6,7 +6,7 @@ class Ranger(Player):
     Ranger class, specializes in ranged attacks.
     """
 
-    def __init__(self, start_pos, img="images/ranger", stats=[1, 3, 1, 15]):
+    def __init__(self, start_pos, img="images/Characters/ranger", stats=[1, 3, 1, 15]):
         super().__init__(start_pos, img)
 
         self.stats["MELEE"] = stats[0]

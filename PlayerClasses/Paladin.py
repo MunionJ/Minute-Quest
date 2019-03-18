@@ -6,7 +6,7 @@ class Paladin(Player):
     Paladin class: specializes in tanking
     """
 
-    def __init__(self, start_pos, img="images/paladin", stats=[2, 1, 2, 25]):
+    def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 25]):
         super().__init__(start_pos, img)
 
         self.stats["MELEE"] = stats[0]

@@ -6,7 +6,7 @@ class Wizard(Player):
     Wizard class, specializes in magic attacks.
     """
 
-    def __init__(self, start_pos, img="images/wizard", stats=[1, 1, 10, 18]):
+    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 10, 18]):
         super().__init__(start_pos, img)
 
         self.stats["MELEE"] = stats[0]

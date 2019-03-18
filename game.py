@@ -14,7 +14,7 @@ class Game:
         self.dungeon = Dungeon(4)
         #self.player = Player(self.dungeon.playerSpawn, "images/character1")
         self.party_list = Party(self.dungeon.playerSpawn,
-                                ["images/character1"])
+                                ["images/Characters/character1"])
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
@@ -32,7 +32,7 @@ class Game:
         for room in self.dungeon.rooms:
             enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
-                enemy = Enemy(enemyspawnpoint.midbottom, "images/enemy1")
+                enemy = Enemy(enemyspawnpoint.midbottom, "images/Characters/enemy1")
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
