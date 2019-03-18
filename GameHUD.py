@@ -93,5 +93,8 @@ class GameHUD:
     def getTime(self):
         return self.timer
 
+    def getRoomObj(self, str):
+        pass
+
     def toggleDebug(self):
         pass

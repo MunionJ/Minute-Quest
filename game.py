@@ -124,6 +124,7 @@ class Game:
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
                 hasCollided = True
+                room.determineObj()
                 break
 
         if not hasCollided:
@@ -173,7 +174,6 @@ class Game:
         self.player.determineState()
 
         for room in self.dungeon.rooms:
-
             if self.player.rect.colliderect(room.bgImageRect):
                 for enemy in room.enemies:
                     if(not self.manager.hasReferenceToGameObject(enemy)):
