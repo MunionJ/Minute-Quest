@@ -46,17 +46,17 @@ class Enemy(Actor):
 
     def move(self, keys, dt):
         if self.change_move:  #uncommenting this makes enemies walk left and right
-           while time.time() > self.move_time:
-               if self.accel.x < MAX_X_ACC:
-                   self.accel.x += PLAYER_ACC
-               self.change_move = False
-               self.move_time = time.time() + 2
+            while time.time() > self.move_time:
+                if self.accel.x < MAX_X_ACC:
+                    self.accel.x += PLAYER_ACC
+                self.change_move = False
+                self.move_time = time.time() + 0.5
         elif not self.change_move:
-           while time.time() > self.move_time:
-               if self.accel.x > -MAX_X_ACC:
-                   self.accel.x -= PLAYER_ACC
-               self.change_move = True
-               self.move_time = time.time() + 2
+            while time.time() > self.move_time:
+                if self.accel.x > -MAX_X_ACC:
+                    self.accel.x -= PLAYER_ACC
+                self.change_move = True
+                self.move_time = time.time() + 0.5
 
     def determineState(self):
         if self.velocity.x < 0:
