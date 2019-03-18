@@ -22,12 +22,6 @@ class Paladin(Player):
             self.activate_heal()
 
     def activate_heal(self):
-        """ Method for applying the effects of rage."""
+        """ Method for applying the effects of heal."""
         self.num_heal -= 1
         self.stats["CUR_HP"] += self.level * 15
-
-    def update(self, keys, dt):
-        """ Override for base class update method.
-            Has all the same functionality, just added rage
-            mechanics for Warrior."""
-        super().update(keys, dt)
