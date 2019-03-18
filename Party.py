@@ -1,5 +1,7 @@
 from PlayerClasses.Warrior import *
 from PlayerClasses.Ranger import *
+from PlayerClasses.Wizard import *
+from PlayerClasses.Paladin import *
 import pygame
 
 
@@ -14,8 +16,8 @@ class Party:
 
         self.party_members = [Warrior(start_pos),
                               Ranger(start_pos),
-                              Warrior(start_pos),
-                              Warrior(start_pos)
+                              Wizard(start_pos),
+                              Paladin(start_pos)
                               ]
         self.party_index = 0
         self.active_member = self.party_members[self.party_index]
