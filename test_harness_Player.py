@@ -14,7 +14,7 @@ window = pygame.display.set_mode(SCREEN_RES)
 pygame.display.set_caption("PLAYER TEST HARNESS")
 manager = EventManager()
 player = Player((window.get_width() // 2, window.get_height() // 2),
-                "images/character1")
+                "images/warrior")
 enemy = Enemy((window.get_width() // 2, window.get_height() // 2),
                 "images/enemy1")
 
@@ -66,6 +66,7 @@ while running:
 
     #Move Player and Check for Collisions
     player.moveX(dt)
+    enemy.moveX(dt)
     collisions = pygame.sprite.spritecollide(player, tiles, False)
     if collisions:
         hit = collisions[0]
