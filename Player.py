@@ -98,6 +98,12 @@ class Player(Actor):
             self.frames["right"] = self.rframes[self.anim]
             self.t_anim = time.time() + 0.25
 
+        if self.cur_state == states.Jumping or self.cur_state == states.Falling:
+            if self.facing_right:
+                self.image = self.frames["rjump"]
+            if not self.facing_right:
+                self.image = pygame.transform.flip(self.frames['rjump'], True, False)
+
     def isInAir(self):
         if self.jumpFrameCount <= 0:
             super().isInAir()
