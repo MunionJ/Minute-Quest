@@ -81,9 +81,6 @@ class DungeonRoom:
                                 self.exitPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             elif tilecode in PLAYER_SPAWNS:
                                 self.playerSpawn = pygame.Rect(3 * tilewidth, y * tileheight, tilewidth, tileheight)
-            # TODO Find a place to properly call this, so that it is only determined once a player enters the
-            # specific room.
-            self.determineObj()
 
     def determineObj(self):
         """
