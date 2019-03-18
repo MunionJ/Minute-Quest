@@ -14,3 +14,4 @@ class Ranger(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+
