@@ -30,11 +30,11 @@ class Wizard(Player):
         """Does the timer for both the ability itself and the cool down timer for using it again"""
         if self.TimeStop:
             while self.TimeStop_timer >= 0:
-                self.update(dt)
+                self.timer_update(dt)
         else:
             pass
 
-    def update(self, dt):
+    def timer_update(self, dt):
         """updates all of the timers"""
         self.TimeStop_timer -= dt
         if self.TimeStop_timer <= 0:
@@ -42,3 +42,10 @@ class Wizard(Player):
             self.DelayTimer -= dt
             if self.DelayTimer <= 0:
                 self.NumAbility += 1
+            self.DelayTimer = 60
+        self.TimeStop_timer = 10
+
+    def update(self, keys, dt):
+        super().update(keys,dt)
+        if self.use_ability:
+            self.ability_timer(dt)
