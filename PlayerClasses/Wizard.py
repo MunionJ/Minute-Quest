@@ -35,7 +35,7 @@ class Wizard(Player):
             pass
 
     def timer_update(self, dt):
-        """updates all of the timers"""
+        """Updates all of the timers"""
         self.TimeStop_timer -= dt
         if self.TimeStop_timer <= 0:
             self.NumAbility -= 1
@@ -46,6 +46,9 @@ class Wizard(Player):
         self.TimeStop_timer = 10
 
     def update(self, keys, dt):
+        """Overrides for base class update method.
+            Has all the same functionality, just adds the time for Wizard
+            mechanics for Wizard. """
         super().update(keys, dt)
         if self.use_ability:
             self.ability_timer(dt)
