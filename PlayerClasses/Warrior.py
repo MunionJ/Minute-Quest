@@ -1,4 +1,4 @@
-import time
+import pygame
 from Player import Player
 
 
@@ -22,10 +22,11 @@ class Warrior(Player):
         self.rage_timer = 5
         self.rage_active = False
 
-    def use_ability(self):
+    def use_ability(self, keys):
         """ Method for using class-specific ability."""
-        if self.num_rages > 0:
-            self.activate_rage()
+        if keys[pygame.K_r]:
+            if self.num_rages > 0:
+                self.activate_rage()
 
     def activate_rage(self):
         """ Method for applying the effects of rage."""
@@ -53,5 +54,6 @@ class Warrior(Player):
             Has all the same functionality, just added rage
             mechanics for Warrior."""
         super().update(keys, dt)
+        self.use_ability(keys)
         if self.rage_active:
             self.rage_update(dt)
