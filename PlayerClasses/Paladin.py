@@ -28,5 +28,5 @@ class Paladin(Player):
 
     def update(self, *args):
         """ Method called for per frame update"""
-        super.update(*args)
+        super().update(*args)
         pass
