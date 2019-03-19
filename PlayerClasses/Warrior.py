@@ -7,7 +7,7 @@ class Warrior(Player):
         character will be the melee damage specialist."""
 
     def __init__(self, start_pos, img="images/Characters/"
-                                      "warrior", stats=[3, 1, 1, 20]):
+                                      "warrior", stats=[3, 1, 1, 30]):
         super().__init__(start_pos, img)
         # CONSTRUCTOR PARAMETERS #
         # stats: a list of initial stats in the order [MELEE, RANGE, MAGIC, MAX_HP]
@@ -33,7 +33,7 @@ class Warrior(Player):
         self.rage_active = True
         self.num_rages -= 1
         self.stats["MELEE"] *= 2
-        self.stats["CUR_HP"] += self.level * 5
+        self.stats["CUR_HP"] += self.stats["MAX_HP"] // 4
 
     def deactivate_rage(self):
         """ Method for turning off the effects of rage."""

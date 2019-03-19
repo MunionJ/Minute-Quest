@@ -10,6 +10,7 @@ class GameHUD:
         self.timer = 60     # seconds
         self.hud_surf = pygame.Surface((100, window.get_height()))
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',60)
+        self.small_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 15)
         self.font_color = pygame.color.THECOLORS['green']
         self.room_objective = None
 
@@ -51,6 +52,11 @@ class GameHUD:
                                   (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
                                   bar_height)
                                  )
+            self.hud_surf.blit(self.small_font.render(str(char.stats["CUR_HP"]) + ' / ' + str(char.stats["MAX_HP"]),
+                                                      False,
+                                                      (pygame.color.THECOLORS['white'])),
+                               (x, y - 15)
+                               )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
                              pygame.color.THECOLORS["white"],
