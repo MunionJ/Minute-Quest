@@ -93,9 +93,10 @@ class GameHUD:
                     ((window.get_width() // 2) - text_offset, 525)
                     )
 
-    def update(self, keys, dt):
+    def update(self, *args):
         """ Updates remaining time for given playable
             segment ( dungeon, town, etc. )"""
+        mouseButtons, keys, dt = args
         self.timer -= dt
 
         if self.timer < 10:

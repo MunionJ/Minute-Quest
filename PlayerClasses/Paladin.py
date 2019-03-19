@@ -25,3 +25,8 @@ class Paladin(Player):
         """ Method for applying the effects of heal."""
         self.num_heal -= 1
         self.stats["CUR_HP"] += self.level * 15
+
+    def update(self, *args):
+        """ Method called for per frame update"""
+        super.update(*args)
+        pass

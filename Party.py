@@ -14,10 +14,10 @@ class Party:
         # mem1, mem2, mem3, mem4: Each one of these is an
         # individual party member
 
-        self.party_members = [Warrior(start_pos),
-                              Ranger(start_pos),
-                              Wizard(start_pos),
-                              Paladin(start_pos)
+        self.party_members = [Warrior(start_pos),   #Jon is working on this
+                              Ranger(start_pos),    #??
+                              Wizard(start_pos),    #Mike is working on this
+                              Paladin(start_pos)    #??
                               ]
         self.party_index = 0
         self.active_member = self.party_members[self.party_index]
@@ -29,6 +29,7 @@ class Party:
     def update(self, key, dt):
         """ Method for changing active
             party member."""
+
         if self.last_active > 3:
             if key == pygame.K_w:
                 self.party_index -= 1

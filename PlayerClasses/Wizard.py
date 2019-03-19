@@ -45,10 +45,11 @@ class Wizard(Player):
             self.DelayTimer = 60
         self.TimeStop_timer = 10
 
-    def update(self, keys, dt):
+    def update(self, *args):
         """Overrides for base class update method.
             Has all the same functionality, just adds the time for Wizard
             mechanics for Wizard. """
-        super().update(keys, dt)
+        super().update(*args)
+        mouseButtons, keys, dt = args
         if self.use_ability:
             self.ability_timer(dt)

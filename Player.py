@@ -73,9 +73,11 @@ class Player(Actor):
         if self.stats["CUR_HP"] > 0:    # testing with this for now - Jon
             self.stats["CUR_HP"] -= 1
 
-    def update(self, keys, dt):
+    def update(self, *args):
         """ Testing Player jumping."""
-        super().update(keys, dt)
+        mouseButtons, keys, dt = args
+
+        super().update(*args)
 
         if self.jumpFrameCount > 0:
             self.jumpFrameCount -= 1

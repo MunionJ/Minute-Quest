@@ -67,11 +67,12 @@ class Actor(pygame.sprite.Sprite):
         self.pos.y += self.velocity.y
         self.rect.center = (int(self.pos.x), int(self.pos.y))
 
-    def update(self, keys, dt):
+    def update(self, *args):
         """Base update method. Will be filled
             out later."""
         # Gravity and Player Movement
-
+        keys = args[1]
+        dt = args[2]
         self.apply_physics(dt)
         self.move(keys, dt)
 

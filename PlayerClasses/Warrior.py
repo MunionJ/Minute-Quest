@@ -49,11 +49,12 @@ class Warrior(Player):
         if self.rage_timer <= 0:
             self.deactivate_rage()
 
-    def update(self, keys, dt):
+    def update(self, *args):
         """ Override for base class update method.
             Has all the same functionality, just added rage
             mechanics for Warrior."""
-        super().update(keys, dt)
+        mouseButtons, keys, dt = args
+        super().update(*args)
         self.use_ability(keys)
         if self.rage_active:
             self.rage_update(dt)

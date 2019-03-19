@@ -57,9 +57,7 @@ class EventManager:
 
     def process_input(self, dt):
         """ This method processes user input."""
-        timer = 1
         keys = pygame.key.get_pressed()
-        timer -= dt
 
         if keys[pygame.K_ESCAPE]:
             return False
@@ -135,8 +133,9 @@ class EventManager:
 
                 keys = tuple(temp)
 
+        mouseButtons = pygame.mouse.get_pressed()
         for obj in self.game_objects['game_objects']:
-                obj.update(keys, dt)
+            obj.update(mouseButtons, keys, dt)
 
         #pygame.event.pump()
         return True

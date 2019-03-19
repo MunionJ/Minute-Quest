@@ -67,8 +67,9 @@ class Enemy(Actor):
 
         super().determineState()
 
-    def update(self, keys, dt):
-        super().update(keys, dt)
+    def update(self, *args):
+        mouseButtons, keys, dt = args
+        super().update(*args)
 
         if self.cur_state == states.Standing and self.facing_right:
             self.img = self.rframes[0]
