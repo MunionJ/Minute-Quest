@@ -1,4 +1,4 @@
-from Player import Player
+from Actors.Player import Player
 
 
 class Paladin(Player):

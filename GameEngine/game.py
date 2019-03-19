@@ -1,8 +1,8 @@
-from Player import *
+from Actors.Player import *
 from Scene.Camera import *
-from GameHUD import *
+from GameEngine.GameHUD import *
 from Party import *
-from Enemies import *
+from Actors.Enemies import *
 
 
 class Game:

@@ -1,6 +1,6 @@
 import pygame
 from config import *
-from PlayerStates import PlayerStates as states
+from Actors.PlayerStates import PlayerStates as states
 vec = pygame.math.Vector2
 
 

@@ -1,8 +1,6 @@
-import pygame
-from Scene.Tile import Tile
 from Scene.Dungeon import *
 from Scene.Reticle import *
-import math
+
 
 class Camera():
 
@@ -121,7 +119,7 @@ class Camera():
 
 if __name__ == "__main__":
     import os
-    from EventManager import *
+    from GameEngine.EventManager import *
 
     running = True
     clock = pygame.time.Clock()

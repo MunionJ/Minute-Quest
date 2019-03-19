@@ -2,8 +2,8 @@ from MenuSystem.GameMenuStates import GameMenus as menu
 from MenuSystem.LandingMenu import *
 from MenuSystem.ControlsMenu import *
 from MenuSystem.GameMenu import *
-from EventManager import *
-from game import *
+from GameEngine.EventManager import *
+from GameEngine.game import *
 
 class GameManager:
 

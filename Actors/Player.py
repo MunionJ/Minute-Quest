@@ -1,6 +1,6 @@
 import pygame
 import time
-from Actor import *
+from Actors.Actor import *
 
 
 class Player(Actor):

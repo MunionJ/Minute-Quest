@@ -1,6 +1,6 @@
 import pygame
 import os
-from GameManager import *
+from GameEngine.GameManager import *
 
 # Initialization
 pygame.init()

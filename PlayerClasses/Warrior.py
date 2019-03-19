@@ -1,6 +1,6 @@
 import pygame
 import copy
-from Player import Player
+from Actors.Player import Player
 
 
 class Warrior(Player):

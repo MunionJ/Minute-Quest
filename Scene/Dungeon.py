@@ -1,4 +1,3 @@
-import pygame
 import random
 from Scene.DungeonRoom import *
 import copy

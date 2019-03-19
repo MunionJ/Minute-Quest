@@ -4,7 +4,6 @@ import os
 from Enemies import *
 from Player import *
 from EventManager import *
-import random
 from Scene.Tile import *
 
 pygame.init()

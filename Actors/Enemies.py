@@ -1,4 +1,4 @@
-from Actor import *
+from Actors.Actor import *
 import time
 
 class Enemy(Actor):
