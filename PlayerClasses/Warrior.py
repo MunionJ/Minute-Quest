@@ -1,4 +1,5 @@
 import pygame
+import copy
 from Player import Player
 
 
@@ -17,7 +18,8 @@ class Warrior(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.base_stats = self.stats
+        self.base_stats = copy.deepcopy(self.stats)
+
         self.num_rages = 1
         self.rage_timer = 5
         self.rage_active = False
