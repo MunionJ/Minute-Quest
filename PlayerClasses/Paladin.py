@@ -9,6 +9,7 @@ class Paladin(Player):
     def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 25]):
         super().__init__(start_pos, img)
 
+        self.class_name = "PALADIN"
         self.stats["MELEE"] = stats[0]
         self.stats["RANGE"] = stats[1]
         self.stats["MAGIC"] = stats[2]

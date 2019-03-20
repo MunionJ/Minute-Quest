@@ -13,6 +13,7 @@ class Warrior(Player):
         # CONSTRUCTOR PARAMETERS #
         # stats: a list of initial stats in the order [MELEE, RANGE, MAGIC, MAX_HP]
 
+        self.class_name = "WARRIOR"
         self.stats["MELEE"] = stats[0]
         self.stats["RANGE"] = stats[1]
         self.stats["MAGIC"] = stats[2]

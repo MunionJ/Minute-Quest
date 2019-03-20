@@ -9,6 +9,7 @@ class Wizard(Player):
     def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 10, 18]):
         super().__init__(start_pos, img)
 
+        self.class_name = "WIZARD"
         self.stats["MELEE"] = stats[0]
         self.stats["RANGE"] = stats[1]
         self.stats["MAGIC"] = stats[2]
