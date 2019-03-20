@@ -1,4 +1,5 @@
 from Actors.Player import Player
+import pygame
 
 
 class Wizard(Player):
@@ -20,12 +21,13 @@ class Wizard(Player):
         self.DelayTimer = 60
         self.TimeStop_timer = 10
 
-    def use_ability(self):
+    def use_ability(self, keys):
         """Gives the Wizard the power to use his abilities"""
-        if self.NumAbility > 0:
-            self.TimeStop = True
-        else:
-            self.TimeStop = False
+        if keys[pygame.K.r]:
+            if self.NumAbility > 0:
+                self.TimeStop = True
+            else:
+                self.TimeStop = False
 
     def ability_timer(self, dt):
         """Does the timer for both the ability itself and the cool down timer for using it again"""
@@ -52,5 +54,5 @@ class Wizard(Player):
             mechanics for Wizard. """
         super().update(*args)
         mouseButtons, keys, dt = args
-        if self.use_ability:
+        if self.use_ability(keys):
             self.ability_timer(dt)
