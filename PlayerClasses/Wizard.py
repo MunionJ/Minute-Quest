@@ -23,7 +23,7 @@ class Wizard(Player):
 
     def use_ability(self, keys):
         """Gives the Wizard the power to use his abilities"""
-        if keys[pygame.K.r]:
+        if keys[pygame.K_r]:
             if self.NumAbility > 0:
                 self.TimeStop = True
             else:
