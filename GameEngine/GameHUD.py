@@ -11,6 +11,7 @@ class GameHUD:
         self.hud_surf = pygame.Surface((100, window.get_height()))
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',60)
         self.small_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 15)
+        self.announce_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 30)
         self.font_color = pygame.color.THECOLORS['green']
         self.room_objective = None
 
@@ -52,9 +53,11 @@ class GameHUD:
                                   (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
                                   bar_height)
                                  )
+            # draw numerical values for each party member's HP
             self.hud_surf.blit(self.small_font.render(str(char.stats["CUR_HP"]) + ' / ' + str(char.stats["MAX_HP"]),
                                                       False,
-                                                      (pygame.color.THECOLORS['white'])),
+                                                      (pygame.color.THECOLORS['white'])
+                                                      ),
                                (x, y - 15)
                                )
             # draw outline of hp bar
@@ -74,12 +77,12 @@ class GameHUD:
         if self.timer > 0:
             font_surf = self.font.render(str(round(self.timer, 1)),
                                          False,
-                                         (self.font_color)
+                                         self.font_color
                                          )
         else:
             font_surf = self.font.render("TIME UP",
                                          False,
-                                         (self.font_color)
+                                         self.font_color
                                          )
         window.blit(font_surf,
                     (window.get_width() // 2, 30)
@@ -87,7 +90,7 @@ class GameHUD:
         # blit the room objective
         # TODO Make the announcement only last for a few seconds
         # TODO Make the announcement fit better if the rect goes off-screen
-        announcement = self.font.render(self.room_objective, False, self.font_color)
+        announcement = self.announce_font.render(self.room_objective, False, self.font_color)
         text_offset = announcement.get_width() // 2
         window.blit(announcement,
                     ((window.get_width() // 2) - text_offset, 525)
