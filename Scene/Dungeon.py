@@ -69,16 +69,24 @@ class Dungeon:
         self.boundary = pygame.Rect(0, smallest_y, self.totalDungeonWidth, self.totalDungeonHeight)
         self.playerBounds = self.boundary
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
-        dirtBackgound = pygame.image.load("./images/map_dirt_background.png")
-        dirtBackgound = pygame.transform.scale(dirtBackgound, SCREEN_RES)
-        self.dirtBackground = dirtBackgound
+
+        self.dirt = pygame.image.load("./images/map_dirt_background.png")
+        self.dirt = pygame.transform.scale(self.dirt, SCREEN_RES)
+
+    def drawBackGround(self,screen,cameraPos):
+        x_offset = cameraPos[0] % SCREEN_RES[0]
+        y_offset = self.dungeonExit.bottom - cameraPos[1]
+        print(x_offset, y_offset)
+
+        y = y_offset
+        while y < SCREEN_RES[1]+cameraPos[1]:
+            screen.blit(self.dirt, (SCREEN_RES[0] - x_offset, y))
+            screen.blit(self.dirt, (-x_offset, y))
+            y += self.dirt.get_rect().h
 
 
     def draw(self,screen, cameraPos):
-        screen.blit(
-            self.dirtBackground,
-            (0,self.dungeonExit.bottom - cameraPos[1])
-        )
+        #self.drawBackGround(screen,cameraPos)
         for room in self.rooms:
             room.draw(screen, cameraPos)
 
