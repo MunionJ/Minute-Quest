@@ -92,6 +92,9 @@ class Enemy(Actor):
             a enemy status to dead."""
         self.alive = False
 
+    def attack(self):
+        pass
+
     def draw(self, window):
         super().draw(window)
         window.blit(self.img, self.rect)
