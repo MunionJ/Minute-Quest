@@ -16,3 +16,7 @@ class Ranger(Player):
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
 
+    def update(self, *args):
+        mouseButtons, keys, dt = args
+        if mouseButtons[1]:
+            self.ranged_attack()

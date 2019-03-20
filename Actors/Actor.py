@@ -81,14 +81,15 @@ class Actor(pygame.sprite.Sprite):
         if self.cur_state == states.Standing:   # If current state is standing or running, do not apply gravity
             if self.accel.y != 0:
                 self.accel = vec(0, 0)
+
         elif self.cur_state == states.Running:# If current state is standing or running, do not apply gravity
             self.accel = vec(self.accel.x, 0)
 
-        if self.cur_state == states.Jumping:   # If current state is jumping, add the jump vector
-            self.velocity += self.jump_vector
+        # if self.cur_state == states.Jumping:   # If current state is jumping, add the jump vector
+        #   self.velocity += self.jump_vector
 
         if self.cur_state == states.Falling:   # If current state is falling, apply gravity
-            self.velocity += vec(0, PLAYER_GRAV)
+            self.velocity += vec(self.accel.x, PLAYER_GRAV)
 
 
     def determineState(self):
@@ -100,18 +101,19 @@ class Actor(pygame.sprite.Sprite):
 
         if self.cur_state != states.Jumping or self.cur_state != states.Falling:
             if self.velocity.x != 0:
-                if self.cur_state != states.Running:
-                    self.changeState(states.Running)
-                else:
-                    self.changeState(states.Standing)
+                self.changeState(states.Running)
+            else:
+                self.changeState(states.Standing)
 
-        if self.velocity.x == 0 and self.velocity.y == 0 and self.onSurface:
-            self.changeState(states.Standing)
+        if self.onSurface:
+            if self.velocity.x != 0:
+                self.changeState(states.Running)
+            else:
+                self.changeState(states.Standing)
 
         if not self.onSurface:
             self.changeState(states.Falling)
 
-        self.pos.x, self.pos.y = self.rect.center
 
 
     def isInAir(self):
@@ -121,14 +123,6 @@ class Actor(pygame.sprite.Sprite):
 
         if self.cur_state != newState:
             self.cur_state = newState
-            if newState == states.Standing:  # standing
-                pass
-            elif newState == states.Jumping:  # jumping
-                pass
-            elif newState == states.Running:  # running
-                pass
-            elif newState == states.Falling:  # falling
-                pass
 
     def handleXCollision(self,other_rect):
         if self.velocity.x > 0:
@@ -155,6 +149,7 @@ class Actor(pygame.sprite.Sprite):
                 self.accel.y = 0
                 self.velocity.y = 0
                 self.pos.y = self.rect.center[1]
+                self.onSurface = False
 
         return False
 

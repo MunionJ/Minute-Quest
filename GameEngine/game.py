@@ -42,6 +42,7 @@ class Game:
         self.fontSurface = None
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
+        self.projectiles = []
 
 
     def start_game(self):
@@ -49,6 +50,7 @@ class Game:
 
     def launch_game(self):
         while self.running:
+            print(self.player.velocity, self.player.accel)
             dt = self.clock.tick(60) / 1000
             if self.gameOverCondition and self.postTime > 0:
                 self.postTime -= dt

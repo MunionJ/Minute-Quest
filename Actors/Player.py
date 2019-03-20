@@ -129,6 +129,7 @@ class Player(Actor):
             super().isInAir()
 
     def determineState(self):
+        # TODO Fix determine state in this file
         if not self.onSurface and self.jumpFrameCount <= 0:
             self.changeState(states.Falling)
             return
@@ -150,7 +151,6 @@ class Player(Actor):
                 return
 
     def move(self, keys, dt):
-        # print(keys[pygame.K_s], keys[pygame.K_a], keys[pygame.K_d])
         movedHorizontal = False
         if keys[pygame.K_s]:
             # Implement ability to crouch?
@@ -183,6 +183,7 @@ class Player(Actor):
                 if self.velocity.x < 0:
                     self.velocity.x = 0
 
+
     def jump(self):
         """ Generic jump method. Can be
             overridden later."""
@@ -192,7 +193,7 @@ class Player(Actor):
         if not self.facing_right:
             self.image = pygame.transform.flip(self.frames['rjump'], True, False)
 
-        self.velocity += 10*self.jump_vector
+        self.velocity += self.jump_vector
         self.jumpFrameCount = self.jumpFrames
 
     def use_ability(self):
