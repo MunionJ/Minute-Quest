@@ -190,9 +190,9 @@ class Player(Actor):
             self.image = self.frames["rjump"]
         if not self.facing_right:
             self.image = pygame.transform.flip(self.frames['rjump'], True, False)
-
-        self.velocity += self.jump_vector
-        self.jumpFrameCount = self.jumpFrames
+        if self.onSurface:
+            self.velocity += self.jump_vector
+            self.jumpFrameCount = self.jumpFrames
 
     def use_ability(self):
         """ Generic ability usage class.

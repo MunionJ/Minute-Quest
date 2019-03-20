@@ -79,7 +79,7 @@ class Game:
                 #         self.running = False
 
                 self.collisionHandling(dt)
-
+                print("In game line 82: ",self.player.cur_state)
                 #Win Condition
                 if self.player.pos.x >= self.dungeon.dungeonExit.left:
                     self.gameWin()
