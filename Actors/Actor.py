@@ -85,11 +85,11 @@ class Actor(pygame.sprite.Sprite):
         elif self.cur_state == states.Running:# If current state is standing or running, do not apply gravity
             self.accel = vec(self.accel.x, 0)
 
-        if self.cur_state == states.Jumping:   # If current state is jumping, add the jump vector
-          self.velocity += self.jump_vector
+        # if self.cur_state == states.Jumping:   # If current state is jumping, add the jump vector
+        #   self.velocity += self.jump_vector
 
         if self.cur_state == states.Falling:   # If current state is falling, apply gravity
-            self.velocity += vec(0, PLAYER_GRAV)
+            self.velocity += vec(self.accel.x, PLAYER_GRAV)
 
 
     def determineState(self):
