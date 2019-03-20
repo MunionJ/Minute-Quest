@@ -104,6 +104,6 @@ class Enemy(Actor):
         """Method allows the enemy attack the player when in close enough range"""
         pass
 
-    def draw(self, window):
-        super().draw(window)
-        window.blit(self.img, self.rect)
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
+        window.blit(self.img, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))

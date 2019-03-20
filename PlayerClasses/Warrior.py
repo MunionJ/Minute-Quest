@@ -68,3 +68,12 @@ class Warrior(Player):
             self.rage_update(dt)
         if self.weapon_active:
             self.weapon_update(dt)
+
+    def draw(self, window, cameraPos):
+        super().draw(window,cameraPos)
+        # testing player weapon image
+        if self.cur_weapon is not None:
+            if self.weapon_active:
+                window.blit(self.cur_weapon.image,
+                            (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
+                            )

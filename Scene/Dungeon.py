@@ -1,6 +1,7 @@
 import random
 from Scene.DungeonRoom import *
 import copy
+from config import *
 
 
 class Dungeon:
@@ -23,8 +24,6 @@ class Dungeon:
             self.rooms.append(room)
 
         self.playerSpawn = self.rooms[0].playerSpawn
-
-
 
         x_offset = self.rooms[0].totalMapWidth
 
@@ -59,20 +58,29 @@ class Dungeon:
             currentRoom.boundary.x += x_offset
             currentRoom.boundary.y += y_offset
 
-
             x_offset += currentRoom.totalMapWidth
             smallest_y = min(currentRoom.bgImageRect.top,prevRoom.bgImageRect.top)
             largest_y = max(currentRoom.bgImageRect.bottom,prevRoom.bgImageRect.bottom)
 
         self.totalDungeonWidth = x_offset
         self.totalDungeonHeight = largest_y - smallest_y
+        self.smallest_y = smallest_y
+
         self.boundary = pygame.Rect(0, smallest_y, self.totalDungeonWidth, self.totalDungeonHeight)
         self.playerBounds = self.boundary
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
+        dirtBackgound = pygame.image.load("./images/map_dirt_background.png")
+        dirtBackgound = pygame.transform.scale(dirtBackgound, SCREEN_RES)
+        self.dirtBackground = dirtBackgound
 
-    def draw(self,screen):
+
+    def draw(self,screen, cameraPos):
+        screen.blit(
+            self.dirtBackground,
+            (0,self.dungeonExit.bottom - cameraPos[1])
+        )
         for room in self.rooms:
-            room.draw(screen)
+            room.draw(screen, cameraPos)
 
     def removeEmptyChoices(self, choices):
         badChoices = []

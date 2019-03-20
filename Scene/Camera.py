@@ -75,47 +75,9 @@ class Camera():
         self.debug = not self.debug
 
     def draw(self, screen, player, enemy_list):
-        for map in self.dungeon.rooms:
-            if self.dungeon.playerBounds.colliderect(map.bgImageRect):
-                screen.blit(
-                    map.bgImage,
-                    (int(map.bgImageRect.x - self.pos[0]),int(map.bgImageRect.y - self.pos[1]))
-                )
-
-                for wall in map.walls:
-                    # TODO Fix tile draw code
-                    screen.blit(
-                        wall.image,
-                        (int(wall.rect.x - self.pos[0]),int(wall.rect.y - self.pos[1]))
-                    )
-
-                for enemy in map.enemies:
-                    screen.blit(
-                        enemy.img,
-                        (enemy.rect.x - self.pos[0], enemy.rect.y - self.pos[1])
-                    )
-
-                bg_rect = pygame.Rect(
-                    int(map.bgImageRect.x - self.pos[0]),
-                    int(map.bgImageRect.y - self.pos[1]),
-                    map.bgImageRect.w,
-                    map.bgImageRect.h
-                )
-            else:
-                break
-
-        screen.blit(
-            player.image,
-            (player.rect.x - self.pos[0], player.rect.y - self.pos[1])
-                    )
-        # testing player weapon image
-        if player.cur_weapon is not None:
-            if player.weapon_active:
-                screen.blit(player.cur_weapon.image,
-                            (player.rect.x - self.pos[0] + 15, player.rect.y - self.pos[1])
-                            )
-
-
+        #screen.blit(self.dungeon.dirtBacground,(0,self.dungeon.dungeonExit.y-self.pos[1]))
+        self.dungeon.draw(screen,self.pos)
+        player.draw(screen,self.pos)
 
 
     def update(self,*args):

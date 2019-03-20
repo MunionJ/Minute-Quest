@@ -159,19 +159,21 @@ class Actor(pygame.sprite.Sprite):
         self.velocity.x = 0
         self.pos.x = self.rect.center[0]
 
-    def draw(self, window):
+    def draw(self, window, cameraPos):
         """Base draw method. Will be filled
             out later."""
         # temporarily just drawing a rect
-        pygame.draw.rect(window,
-                         (255, 255, 255),
-                         self.rect
-                         )
-        if self.debug:
-            pygame.draw.rect(window,
-                             (255, 0, 0),
-                             self.rect,
-                             2)
+        # pygame.draw.rect(window,
+        #                  (255, 255, 255),
+        #                  (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1]))
+        #                  )
+        # if self.debug:
+        #     pygame.draw.rect(window,
+        #                      (255, 0, 0),
+        #                      (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])),
+        #                      2)
+
+        pass
 
     def toggleDebug(self):
         self.debug = not self.debug

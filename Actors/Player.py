@@ -2,7 +2,6 @@ import pygame
 import time
 from Actors.Actor import *
 
-
 class Player(Actor):
     """ The player class which will be controlled
         by the user."""
@@ -36,6 +35,9 @@ class Player(Actor):
         self.rect = self.frames["right"].get_rect()
         self.image = self.frames["right"]
         self.facing_right = True
+        self.usingAbility = False
+        self.abilityCoolDown = 5
+        self.currentAbilityTimer = 0
 
         # weapon dictionary with weapon name as key,
         # weapon object as value
@@ -195,7 +197,11 @@ class Player(Actor):
     def use_ability(self):
         """ Generic ability usage class.
             Can be overriden later."""
-        pass
+        self.usingAbility = True
+
+    def end_ability(self):
+        """ Signal to game that the player has finished using their ability"""
+        self.usingAbility = False
 
     def use_item(self):
         """ Generic item usage method.
@@ -218,6 +224,6 @@ class Player(Actor):
             player level."""
         pass
 
-    def draw(self, window):
-        super().draw(window)
-        window.blit(self.image, self.rect)
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
+        window.blit(self.image, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))

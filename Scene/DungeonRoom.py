@@ -103,3 +103,19 @@ class DungeonRoom:
                 return type + "Find the Key to the Exit"
             elif room_type[1] == "project puzzle room.txt":
                 return type + "Beat Original Puzzle"
+
+    def draw(self,screen,cameraPos):
+        screen.blit(self.bgImage,(int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))
+
+        for wall in self.walls:
+            # TODO Fix tile draw code
+            screen.blit(
+                wall.image,
+                (int(wall.rect.x - cameraPos[0]), int(wall.rect.y - cameraPos[1]))
+            )
+
+        for enemy in self.enemies:
+            screen.blit(
+                enemy.img,
+                (enemy.rect.x - cameraPos[0], enemy.rect.y - cameraPos[1])
+            )
