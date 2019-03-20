@@ -52,7 +52,7 @@ class Wizard(Player):
         """Overrides for base class update method.
             Has all the same functionality, just adds the time for Wizard
             mechanics for Wizard. """
-        super().update(*args)
         mouseButtons, keys, dt = args
+        super().update(*args)
         if self.use_ability(keys):
             self.ability_timer(dt)

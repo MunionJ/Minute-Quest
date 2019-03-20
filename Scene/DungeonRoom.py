@@ -102,4 +102,4 @@ class DungeonRoom:
             elif room_type[1] == "MinuteQuestRoom3.txt":
                 return type + "Find the Key to the Exit"
             elif room_type[1] == "project puzzle room.txt":
-                return type + "???"
+                return type + "Beat Original Puzzle"
