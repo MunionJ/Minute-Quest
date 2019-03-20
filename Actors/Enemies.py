@@ -43,6 +43,7 @@ class Enemy(Actor):
         self.alive = True
         self.cur_state = states.Falling
         self.onSurface = False
+        self.hp = 1
 
     def move(self, keys, dt):
         if self.change_move:  #uncommenting this makes enemies walk left and right
@@ -92,7 +93,15 @@ class Enemy(Actor):
             a enemy status to dead."""
         self.alive = False
 
+    def take_damage(self):
+        """Method that make the enemy take damage from an attack"""
+        self.hp -= 1
+        if self.hp <= 0:
+            self.set_dead()
+        pass
+
     def attack(self):
+        """Method allows the enemy attack the player when in close enough range"""
         pass
 
     def draw(self, window):
