@@ -13,8 +13,7 @@ class Game:
         self.running = False
         self.dungeon = Dungeon(4)
         #self.player = Player(self.dungeon.playerSpawn, "images/character1")
-        self.party_list = Party(self.dungeon.playerSpawn,
-                                ["images/Characters/character1"])
+        self.party_list = Party(self.dungeon.playerSpawn)
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)

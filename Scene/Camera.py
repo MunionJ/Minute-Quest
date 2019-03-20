@@ -104,11 +104,16 @@ class Camera():
             else:
                 break
 
-
         screen.blit(
             player.image,
             (player.rect.x - self.pos[0], player.rect.y - self.pos[1])
                     )
+        # testing player weapon image
+        if player.cur_weapon is not None:
+            if player.weapon_active:
+                screen.blit(player.cur_weapon.image,
+                            (player.rect.x - self.pos[0] + 15, player.rect.y - self.pos[1])
+                            )
 
 
 

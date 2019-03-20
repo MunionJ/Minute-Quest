@@ -9,7 +9,7 @@ class Party:
     """ The Party class will contain a list
         of party members, and handle which party member
         is currently active in gameplay."""
-    def __init__(self, start_pos, img_list):
+    def __init__(self, start_pos):
         # CONSTRUCTOR PARAMETERS:
         # mem1, mem2, mem3, mem4: Each one of these is an
         # individual party member

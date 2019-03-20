@@ -38,10 +38,18 @@ class Player(Actor):
         self.facing_right = True
 
         # weapon dictionary with weapon name as key,
-        # weapon sprite as value
+        # weapon object as value
         self.weapons = {}
         #self.cur_weapon = self.weapons["blah"]
-        # figure out a time later
+        self.cur_weapon = None
+
+        # flag for player weapon active
+        self.weapon_active = False
+
+        # decide on amount of active time later
+        self.cur_weapon_timer = 0
+        self.max_weapon_timer = 0.5
+        # figure out an exact time later
         self.invuln_timer = 3
 
         # pass a list as constructor parameter to specialized character class to set defaults
@@ -56,11 +64,21 @@ class Player(Actor):
         self.jumpFrameCount = 0
         self.jumpFrames = 2
 
-    def melee_attack(self):
+    def melee_attack(self, keys, dt):
         """ Generic melee attack method. Will be
             overridden by more specialized
-            classes later."""
-        pass
+            classes later (maybe)."""
+        if keys[pygame.K_f]:
+            self.weapon_active = True
+
+    def weapon_update(self, dt):
+        """ Method for updating weapon"""
+        if self.weapon_active:
+            if self.cur_weapon_timer < self.max_weapon_timer:
+                self.cur_weapon_timer += dt
+            else:
+                self.cur_weapon_timer = 0
+                self.weapon_active = False
 
     def ranged_attack(self):
         """ Generic ranged attack method. Blah blah blah."""

@@ -1,6 +1,7 @@
 import pygame
 import copy
 from Actors.Player import Player
+from Weapon import Weapon
 
 
 class Warrior(Player):
@@ -20,6 +21,9 @@ class Warrior(Player):
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
         self.base_stats = copy.deepcopy(self.stats)
+
+        self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
+        self.cur_weapon = self.weapons["axe"]
 
         self.num_rages = 1
         self.rage_timer = 5
@@ -59,5 +63,8 @@ class Warrior(Player):
         mouseButtons, keys, dt = args
         super().update(*args)
         self.use_ability(keys)
+        self.melee_attack(keys, dt)
         if self.rage_active:
             self.rage_update(dt)
+        if self.weapon_active:
+            self.weapon_update(dt)
