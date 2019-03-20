@@ -8,6 +8,9 @@ class Dungeon:
     def __init__(self, num_rooms):
         self.rooms = []
         tempChoices = copy.deepcopy(ROOMS)
+        entrance = DungeonRoom("./maps/entrance.txt","./images/ProjectUtumno_full.png")
+        #self.rooms.append(entrance)
+
         for i in range(num_rooms):
 
             tempChoices = self.removeEmptyChoices(tempChoices)
@@ -22,6 +25,9 @@ class Dungeon:
                 raise TypeError("Map Name Not Found in Config " + roomName)
             room = DungeonRoom(dungeonName, sprite_sheet)
             self.rooms.append(room)
+
+        exit = DungeonRoom("./maps/Exit Room.txt", "./images/ProjectUtumno_full.png")
+        #self.rooms.append(exit)
 
         self.playerSpawn = self.rooms[0].playerSpawn
 
