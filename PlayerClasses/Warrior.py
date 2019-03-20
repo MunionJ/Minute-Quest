@@ -63,7 +63,7 @@ class Warrior(Player):
         mouseButtons, keys, dt = args
         super().update(*args)
         self.use_ability(keys)
-        self.melee_attack(keys, dt)
+        self.basic_attack(mouseButtons, keys, dt)
         if self.rage_active:
             self.rage_update(dt)
         if self.weapon_active:

@@ -1,4 +1,5 @@
 from Actors.Player import Player
+from Weapon import *
 
 
 class Ranger(Player):
@@ -15,8 +16,8 @@ class Ranger(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+        self.weapons["bow"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
 
     def update(self, *args):
+        super().update(*args)
         mouseButtons, keys, dt = args
-        if mouseButtons[1]:
-            self.ranged_attack()

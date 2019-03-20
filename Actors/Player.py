@@ -64,11 +64,11 @@ class Player(Actor):
         self.jumpFrameCount = 0
         self.jumpFrames = 2
 
-    def melee_attack(self, keys, dt):
-        """ Generic melee attack method. Will be
+    def basic_attack(self, mbuttons, keys, dt):
+        """ Generic attack method. Will be
             overridden by more specialized
             classes later (maybe)."""
-        if keys[pygame.K_f]:
+        if mbuttons[0]:
             self.weapon_active = True
 
     def weapon_update(self, dt):
@@ -79,10 +79,6 @@ class Player(Actor):
             else:
                 self.cur_weapon_timer = 0
                 self.weapon_active = False
-
-    def ranged_attack(self):
-        """ Generic ranged attack method. Blah blah blah."""
-        pass
 
     def receive_dmg(self):
         """ Generic method for when a
