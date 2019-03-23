@@ -14,10 +14,14 @@ class Tile(pygame.sprite.Sprite):
     def toggleDebug(self):
         self.debug = not self.debug
 
-    def draw(self,win):
-        win.blit(self.image,self.rect)
+    def draw(self,screen, cameraPos):
+        screen.blit(
+            self.image,
+            (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]))
+        )
         if self.debug:
-            pygame.draw.rect(win, pygame.color.THECOLORS['red'], self.rect,1)
+            debug = pygame.Rect(int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]),self.rect.w,self.rect.h)
+            pygame.draw.rect(screen, pygame.color.THECOLORS['red'], debug,1)
 
 
 

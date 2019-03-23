@@ -109,10 +109,8 @@ class DungeonRoom:
 
         for wall in self.walls:
             # TODO Fix tile draw code
-            screen.blit(
-                wall.image,
-                (int(wall.rect.x - cameraPos[0]), int(wall.rect.y - cameraPos[1]))
-            )
+            wall.draw(screen,cameraPos)
+
 
         for enemy in self.enemies:
             screen.blit(

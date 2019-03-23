@@ -227,3 +227,6 @@ class Player(Actor):
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
         window.blit(self.image, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))
+        if self.debug:
+            debug = pygame.Rect(int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]), self.rect.w, self.rect.h)
+            pygame.draw.rect(window,pygame.color.THECOLORS['red'],debug,1)

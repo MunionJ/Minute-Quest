@@ -4,6 +4,9 @@ import pygame
 class Reticle(pygame.sprite.Sprite):
 
     def __init__(self):
+        """
+            Test Object to move through the dungeon
+        """
         super().__init__()
         self.image = pygame.Surface((32,32))
         self.image.fill(pygame.color.THECOLORS['black'])
@@ -15,11 +18,22 @@ class Reticle(pygame.sprite.Sprite):
         self.pos = [self.rect.center[0],self.rect.center[1]]
 
     def setPos(self,pos):
+        """
+            sets position of the reticle
+        :param pos: tuple to set location of the reticle
+        :return: void
+        """
         self.pos[0],self.pos[1] = pos
         self.rect.center = (int(pos[0]),int(pos[1]))
 
-    def update(self,keys,dt):
-
+    def update(self,mouseButtons,keys,dt):
+        """
+            Called every frame to move the reticle
+            :param mouseButtons:    tuple of mousebuttons
+            :param keys:    tuple of current keys being pressed
+            :param dt: change in time
+            :return: void
+        """
         dx = 0
         dy = 0
         if keys[pygame.K_a]:

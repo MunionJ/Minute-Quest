@@ -5,13 +5,16 @@ from Scene.Reticle import *
 class Camera():
 
     def __init__(self, dungeon):
+        """
+            Creates the Game Camera Object
+            :param dungeon: Class that holds the list of dungeon rooms
+        """
         self.dungeon = dungeon
         self.pos = (0,0)
         self.prevPos = (0,0)
         self.boundary = dungeon.boundary
         self.view = pygame.Surface(SCREEN_RES)
         self.rect = self.view.get_rect()
-
         self.debug = False
         self.reticle = Reticle()
         self.bg_color = pygame.color.THECOLORS['black']
@@ -40,6 +43,11 @@ class Camera():
         self.updateMapView()
 
     def getRoomIndex(self,playerPos):
+        """
+            Method to determine current room player is inhabiting
+            :param playerPos: position of active player
+            :return: the room the player is currently in
+        """
         for i in range(len(self.dungeon.rooms)):
             room = self.dungeon.rooms[i].bgImageRect
             if playerPos[0] in range(room.x, room.x + room.w):
@@ -75,9 +83,26 @@ class Camera():
         self.debug = not self.debug
 
     def draw(self, screen, player, enemy_list):
+        """
+            Draws game Scene by passing camera offset
+            :param screen: screen to draw to
+            :param player: current active player in the game
+            :param enemy_list: all enemies in the room
+            :return: void
+        """
         #screen.blit(self.dungeon.dirtBacground,(0,self.dungeon.dungeonExit.y-self.pos[1]))
         self.dungeon.draw(screen,self.pos)
         player.draw(screen,self.pos)
+        finalRoomX = self.dungeon.rooms[len(self.dungeon.rooms)-1].bgImageRect.x
+        if player.rect.x > finalRoomX:
+            #Fade to White
+            fullP = self.dungeon.dungeonExit.x - finalRoomX
+            curP = player.rect.x - finalRoomX
+            alphaLevel = int(255*(curP/fullP))
+            overlay = pygame.Surface(SCREEN_RES)
+            overlay.fill((255,255,255))
+            overlay.set_alpha(alphaLevel)
+            screen.blit(overlay,(0,0))
 
 
     def update(self,*args):
@@ -96,6 +121,7 @@ if __name__ == "__main__":
     pygame.display.set_caption("Menu Test")
     screen = pygame.display.set_mode(SCREEN_RES)
     eventManager = EventManager()
+    map = Dungeon(4)
     camera = Camera(map)
 
     camera.reticle.setPos( camera.dungeon.playerSpawn.center )
@@ -116,5 +142,5 @@ if __name__ == "__main__":
         camera.setCameraPosition(camera.reticle.rect.center)
 
         screen.fill(pygame.color.THECOLORS['black'])
-        camera.draw(screen)
+        camera.draw(screen, None, None)
         pygame.display.update()

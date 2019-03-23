@@ -61,7 +61,10 @@ class Game:
                 self.manager.poll_input(dt)
             else:
                 if self.postTime <= 0:
-                    self.gameOver()
+                    if self.player.rect.x > self.dungeon.rooms[len(self.dungeon.rooms)-1].bgImageRect.x:
+                        self.gameWin()
+                    else:
+                        self.gameOver()
                     break
 
                 self.running = self.manager.process_input(dt)

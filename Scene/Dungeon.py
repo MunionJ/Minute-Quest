@@ -6,10 +6,17 @@ from config import *
 
 class Dungeon:
     def __init__(self, num_rooms):
+        """
+            Creates dungeon rooms by aligning entrance and exit points
+            :param num_rooms: number of rooms with objectives that should be created
+        """
         self.rooms = []
         tempChoices = copy.deepcopy(ROOMS)
+        self.dirt = pygame.image.load("./images/map_dirt_background.png")
+        self.dirt = pygame.transform.scale(self.dirt, SCREEN_RES)
+
         entrance = DungeonRoom("./maps/entrance.txt","./images/ProjectUtumno_full.png")
-        #self.rooms.append(entrance)
+        self.rooms.append(entrance)
 
         for i in range(num_rooms):
 
@@ -27,7 +34,8 @@ class Dungeon:
             self.rooms.append(room)
 
         exit = DungeonRoom("./maps/Exit Room.txt", "./images/ProjectUtumno_full.png")
-        #self.rooms.append(exit)
+        self.fillExitBG(exit)
+        self.rooms.append(exit)
 
         self.playerSpawn = self.rooms[0].playerSpawn
 
@@ -35,7 +43,7 @@ class Dungeon:
 
         smallest_y = self.rooms[0].totalMapHeight
         largest_y = self.rooms[0].totalMapHeight
-        for i in range(1, num_rooms):
+        for i in range(1, len(self.rooms)):
             prevRoom = self.rooms[i-1]
             currentRoom = self.rooms[i]
 
@@ -76,10 +84,36 @@ class Dungeon:
         self.playerBounds = self.boundary
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
 
-        self.dirt = pygame.image.load("./images/map_dirt_background.png")
-        self.dirt = pygame.transform.scale(self.dirt, SCREEN_RES)
+
+
+
+    def fillExitBG(self,exit):
+        """
+            Draws dirt background to Dungeon exit room
+            :param exit: Last room in dungeon
+            :return: void
+        """
+        dirtRect = self.dirt.get_rect()
+        cols = exit.bgImageRect.w // dirtRect.w
+        startY = exit.exitPoint.bottom
+        newBGSurf = pygame.Surface((exit.bgImageRect.w,exit.bgImageRect.h))
+        while startY < exit.bgImageRect.bottom:
+            x = 0
+            while x < exit.bgImageRect.w:
+                newBGSurf.blit(self.dirt,(x,startY))
+                x+= dirtRect.w
+            startY += dirtRect.h
+
+        exit.bgImage = newBGSurf
+
 
     def drawBackGround(self,screen,cameraPos):
+        """
+            Test Method to draws game background
+            :param screen: screen to draw to
+            :param cameraPos: current camera position
+            :return: void
+        """
         x_offset = cameraPos[0] % SCREEN_RES[0]
         y_offset = self.dungeonExit.bottom - cameraPos[1]
         print(x_offset, y_offset)
@@ -92,11 +126,22 @@ class Dungeon:
 
 
     def draw(self,screen, cameraPos):
+        """
+            Draws the Dungeon
+            :param screen: pygame window to draw to
+            :param cameraPos: current camera position
+            :return: void
+        """
         #self.drawBackGround(screen,cameraPos)
         for room in self.rooms:
             room.draw(screen, cameraPos)
 
     def removeEmptyChoices(self, choices):
+        """
+            Removes empty choices after random selection
+            :param choices: map of rooms to be modified
+            :return: map of valid room choices
+        """
         badChoices = []
         for key in choices.keys():
             if len(choices[key]) == 0:
@@ -109,6 +154,11 @@ class Dungeon:
         return r
 
     def assignSpriteSheet(self, roomName):
+        """
+            Determines which sprite sheet to pull tiles from
+            :param roomName: Name of room
+            :return: void
+        """
         for name in WALLS_ONE:
             if name in roomName:
                 return "./images/walls1.png"
@@ -122,7 +172,7 @@ class Dungeon:
 
 if __name__ == "__main__":
     import os
-    from EventManager import *
+    from GameEngine.EventManager import *
     from Scene.Camera import Camera
 
     running = True
