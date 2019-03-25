@@ -38,6 +38,7 @@ class Player(Actor):
         self.usingAbility = False
         self.abilityCoolDown = 5
         self.currentAbilityTimer = 0
+        self.type = "PLAYER"
 
         # weapon dictionary with weapon name as key,
         # weapon object as value

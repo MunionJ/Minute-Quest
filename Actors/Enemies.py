@@ -45,6 +45,7 @@ class Enemy(Actor):
         self.onSurface = False
         self.hp = 1
         self.damage = 4
+        self.type = "ENEMY"
 
     def move(self, keys, dt):
         if self.change_move:  #uncommenting this makes enemies walk left and right
