@@ -48,4 +48,3 @@ class Paladin(Player):
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
-        # testing player weapon image
