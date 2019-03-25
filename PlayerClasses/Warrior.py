@@ -26,7 +26,8 @@ class Warrior(Player):
         self.cur_weapon = self.weapons["axe"]
 
         self.num_rages = 1
-        self.rage_timer = 5
+        self.rage_timer = 0     # counts upward to self.max_rage_timer
+        self.max_rage_time = 5
         self.rage_active = False
 
     def use_ability(self, keys):
@@ -37,14 +38,16 @@ class Warrior(Player):
 
     def activate_rage(self):
         """ Method for applying the effects of rage."""
-        self.rage_active = True
-        self.num_rages -= 1
-        self.stats["MELEE"] *= 2
-        self.stats["CUR_HP"] += self.stats["MAX_HP"] // 4
+        if not self.rage_active:
+            self.rage_active = True
+            self.num_rages -= 1
+            self.stats["MELEE"] *= 2
+            self.stats["CUR_HP"] += self.stats["MAX_HP"] // 4
 
     def deactivate_rage(self):
         """ Method for turning off the effects of rage."""
         self.rage_active = False
+        self.rage_timer = 0
         self.stats["MELEE"] = self.base_stats["MELEE"]
         if self.stats["CUR_HP"] > self.stats["MAX_HP"]:
             self.stats["CUR_HP"] = self.stats["MAX_HP"]
@@ -52,8 +55,8 @@ class Warrior(Player):
     def rage_update(self, dt):
         """ Update the status of the Warrior rage
             ability."""
-        self.rage_timer -= dt
-        if self.rage_timer <= 0:
+        self.rage_timer += dt
+        if self.rage_timer >= self.max_rage_time:
             self.deactivate_rage()
 
     def update(self, *args):
