@@ -48,18 +48,25 @@ class Enemy(Actor):
         self.type = "ENEMY"
 
     def move(self, keys, dt):
-        if self.change_move:  #uncommenting this makes enemies walk left and right
-            while time.time() > self.move_time:
-                if self.accel.x < MAX_X_ACC:
-                    self.accel.x += PLAYER_ACC
-                self.change_move = False
-                self.move_time = time.time() + 0.5
-        elif not self.change_move:
-            while time.time() > self.move_time:
-                if self.accel.x > -MAX_X_ACC:
-                    self.accel.x -= PLAYER_ACC
-                self.change_move = True
-                self.move_time = time.time() + 0.5
+        # if self.change_move:  #uncommenting this makes enemies walk left and right
+        #     while time.time() > self.move_time:
+        #         if self.accel.x < MAX_X_ACC:
+        #             self.accel.x += PLAYER_ACC
+        #         self.change_move = False
+        #         self.move_time = time.time() + 0.5
+        # elif not self.change_move:
+        #     while time.time() > self.move_time:
+        #         if self.accel.x > -MAX_X_ACC:
+        #             self.accel.x -= PLAYER_ACC
+        #         self.change_move = True
+        #         self.move_time = time.time() + 0.5
+        if self.facing_right:
+            if self.accel.x < MAX_X_ACC*0.6:
+                self.accel.x += PLAYER_ACC*0.6
+        else:
+            if abs(self.accel.x) < MAX_X_ACC*0.6:
+                self.accel.x -= PLAYER_ACC*0.6
+
 
     def determineState(self):
         if self.velocity.x < 0:
@@ -83,12 +90,11 @@ class Enemy(Actor):
         if self.cur_state == states.Running and not self.facing_right:
             self.img = pygame.transform.flip(self.frames['right'], True, False)
 
-        while time.time() > self.t_anim:
-            self.anim += 1
-            if self.anim > len(self.rframes)-1:
-                self.anim = 0
-            self.frames["right"] = self.rframes[self.anim]
-            self.t_anim = time.time() + 0.125
+        if self.velocity.x == 0:
+            self.facing_right = not self.facing_right
+            self.accel = -self.accel
+
+        self.move(keys,dt)
 
     def set_dead(self):
         """ Generic method for setting
