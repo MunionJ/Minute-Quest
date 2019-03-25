@@ -17,7 +17,7 @@ class Party:
         self.party_members = [Warrior(start_pos),   #Jon is working on this
                               Ranger(start_pos),    #??
                               Wizard(start_pos),    #Mike is working on this
-                              Paladin(start_pos)    #??
+                              Paladin(start_pos)    #Alex is working on this
                               ]
         self.party_index = 0
         self.active_member = self.party_members[self.party_index]
