@@ -4,7 +4,7 @@ import pygame
 
 class Paladin(Player):
     """
-    Paladin class: specializes in tanking
+    Paladin class: specializes in tanking and healing
     """
 
     def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 25]):
@@ -44,7 +44,13 @@ class Paladin(Player):
         super().draw(window, cameraPos)
         # testing player weapon image
         if self.cur_weapon is not None:
-            if self.weapon_active:
-                window.blit(self.cur_weapon.image,
-                            (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
-                            )
+            if self.facing_right:
+                if self.weapon_active:
+                        window.blit(self.cur_weapon.image,
+                                    (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
+                                    )
+            if not self.facing_right:
+                if self.weapon_active:
+                        window.blit(pygame.transform.flip(self.cur_weapon.image, True, False),
+                                    (self.rect.x - cameraPos[0] - 15, self.rect.y - cameraPos[1])
+                                    )
