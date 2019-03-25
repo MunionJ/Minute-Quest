@@ -52,7 +52,7 @@ class Player(Actor):
         self.cur_weapon_timer = 0
         self.max_weapon_timer = 0.5
         # figure out an exact time later
-        self.invuln_timer = 3
+        self.invuln_timer = 0
 
         # pass a list as constructor parameter to specialized character class to set defaults
         self.stats = {
@@ -82,12 +82,13 @@ class Player(Actor):
                 self.cur_weapon_timer = 0
                 self.weapon_active = False
 
-    def receive_dmg(self):
+    def receive_dmg(self, enemy_object):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
-        if self.stats["CUR_HP"] > 0:    # testing with this for now - Jon
-            self.stats["CUR_HP"] -= 1
+        if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
+            self.stats["CUR_HP"] -= enemy_object.damage
+            self.invuln_timer = INVULN_TIMER
 
     def update(self, *args):
         """ Testing Player jumping."""
@@ -121,6 +122,8 @@ class Player(Actor):
                 self.image = self.frames["rjump"]
             if not self.facing_right:
                 self.image = pygame.transform.flip(self.frames['rjump'], True, False)
+
+        self.invuln_timer -= dt
 
     def isInAir(self):
         if self.jumpFrameCount <= 0:
