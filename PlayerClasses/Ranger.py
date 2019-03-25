@@ -29,7 +29,3 @@ class Ranger(Player):
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
-        if self.cur_weapon.active is True:
-            window.blit(self.cur_weapon.image,
-                        (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
-                        )
