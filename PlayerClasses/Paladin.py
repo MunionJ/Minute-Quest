@@ -1,4 +1,5 @@
 from Actors.Player import Player
+from Weapon import Weapon
 
 
 class Paladin(Player):
@@ -16,6 +17,8 @@ class Paladin(Player):
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
         self.num_heals = 1 + int(self.level//3)
+        self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
+        self.cur_weapon = self.weapons["axe"]
 
     def use_ability(self):
         """ Method for using class-specific ability."""
@@ -29,5 +32,18 @@ class Paladin(Player):
 
     def update(self, *args):
         """ Method called for per frame update"""
+        mouseButtons, keys, dt = args
         super().update(*args)
+        self.basic_attack(mouseButtons, keys, dt)
+        if self.weapon_active:
+            self.weapon_update(dt)
         pass
+
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
+        # testing player weapon image
+        if self.cur_weapon is not None:
+            if self.weapon_active:
+                window.blit(self.cur_weapon.image,
+                            (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
+                            )
