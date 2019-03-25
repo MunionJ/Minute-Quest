@@ -20,5 +20,17 @@ class Weapon:
             self.frames[i] = pygame.transform.flip(self.frames[i], True, False)
             self.frames[i] = self.frames[i].convert_alpha()
         self.image = self.frames["axe1"]
+        self.active = False
+        self.cur_weapon_timer = 0
+        self.max_weapon_timer = 1
         # potential Class attributes:
         # swing speed, ( add more later )
+
+    def update(self, dt):
+        """ Method for updating weapon"""
+        if self.active:
+            if self.cur_weapon_timer < self.max_weapon_timer:
+                self.cur_weapon_timer += dt
+            else:
+                self.cur_weapon_timer = 0
+                self.active = False

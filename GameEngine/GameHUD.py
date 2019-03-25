@@ -16,6 +16,7 @@ class GameHUD:
         self.objective_timer = 0
         self.max_objective_time = 5
         self.room_objective = None
+        self.type = "HUD"
 
     def draw(self, window, party_list, dt):
         """ Draw pertinent information

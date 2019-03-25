@@ -16,12 +16,20 @@ class Ranger(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.weapons["bow"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
+        self.weapons["bow"] = Weapon("images/Weapons/bow.png", (32, 32))
+        self.cur_weapon = self.weapons["bow"]
 
     def update(self, *args):
         super().update(*args)
         mouseButtons, keys, dt = args
+        self.use_ability()
+        self.basic_attack(mouseButtons, keys, dt)
+        if self.cur_weapon.active:
+            self.cur_weapon.update(dt)
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
-        pass
+        if self.cur_weapon.active is True:
+            window.blit(self.cur_weapon.image,
+                        (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
+                        )
