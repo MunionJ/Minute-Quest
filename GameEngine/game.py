@@ -38,7 +38,7 @@ class Game:
             room.enemies = enemy_list
             self.enemiesByRoom.append(enemy_list)
         self.gameOverScreen = pygame.Surface(SCREEN_RES)
-        self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',100)
+        self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 100)
         self.gameOverCondition = None
         self.fontSurface = None
         self.font_color = pygame.color.THECOLORS['red']
@@ -234,7 +234,6 @@ class Game:
 
                     enemy.determineState()
 
-                    # TODO Player and enemy collision here.
                     for enemy in room.enemies:
                         if self.player.rect.colliderect(enemy.rect):
                             self.player.receive_dmg(enemy)

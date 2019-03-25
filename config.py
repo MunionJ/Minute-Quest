@@ -18,7 +18,7 @@ INVULN_TIMER = 0.5
 PIXEL_DIFFERENCE = 2
 
 WALLS_ONE = [
-    "MQ_test_map_battle", "AB_fight_map1", "AB_fight_map2",
+     "MQ_test_map_battle", "AB_fight_map1", "AB_fight_map2",
      "enemy room", "AB_loot_map1",
      "MQ_test_map_loot", "project loot room", "AB_plat_map1.txt",
      "MQ_test_map_platforming", "project platform room", "project puzzle room"
