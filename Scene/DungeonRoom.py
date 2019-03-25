@@ -3,7 +3,6 @@
 # Lab 2: File I/O
 
 from Scene.MapLoader import loadMap
-import pygame
 from config import *
 from Scene.Tile import *
 
@@ -42,6 +41,7 @@ class DungeonRoom:
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
         self.enemies = []
+        self.objective_complete = False
 
         for i in range(len(self.layer_data)):
             layer = self.layer_data[i]
