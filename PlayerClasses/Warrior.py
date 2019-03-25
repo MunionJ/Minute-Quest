@@ -32,7 +32,7 @@ class Warrior(Player):
 
     def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""
-        if keys[pygame.K_r] or mouseButtons[2]:
+        if keys[pygame.K_r] or mouseButtons[2]:     # mouseButtons[2] = right mouse button
             if self.num_rages > 0:
                 self.activate_rage()
 
