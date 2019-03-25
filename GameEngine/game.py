@@ -221,6 +221,12 @@ class Game:
                     enemy.set_pos(rect)
 
                     enemy.determineState()
+
+                    # TODO Player and enemy collision here.
+                    for enemy in room.enemies:
+                        if self.player.rect.colliderect(enemy.rect):
+                            self.player.receive_dmg(enemy)
+
             else:
                 for enemy in room.enemies:
                     if self.manager.hasReferenceToGameObject(enemy):
