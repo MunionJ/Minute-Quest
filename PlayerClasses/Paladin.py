@@ -16,7 +16,7 @@ class Paladin(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
+        self.weapons["axe"] = Weapon("images/Weapons/waraxe.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
         self.healPercentage = (.1 + (1/20)*self.level)
         self.numHeals = 1
@@ -37,7 +37,6 @@ class Paladin(Player):
 
     def update(self, *args):
         """ Method called for per frame update"""
-        mouseButtons, keys, dt = args
         super().update(*args)
         mouseButtons, keys, dt = args
         if keys[pygame.K_r] or mouseButtons[2]:
@@ -49,15 +48,3 @@ class Paladin(Player):
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
-        # testing player weapon image
-        if self.cur_weapon is not None:
-            if self.facing_right:
-                if self.cur_weapon.active:
-                        window.blit(self.cur_weapon.image,
-                                    (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
-                                    )
-            if not self.facing_right:
-                if self.cur_weapon.active:
-                        window.blit(pygame.transform.flip(self.cur_weapon.image, True, False),
-                                    (self.rect.x - cameraPos[0] - 15, self.rect.y - cameraPos[1])
-                                    )
