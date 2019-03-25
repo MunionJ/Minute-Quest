@@ -21,7 +21,7 @@ class Paladin(Player):
         self.healPercentage = (.1 + (1/20)*self.level)
         self.numHeals = 1
 
-    def use_ability(self, keys, mouseButtons):
+    def use_ability(self):
         """ Method for using class-specific ability."""
         super().use_ability()
 
