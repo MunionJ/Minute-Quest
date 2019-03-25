@@ -1,6 +1,6 @@
 from Actors.Player import Player
 from Weapon import Weapon
-
+import pygame
 
 class Paladin(Player):
     """
@@ -20,10 +20,11 @@ class Paladin(Player):
         self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
 
-    def use_ability(self):
+    def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""
-        if self.num_heals > 0:
-            self.activate_heal()
+        if keys[pygame.K_r] or mouseButtons[2]:
+            if self.num_heals > 0:
+                self.activate_heal()
 
     def activate_heal(self):
         """ Method for applying the effects of heal."""
