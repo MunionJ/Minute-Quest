@@ -7,7 +7,7 @@ class Wizard(Player):
     Wizard class, specializes in magic attacks.
     """
 
-    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 10, 18]):
+    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 3, 25]):
         super().__init__(start_pos, img)
 
         self.class_name = "WIZARD"
@@ -19,7 +19,8 @@ class Wizard(Player):
         self.TimeStop = False
         self.NumAbility = 1
         self.DelayTimer = 60
-        self.TimeStop_timer = 10
+        self.TimeStop_timer = 5
+        self.useAbility = False
 
     def use_ability(self, keys):
         """Gives the Wizard the power to use his abilities"""
@@ -46,7 +47,7 @@ class Wizard(Player):
             if self.DelayTimer <= 0:
                 self.NumAbility += 1
             self.DelayTimer = 60
-        self.TimeStop_timer = 10
+        self.TimeStop_timer = 5
 
     def update(self, *args):
         """Overrides for base class update method.
