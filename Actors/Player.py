@@ -46,12 +46,6 @@ class Player(Actor):
         #self.cur_weapon = self.weapons["blah"]
         self.cur_weapon = None
 
-        # flag for player weapon active
-        self.weapon_active = False
-
-        # decide on amount of active time later
-        self.cur_weapon_timer = 0
-        self.max_weapon_timer = 0.5
         # figure out an exact time later
         self.invuln_timer = 0
 
@@ -72,16 +66,7 @@ class Player(Actor):
             overridden by more specialized
             classes later (maybe)."""
         if mbuttons[0]:
-            self.weapon_active = True
-
-    def weapon_update(self, dt):
-        """ Method for updating weapon"""
-        if self.weapon_active:
-            if self.cur_weapon_timer < self.max_weapon_timer:
-                self.cur_weapon_timer += dt
-            else:
-                self.cur_weapon_timer = 0
-                self.weapon_active = False
+            self.cur_weapon.active = True
 
     def receive_dmg(self, enemy_object):
         """ Generic method for when a
