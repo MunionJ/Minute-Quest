@@ -15,6 +15,7 @@ class EventManager:
             'game_windows':[],
             'game_menus':[],
             'party_objects':[],
+            'enemy_objects':[]
         }
         self.joySticks = []
 
@@ -51,11 +52,17 @@ class EventManager:
     def removeGameMenu(self,menu):
         self.game_objects['game_menus'].remove(menu)
 
+    def addEnemyObject(self, enemy):
+        self.game_objects['enemy_objects'].append(enemy)
+
+    def removeEnemyObject(self,enemy):
+        self.game_objects['enemy_objects'].remove(enemy)
+
     def turnOnDebugMode(self):
         for obj in self.game_objects['game_objects']:
             obj.toggleDebug()
 
-    def process_input(self, dt):
+    def process_input(self, dt, updateEnemies):
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
 
@@ -135,7 +142,11 @@ class EventManager:
 
         mouseButtons = pygame.mouse.get_pressed()
         for obj in self.game_objects['game_objects']:
-            obj.update(mouseButtons, keys, dt)
+            if obj.type == "ENEMY":
+                if updateEnemies:
+                    obj.update(mouseButtons, keys, dt)
+            else:
+                obj.update(mouseButtons, keys, dt)
 
         #pygame.event.pump()
         return True

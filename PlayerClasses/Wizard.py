@@ -16,19 +16,14 @@ class Wizard(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.TimeStop = False
         self.NumAbility = 1
         self.DelayTimer = 60
         self.TimeStop_timer = 5
         self.useAbility = False
 
-    def use_ability(self, keys):
+    def use_ability(self):
         """Gives the Wizard the power to use his abilities"""
-        if keys[pygame.K_r]:
-            if self.NumAbility > 0:
-                self.TimeStop = True
-            else:
-                self.TimeStop = False
+        super().use_ability()
 
     def ability_timer(self, dt):
         """Does the timer for both the ability itself and the cool down timer for using it again"""
@@ -40,14 +35,11 @@ class Wizard(Player):
 
     def timer_update(self, dt):
         """Updates all of the timers"""
-        self.TimeStop_timer -= dt
-        if self.TimeStop_timer <= 0:
-            self.NumAbility -= 1
-            self.DelayTimer -= dt
-            if self.DelayTimer <= 0:
-                self.NumAbility += 1
-            self.DelayTimer = 60
-        self.TimeStop_timer = 5
+        if self.usingAbility:
+            self.TimeStop_timer -= dt
+            if self.TimeStop_timer <= 0:
+                self.DelayTimer -= dt
+                super().end_ability()
 
     def update(self, *args):
         """Overrides for base class update method.
@@ -55,5 +47,9 @@ class Wizard(Player):
             mechanics for Wizard. """
         mouseButtons, keys, dt = args
         super().update(*args)
-        if self.use_ability(keys):
-            self.ability_timer(dt)
+        if keys[pygame.K_r] or mouseButtons[2]:
+            if self.NumAbility > 0:
+                self.use_ability()
+                self.NumAbility -= 1
+        self.timer_update(dt)
+

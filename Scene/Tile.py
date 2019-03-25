@@ -10,6 +10,7 @@ class Tile(pygame.sprite.Sprite):
         self.image = imageSurf
         self.rect = rect
         self.debug = False
+        self.type = "TILE"
 
     def toggleDebug(self):
         self.debug = not self.debug

@@ -24,6 +24,7 @@ class Game:
         self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
         self.bg_color = pygame.color.THECOLORS["black"]
+        self.prev_room = self.dungeon.rooms[0]
         for room in self.dungeon.rooms:
             for wall in room.walls.sprites():
                 self.manager.addGameObject(wall)
@@ -43,7 +44,6 @@ class Game:
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
         self.projectiles = []
-
 
     def start_game(self):
         self.running = True
@@ -67,7 +67,7 @@ class Game:
                         self.gameOver()
                     break
 
-                self.running = self.manager.process_input(dt)
+                self.running = self.manager.process_input(dt, (not (self.player.class_name=="WIZARD" and self.player.usingAbility)))
                 self.running = self.manager.poll_input(dt)
                 self.player_swap_cd(dt)
                 cur_pos = self.player.rect
@@ -80,6 +80,12 @@ class Game:
                 # for event in events:
                 #     if event.type == pygame.QUIT:
                 #         self.running = False
+
+                if self.player.usingAbility:
+                    if self.player.class_name == "WIZARD":
+                        self.HUD.timer += dt
+                    elif self.player.class_name == "PALADIN":
+                        self.player.heal_party(self.party_list)
 
                 self.collisionHandling(dt)
                 #Win Condition
@@ -97,7 +103,7 @@ class Game:
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
                 self.camera.draw(self.window, self.player, self.enemiesByRoom)
-                self.HUD.draw(self.window, self.party_list)
+                self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
 
     def player_swap_cd(self, dt):
@@ -178,6 +184,10 @@ class Game:
 
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
+                # handle objective display
+                if self.prev_room != room:
+                    self.prev_room = room
+                    self.HUD.reset_objective_timer()
                 for enemy in room.enemies:
                     if(not self.manager.hasReferenceToGameObject(enemy)):
                         self.manager.addGameObject(enemy)

@@ -13,9 +13,12 @@ class GameHUD:
         self.small_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 15)
         self.announce_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 30)
         self.font_color = pygame.color.THECOLORS['green']
+        self.objective_timer = 0
+        self.max_objective_time = 5
         self.room_objective = None
+        self.type = "HUD"
 
-    def draw(self, window, party_list):
+    def draw(self, window, party_list, dt):
         """ Draw pertinent information
             about each party member, as well
             as the remaining time."""
@@ -90,11 +93,13 @@ class GameHUD:
         # blit the room objective
         # TODO Make the announcement only last for a few seconds
         # TODO Make the announcement fit better if the rect goes off-screen
-        announcement = self.announce_font.render(self.room_objective, False, self.font_color)
-        text_offset = announcement.get_width() // 2
-        window.blit(announcement,
-                    ((window.get_width() // 2) - text_offset, 525)
-                    )
+        if self.objective_timer < self.max_objective_time:
+            self.objective_timer += dt
+            announcement = self.announce_font.render(self.room_objective, False, pygame.color.THECOLORS['white'])
+            text_offset = announcement.get_width() // 2
+            window.blit(announcement,
+                        ((window.get_width() // 2) - text_offset, 525)
+                        )
 
     def update(self, *args):
         """ Updates remaining time for given playable
@@ -108,6 +113,12 @@ class GameHUD:
             self.font_color = pygame.color.THECOLORS['yellow']
         else:
             self.font_color = pygame.color.THECOLORS['green']
+
+    def reset_objective_timer(self):
+        ''' Resets the timer for displaying
+            the room objective.
+        '''
+        self.objective_timer = 0
 
     def getTime(self):
         return self.timer
