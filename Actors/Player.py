@@ -224,6 +224,13 @@ class Player(Actor):
             player level."""
         pass
 
+
+    def healPlayer(self, health):
+        if self.stats["CUR_HP"] + health >= self.stats["MAX_HP"]:
+            self.stats["CUR_HP"] = self.stats["MAX_HP"]
+        else:
+            self.stats["CUR_HP"] += health
+
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
         window.blit(self.image, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))

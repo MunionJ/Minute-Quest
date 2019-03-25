@@ -81,6 +81,12 @@ class Game:
                 #     if event.type == pygame.QUIT:
                 #         self.running = False
 
+                if self.player.usingAbility:
+                    if self.player.class_name == "WIZARD":
+                        self.HUD.timer += dt
+                    elif self.player.class_name == "PALADIN":
+                        self.player.heal_party(self.party_list)
+
                 self.collisionHandling(dt)
                 #Win Condition
                 if self.player.pos.x >= self.dungeon.dungeonExit.left:

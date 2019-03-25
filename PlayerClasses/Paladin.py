@@ -1,5 +1,5 @@
 from Actors.Player import Player
-
+import pygame
 
 class Paladin(Player):
     """
@@ -15,19 +15,27 @@ class Paladin(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.num_heals = 1 + int(self.level//3)
+        self.healPercentage = (.1 + (1/20)*self.level)
+        self.numHeals = 1
 
     def use_ability(self):
         """ Method for using class-specific ability."""
-        if self.num_heals > 0:
-            self.activate_heal()
+        super().use_ability()
 
-    def activate_heal(self):
-        """ Method for applying the effects of heal."""
-        self.num_heal -= 1
-        self.stats["CUR_HP"] += self.level * 15
+        if self.numHeals > 0:
+            self.numHeals -= 1
+
+    def heal_party(self,party):
+        print("In Paladin: Using Ability")
+        for member in party.party_members:
+            member.healPlayer(int(member.stats["MAX_HP"]*self.healPercentage))
+
+        super().end_ability()
 
     def update(self, *args):
         """ Method called for per frame update"""
         super().update(*args)
-        pass
+        mouseButtons, keys, dt = args
+        if keys[pygame.K_r] or mouseButtons[2]:
+            if self.numHeals > 0:
+                self.use_ability()
