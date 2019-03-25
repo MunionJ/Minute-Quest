@@ -44,20 +44,20 @@ class Paladin(Player):
             if self.numHeals > 0:
                 self.use_ability()
         self.basic_attack(mouseButtons, keys, dt)
-        if self.weapon_active:
-            self.weapon_update(dt)
+        if self.cur_weapon.active:
+            self.cur_weapon.update(dt)
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
         # testing player weapon image
         if self.cur_weapon is not None:
             if self.facing_right:
-                if self.weapon_active:
+                if self.cur_weapon.active:
                         window.blit(self.cur_weapon.image,
                                     (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
                                     )
             if not self.facing_right:
-                if self.weapon_active:
+                if self.cur_weapon.active:
                         window.blit(pygame.transform.flip(self.cur_weapon.image, True, False),
                                     (self.rect.x - cameraPos[0] - 15, self.rect.y - cameraPos[1])
                                     )
