@@ -31,6 +31,7 @@ class GameHUD:
             if char == party_list.active_member:
                 # determine what color the active party member's HP bar should be
                 color = None
+
                 hp_percentage = (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * 100
                 if hp_percentage <= 25:
                     color = pygame.color.THECOLORS["red"]
@@ -87,6 +88,7 @@ class GameHUD:
                                          False,
                                          self.font_color
                                          )
+
         window.blit(font_surf,
                     (window.get_width() // 2, 30)
                     )
