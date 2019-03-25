@@ -21,3 +21,7 @@ class Ranger(Player):
     def update(self, *args):
         super().update(*args)
         mouseButtons, keys, dt = args
+
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
+        pass

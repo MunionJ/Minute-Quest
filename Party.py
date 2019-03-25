@@ -53,8 +53,7 @@ class Party:
             elif key == pygame.K_4:
                 self.party_index = 3
                 self.last_active = 0
-        if key == pygame.K_q:           # just for testing purposes
-            self.active_member.receive_dmg()
+
         self.active_member = self.party_members[self.party_index]
 
     def calc_avg_level(self):
