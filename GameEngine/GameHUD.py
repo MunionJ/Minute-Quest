@@ -23,7 +23,7 @@ class GameHUD:
             about each party member, as well
             as the remaining time."""
         x = 10
-        y = 20
+        y = 30
         bar_width = 75
         bar_height = 15
         self.hud_surf.fill((0, 0, 0))
@@ -63,6 +63,12 @@ class GameHUD:
                                                       (pygame.color.THECOLORS['white'])
                                                       ),
                                (x, y - 15)
+                               )
+            self.hud_surf.blit(self.small_font.render(char.class_name,
+                                                      False,
+                                                      (pygame.color.THECOLORS['white'])
+                                                      ),
+                               (x, y - 30)
                                )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
