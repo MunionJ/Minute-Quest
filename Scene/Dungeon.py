@@ -39,7 +39,7 @@ class Dungeon:
             tempChoices = self.removeEmptyChoices(tempChoices)
             roomName = random.choice(tempChoices[roomType])
             tempChoices[roomType].remove(roomName)
-            dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
+            dungeonName = "./maps/{0}/{1}".format(roomType, roomName)
 
             sprite_sheet = self.assignSpriteSheet(roomName)
             if sprite_sheet == None:

@@ -129,12 +129,14 @@ class Enemy(Actor):
 
             if (v1[0]*lineSlope+yintercept) - v1[1] > 0 and v2[0]*lineSlope+yintercept - v2[1] > 0 and v3[0]*lineSlope+yintercept - v3[1] > 0 and v4[0]*lineSlope+yintercept - v4[1] > 0 or v1[0] * lineSlope + yintercept  - v1[1] < 0 and v2[0] * lineSlope + yintercept - v2[1] < 0 and v3[0] * lineSlope + yintercept - v3[1] < 0 and v4[0] * lineSlope + yintercept  - v4[1] < 0:
                 vision_collision = True
+                player.is_seen = True
                 if int((player.rect.x - cameraPos[0])) > (int(self.rect.x - cameraPos[0])):
                     self.facing_right = True
                 if int((player.rect.x - cameraPos[0])) < (int(self.rect.x - cameraPos[0])):
                     self.facing_right = False
             else:
                 vision_collision = False
+                player.is_seen = False
                 break
         self.sees_player = vision_collision
 
