@@ -19,6 +19,8 @@ class Wizard(Player):
         self.stats["MAX_HP"] = stats[3]
         self.weapons["staff"] = Weapon("images/Weapons/earthstaff.png", (40, 40))
         self.cur_weapon = self.weapons["staff"]
+        self.cur_weapon.rect = self.rect
+        self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.NumAbility = 1
         self.DelayTimer = 60
         self.TimeStop_timer = 5

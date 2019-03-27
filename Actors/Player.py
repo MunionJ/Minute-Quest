@@ -80,7 +80,7 @@ class Player(Actor):
         if self.cur_state == states.Jumping:
             y = 0
         else:
-            y = random.randint(-30, -20)
+            y = random.randint(-20, -15)
         self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):
