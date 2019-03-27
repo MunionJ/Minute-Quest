@@ -80,8 +80,9 @@ class Game:
                     if len(room.enemies) > 0:
                         if room.bgImageRect.colliderect(self.player.rect):
                             for enemy in room.enemies:
-                                #line_of_sight(self, window, cameraPos, player, wallTiles):
-                                enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
+                                distance = self.player.pos - enemy.pos
+                                if distance.length() < 200:
+                                    enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
                                 #do i have line of sight
                 # events = pygame.event.get()
                 # for event in events:
