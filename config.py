@@ -14,6 +14,10 @@ PLAYER_FRICTION = -0.24
 JUMP_VEC = 7.5
 INVULN_TIMER = 0.5
 
+#Projectile Variables
+MAX_ACC = 3
+MAX_VELOCITY = 200
+
 #Maximum offset of pixels between an actor on a surface to determine if a player is on a surface
 PIXEL_DIFFERENCE = 2
 
