@@ -89,6 +89,14 @@ class Game:
 
                 self.collisionHandling(dt)
                 #Win Condition
+                if not self.player.alive:
+                    prevRect = self.player.rect
+                    self.manager.removeGameObject(self.player)
+                    self.party_list.swapPlayer()
+                    self.player = self.party_list.active_member
+                    self.player.set_pos(prevRect)
+                    self.manager.addGameObject(self.player)
+
                 if self.player.pos.x >= self.dungeon.dungeonExit.left:
                     self.gameWin()
 
