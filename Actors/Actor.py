@@ -25,6 +25,15 @@ class Actor(pygame.sprite.Sprite):
         self.jump_offset = 0
         self.onSurface = False
 
+        # pass a list as constructor parameter to specialized character class to set defaults
+        self.stats = {
+            "MELEE": 0,
+            "RANGE": 0,
+            "MAGIC": 0,
+            "CUR_HP": 0,
+            "MAX_HP": 0
+        }
+
     def move(self, keys, dt):
         """Base movement method meant to be overriden."""
         pass

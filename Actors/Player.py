@@ -49,15 +49,6 @@ class Player(Actor):
         # figure out an exact time later
         self.invuln_timer = 0
 
-        # pass a list as constructor parameter to specialized character class to set defaults
-        self.stats = {
-            "MELEE": 0,
-            "RANGE": 0,
-            "MAGIC": 0,
-            "CUR_HP": 0,
-            "MAX_HP": 0
-        }
-
         self.jumpFrameCount = 0
         self.jumpFrames = 2
 
