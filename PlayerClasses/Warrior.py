@@ -24,6 +24,8 @@ class Warrior(Player):
 
         self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
+        self.cur_weapon.rect = self.rect
+        self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
 
         self.num_rages = 3
         self.rage_timer = 0     # counts upward to self.max_rage_timer

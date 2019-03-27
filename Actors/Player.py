@@ -84,9 +84,14 @@ class Player(Actor):
         if keys[pygame.K_d]:
             self.facing_right = True
             self.image = self.frames["right"]
+            if self.cur_weapon is not None:
+                self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
+
         if keys[pygame.K_a]:
             self.facing_right = False
             self.image = pygame.transform.flip((self.frames["right"]), True, False)
+            if self.cur_weapon is not None:
+                self.cur_weapon.rect.x = self.cur_weapon.rect.x - 15
 
         if keys[pygame.K_SPACE] and (self.cur_state == states.Standing or self.cur_state == states.Running):
             self.jump()
@@ -227,8 +232,26 @@ class Player(Actor):
                         window.blit(self.cur_weapon.image,
                                     (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
                                     )
+
+                        # pygame.draw.rect(window,
+                        #                  (255, 0, 0),
+                        #                  (self.cur_weapon.rect.x - cameraPos[0] + 25,
+                        #                   self.cur_weapon.rect.y - cameraPos[1],
+                        #                   self.cur_weapon.rect.w,
+                        #                   self.cur_weapon.rect.h
+                        #                   ),
+                        #                  2)
             if not self.facing_right:
                 if self.cur_weapon.active:
                         window.blit(pygame.transform.flip(self.cur_weapon.image, True, False),
                                     (self.rect.x - cameraPos[0] - 15, self.rect.y - cameraPos[1])
                                     )
+
+                        # pygame.draw.rect(window,
+                        #                  (255, 0, 0),
+                        #                  (self.cur_weapon.rect.x - cameraPos[0] - 25,
+                        #                   self.cur_weapon.rect.y - cameraPos[1],
+                        #                   self.cur_weapon.rect.w,
+                        #                   self.cur_weapon.rect.h
+                        #                   ),
+                        #                  2)
