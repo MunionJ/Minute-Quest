@@ -1,4 +1,4 @@
-import pygame
+import random
 import time
 from Actors.Actor import *
 
@@ -70,6 +70,19 @@ class Player(Actor):
             else:
                 self.stats["CUR_HP"] -= enemy_object.damage
             self.invuln_timer = INVULN_TIMER
+
+    def receive_knockback(self, enemy_object):
+        if enemy_object.facing_right is True:
+            x = random.randint(30, 50)
+        else:
+            x = random.randint(-50, -30)
+
+        if self.cur_state == states.Jumping:
+            y = 0
+        else:
+            y = random.randint(-30, -20)
+
+        self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):
         """ Testing Player jumping."""

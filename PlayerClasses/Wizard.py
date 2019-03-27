@@ -1,5 +1,6 @@
 from Actors.Player import Player
 import pygame
+from Weapon import Weapon
 
 
 class Wizard(Player):
@@ -16,6 +17,7 @@ class Wizard(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+        self.weapons["staff"] = Weapon("images/Weapons/earthstaff.png", (40, 40))
         self.cur_weapon = self.weapons["staff"]
         self.NumAbility = 1
         self.DelayTimer = 60
