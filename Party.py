@@ -32,27 +32,49 @@ class Party:
 
         if self.last_active > 3:
             if key == pygame.K_w:
-                self.party_index -= 1
-                if self.party_index < 0:
-                    self.party_index = len(self.party_members) - 1
+                count = 0
+                while not self.party_members[self.party_index].alive and count < len(self.party_members):
+                    self.party_index -= 1
+                    if self.party_index < 0:
+                        self.party_index = len(self.party_members) - 1
+                    count += 1
                 self.last_active = 0
             elif key == pygame.K_s:
-                self.party_index += 1
-                if self.party_index > len(self.party_members) - 1:
-                    self.party_index = 0
+                count = 0
+                while not self.party_members[self.party_index].alive and count < len(self.party_members):
+                    self.party_index += 1
+                    if self.party_index > len(self.party_members) - 1:
+                        self.party_index = 0
+                    count += 1
                 self.last_active = 0
+
             elif key == pygame.K_1:
-                self.party_index = 0
-                self.last_active = 0
+                if self.party_members[0].alive:
+                    self.party_index = 0
+                    self.last_active = 0
             elif key == pygame.K_2:
-                self.party_index = 1
-                self.last_active = 0
+                if self.party_members[1].alive:
+                    self.party_index = 1
+                    self.last_active = 0
             elif key == pygame.K_3:
-                self.party_index = 2
-                self.last_active = 0
+                if self.party_members[2].alive:
+                    self.party_index = 2
+                    self.last_active = 0
             elif key == pygame.K_4:
-                self.party_index = 3
-                self.last_active = 0
+                if self.party_members[3].alive:
+                    self.party_index = 3
+                    self.last_active = 0
+
+        self.active_member = self.party_members[self.party_index]
+
+    def swapPlayer(self):
+        count = 0
+        index = self.party_index
+        while not self.party_members[self.party_index].alive  and count < len(self.party_members):
+            self.party_index += 1
+            if self.party_index > len(self.party_members) - 1:
+                self.party_index = 0
+            count += 1
 
         self.active_member = self.party_members[self.party_index]
 

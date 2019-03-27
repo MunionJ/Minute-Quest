@@ -23,7 +23,7 @@ class GameHUD:
             about each party member, as well
             as the remaining time."""
         x = 10
-        y = 20
+        y = 30
         bar_width = 75
         bar_height = 15
         self.hud_surf.fill((0, 0, 0))
@@ -31,6 +31,7 @@ class GameHUD:
             if char == party_list.active_member:
                 # determine what color the active party member's HP bar should be
                 color = None
+
                 hp_percentage = (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * 100
                 if hp_percentage <= 25:
                     color = pygame.color.THECOLORS["red"]
@@ -63,6 +64,12 @@ class GameHUD:
                                                       ),
                                (x, y - 15)
                                )
+            self.hud_surf.blit(self.small_font.render(char.class_name,
+                                                      False,
+                                                      (pygame.color.THECOLORS['white'])
+                                                      ),
+                               (x, y - 30)
+                               )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
                              pygame.color.THECOLORS["white"],
@@ -87,6 +94,7 @@ class GameHUD:
                                          False,
                                          self.font_color
                                          )
+
         window.blit(font_surf,
                     (window.get_width() // 2, 30)
                     )

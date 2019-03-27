@@ -29,9 +29,9 @@ class Paladin(Player):
             self.numHeals -= 1
 
     def heal_party(self,party):
-        print("In Paladin: Using Ability")
         for member in party.party_members:
-            member.healPlayer(int(member.stats["MAX_HP"]*self.healPercentage))
+            if member.alive:
+                member.healPlayer(int(member.stats["MAX_HP"]*self.healPercentage))
 
         super().end_ability()
 
