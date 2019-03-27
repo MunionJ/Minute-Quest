@@ -67,7 +67,6 @@ class Enemy(Actor):
             if abs(self.accel.x) < MAX_X_ACC*0.6:
                 self.accel.x -= PLAYER_ACC*0.6
 
-
     def determineState(self):
         if self.velocity.x < 0:
             self.facing_right = False
@@ -101,12 +100,14 @@ class Enemy(Actor):
             a enemy status to dead."""
         self.alive = False
 
-    def take_damage(self):
+    def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
-        self.hp -= 1
-        if self.hp <= 0:
-            self.set_dead()
-        pass
+        if self.stats["CUR_HP"] > 0:
+            if self.stats - player.deal_dmg() <= 0:
+                self.stats["CUR_HP"] = 0
+                self.set_dead()
+        else:
+            self.stats["CUR_HP"] -= player.cur_weapon.atk_pwr
 
     def attack(self):
         """Method allows the enemy attack the player when in close enough range"""

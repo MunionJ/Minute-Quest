@@ -36,6 +36,10 @@ class Warrior(Player):
             if self.num_rages > 0:
                 self.activate_rage()
 
+    def deal_dmg(self):
+        """ Method for dealing damage to an enemy."""
+        return self.stats["MELEE"] + self.cur_weapon.atk_pwr
+
     def activate_rage(self):
         """ Method for applying the effects of rage."""
         if not self.rage_active:
