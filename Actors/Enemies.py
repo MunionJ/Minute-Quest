@@ -43,7 +43,8 @@ class Enemy(Actor):
         self.alive = True
         self.cur_state = states.Falling
         self.onSurface = False
-        self.hp = 1
+        self.stats["MAX_HP"] = 5
+        self.stats["CUR_HP"] = self.stats["MAX_HP"]
         self.damage = 4
         self.type = "ENEMY"
 
@@ -103,7 +104,7 @@ class Enemy(Actor):
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
         if self.stats["CUR_HP"] > 0:
-            if self.stats - player.deal_dmg() <= 0:
+            if self.stats["CUR_HP"] - player.deal_dmg() <= 0:
                 self.stats["CUR_HP"] = 0
                 self.set_dead()
         else:

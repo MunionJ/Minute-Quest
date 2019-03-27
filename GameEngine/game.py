@@ -238,6 +238,17 @@ class Game:
                         if self.player.rect.colliderect(enemy.rect):
                             self.player.receive_dmg(enemy)
 
+                if self.player.cur_weapon is not None:
+                    #print("game.py: Line 244: ", self.player.cur_weapon.active)
+                    if self.player.cur_weapon.active:
+                        for enemy in room.enemies:
+                            if self.player.cur_weapon.rect.colliderect(enemy.rect):
+                                print("game.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
+                                enemy.take_damage(self.player)
+                                if not enemy.alive:
+                                    room.enemies.remove(enemy)
+
+
             else:
                 for enemy in room.enemies:
                     if self.manager.hasReferenceToGameObject(enemy):
