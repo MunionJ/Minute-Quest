@@ -115,6 +115,9 @@ class Enemy(Actor):
             v2 = tile.rect.topright
             v3 = tile.rect.bottomleft
             v4 = tile.rect.bottomright
+
+            # TODO Figure a way to draw without this flip, this flip stacks with the flip in the main loop causing a
+            # double flip, this is the source of the lag
             pygame.display.flip()
           #  startx, starty = self.rect.center
 #
