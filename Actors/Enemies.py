@@ -103,7 +103,7 @@ class Enemy(Actor):
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
         if self.stats["CUR_HP"] > 0:
-            if self.stats - (player.cur_weapon.atk_pwr + player.stats["MELEE"]) <= 0:
+            if self.stats - player.deal_dmg() <= 0:
                 self.stats["CUR_HP"] = 0
                 self.set_dead()
         else:

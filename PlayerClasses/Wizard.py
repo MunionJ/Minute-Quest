@@ -25,6 +25,9 @@ class Wizard(Player):
         """Gives the Wizard the power to use his abilities"""
         super().use_ability()
 
+    def deal_dmg(self):
+        return self.stats["MAGIC"]
+
     def ability_timer(self, dt):
         """Does the timer for both the ability itself and the cool down timer for using it again"""
         if self.TimeStop:
