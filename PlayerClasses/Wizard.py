@@ -7,7 +7,7 @@ class Wizard(Player):
     Wizard class, specializes in magic attacks.
     """
 
-    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 3, 25]):
+    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 3, 20]):
         super().__init__(start_pos, img)
 
         self.class_name = "WIZARD"
@@ -16,6 +16,7 @@ class Wizard(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+        self.cur_weapon = self.weapons["staff"]
         self.NumAbility = 1
         self.DelayTimer = 60
         self.TimeStop_timer = 5
@@ -55,4 +56,10 @@ class Wizard(Player):
                 self.use_ability()
                 self.NumAbility -= 1
         self.timer_update(dt)
+        self.basic_attack(mouseButtons, keys, dt)
+        if self.cur_weapon.active:
+            self.cur_weapon.update(dt)
+
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
 
