@@ -69,6 +69,7 @@ class Player(Actor):
                 self.alive = False
             else:
                 self.stats["CUR_HP"] -= enemy_object.damage
+                self.receive_knockback(enemy_object)
             self.invuln_timer = INVULN_TIMER
 
     def receive_knockback(self, enemy_object):
@@ -76,12 +77,10 @@ class Player(Actor):
             x = random.randint(30, 50)
         else:
             x = random.randint(-50, -30)
-
         if self.cur_state == states.Jumping:
             y = 0
         else:
             y = random.randint(-30, -20)
-
         self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):

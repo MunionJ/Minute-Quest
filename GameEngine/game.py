@@ -244,7 +244,6 @@ class Game:
                     for enemy in room.enemies:
                         if self.player.rect.colliderect(enemy.rect):
                             self.player.receive_dmg(enemy)
-                            self.player.receive_knockback(enemy)
 
                 if self.player.cur_weapon is not None:
                     #print("game.py: Line 244: ", self.player.cur_weapon.active)
