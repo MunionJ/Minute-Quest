@@ -46,34 +46,22 @@ class Enemy(Actor):
         self.hp = 1
         self.damage = 4
         self.type = "ENEMY"
+        self.sees_player = False
 
     def move(self, keys, dt):
-        # if self.change_move:  #uncommenting this makes enemies walk left and right
-        #     while time.time() > self.move_time:
-        #         if self.accel.x < MAX_X_ACC:
-        #             self.accel.x += PLAYER_ACC
-        #         self.change_move = False
-        #         self.move_time = time.time() + 0.5
-        # elif not self.change_move:
-        #     while time.time() > self.move_time:
-        #         if self.accel.x > -MAX_X_ACC:
-        #             self.accel.x -= PLAYER_ACC
-        #         self.change_move = True
-        #         self.move_time = time.time() + 0.5
-        if self.facing_right:
-            if self.accel.x < MAX_X_ACC*0.6:
-                self.accel.x += PLAYER_ACC*0.6
-        else:
-            if abs(self.accel.x) < MAX_X_ACC*0.6:
-                self.accel.x -= PLAYER_ACC*0.6
 
+        if self.sees_player:
+            if self.facing_right:
+                self.accel.x += PLAYER_ACC * 0.6
+            else:
+                self.accel.x -= PLAYER_ACC * 0.6
 
     def determineState(self):
-        if self.velocity.x < 0:
-            self.facing_right = False
-
-        if self.velocity.x > 0:
-            self.facing_right = True
+       # if self.velocity.x < 0:
+       #     self.facing_right = False
+#
+       # if self.velocity.x > 0:
+       #     self.facing_right = True
 
         super().determineState()
 
@@ -100,6 +88,52 @@ class Enemy(Actor):
         """ Generic method for setting
             a enemy status to dead."""
         self.alive = False
+
+    def line_of_sight(self, window, cameraPos, player, wallTiles):
+        for tile in wallTiles:
+
+            self.line = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
+                                                (int(player.rect.x - cameraPos[0]), int(player.rect.y - cameraPos[1])))
+            enex = int(self.rect.x - cameraPos[0])
+            eney = int(self.rect.y - cameraPos[1])
+            playx = int(player.rect.x - cameraPos[0])
+            playy = int(player.rect.y - cameraPos[1])
+            if ((enex-playx)**2) + ((eney-playy)**2) >= 150**2:
+                vision_collision = False
+                break
+            if (enex - playx) == 0:
+                vision_collision = False
+                break
+            lineSlope = (eney - playy)/(enex - playx)
+            yintercept = eney+lineSlope*enex
+
+            v1 = tile.rect.topleft
+            v2 = tile.rect.topright
+            v3 = tile.rect.bottomleft
+            v4 = tile.rect.bottomright
+            pygame.display.flip()
+          #  startx, starty = self.rect.center
+#
+          #  line1 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
+          #                                      (int(v1[0] - cameraPos[0]), int(v1[1] - cameraPos[1])))
+          #  line2 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
+          #                                      (int(v2[0] - cameraPos[0]), int(v2[1] - cameraPos[1])))
+          #  line3 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
+          #                                      (int(v3[0] - cameraPos[0]), int(v3[1] - cameraPos[1])))
+          #  line4 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
+          #                                      (int(v4[0] - cameraPos[0]), int(v4[1] - cameraPos[1])))
+
+            if (v1[0]*lineSlope+yintercept) - v1[1] > 0 and v2[0]*lineSlope+yintercept - v2[1] > 0 and v3[0]*lineSlope+yintercept - v3[1] > 0 and v4[0]*lineSlope+yintercept - v4[1] > 0 or v1[0] * lineSlope + yintercept  - v1[1] < 0 and v2[0] * lineSlope + yintercept - v2[1] < 0 and v3[0] * lineSlope + yintercept - v3[1] < 0 and v4[0] * lineSlope + yintercept  - v4[1] < 0:
+                vision_collision = True
+                if int((player.rect.x - cameraPos[0])) > (int(self.rect.x - cameraPos[0])):
+                    self.facing_right = True
+                if int((player.rect.x - cameraPos[0])) < (int(self.rect.x - cameraPos[0])):
+                    self.facing_right = False
+            else:
+                vision_collision = False
+                break
+        self.sees_player = vision_collision
+
 
     def take_damage(self):
         """Method that make the enemy take damage from an attack"""
