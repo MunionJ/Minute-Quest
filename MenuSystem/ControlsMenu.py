@@ -70,7 +70,8 @@ class ControlsMenu(pygame.sprite.Sprite):
         self.gamepadControls.fill((0, 0, 0))
         self.gamepadControls.blit(controller, (300, 200))
         text = pygame.font.Font.render(self.font,
-                                       "The joystick moves along with the d pad up goes through party the a button is jump, ",
+                                       "The joystick moves along with the d pad up goes "
+                                       "through party the a button is jump, ",
                                        12, (255,255,255))
         text2 = pygame.font.Font.render(self.font,
                                        "and the B button is attack. ",
