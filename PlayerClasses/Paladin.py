@@ -18,6 +18,8 @@ class Paladin(Player):
         self.stats["MAX_HP"] = stats[3]
         self.weapons["axe"] = Weapon("images/Weapons/waraxe.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
+        self.cur_weapon.rect = self.rect
+        self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.healPercentage = (.1 + (1/20)*self.level)
         self.numHeals = 1
 

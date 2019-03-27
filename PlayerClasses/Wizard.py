@@ -62,3 +62,6 @@ class Wizard(Player):
         if self.cur_weapon.active:
             self.cur_weapon.update(dt)
 
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
+
