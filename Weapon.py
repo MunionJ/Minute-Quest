@@ -20,6 +20,7 @@ class Weapon:
             self.frames[i] = pygame.transform.flip(self.frames[i], True, False)
             self.frames[i] = self.frames[i].convert_alpha()
         self.image = self.frames["axe1"]
+        self.rect = None
         self.active = False
         self.cur_weapon_timer = 0
         self.max_weapon_timer = 1
