@@ -28,6 +28,9 @@ class Paladin(Player):
         if self.numHeals > 0:
             self.numHeals -= 1
 
+    def deal_dmg(self):
+        return self.stats["MELEE"] + self.cur_weapon.atk_pwr
+
     def heal_party(self,party):
         for member in party.party_members:
             if member.alive:
