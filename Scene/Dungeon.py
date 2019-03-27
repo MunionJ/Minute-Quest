@@ -20,9 +20,23 @@ class Dungeon:
 
         for i in range(num_rooms):
 
-            tempChoices = self.removeEmptyChoices(tempChoices)
+            dice = random.randint(0, 100)
 
-            roomType = random.choice(list(tempChoices.keys()))
+            roomType = None
+
+            if dice == 0:
+                roomType = "LootRooms"
+
+            elif dice < 41:
+                roomType = "EnemyRooms"
+
+            elif dice < 82:
+                roomType = "PlatformRooms"
+
+            else:
+                roomType = "PuzzleRooms"
+
+            tempChoices = self.removeEmptyChoices(tempChoices)
             roomName = random.choice(tempChoices[roomType])
             tempChoices[roomType].remove(roomName)
             dungeonName = "./maps/{0}/{1}".format(roomType,roomName)
