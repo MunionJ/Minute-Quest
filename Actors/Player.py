@@ -1,4 +1,4 @@
-import pygame
+import random
 import time
 from Actors.Actor import *
 
@@ -49,15 +49,6 @@ class Player(Actor):
         # figure out an exact time later
         self.invuln_timer = 0
 
-        # pass a list as constructor parameter to specialized character class to set defaults
-        self.stats = {
-            "MELEE": 0,
-            "RANGE": 0,
-            "MAGIC": 0,
-            "CUR_HP": 0,
-            "MAX_HP": 0
-        }
-
         self.jumpFrameCount = 0
         self.jumpFrames = 2
 
@@ -80,6 +71,19 @@ class Player(Actor):
                 self.stats["CUR_HP"] -= enemy_object.damage
             self.invuln_timer = INVULN_TIMER
 
+    def receive_knockback(self, enemy_object):
+        if enemy_object.facing_right is True:
+            x = random.randint(30, 50)
+        else:
+            x = random.randint(-50, -30)
+
+        if self.cur_state == states.Jumping:
+            y = 0
+        else:
+            y = random.randint(-30, -20)
+
+        self.velocity += pygame.math.Vector2(x, y)
+
     def update(self, *args):
         """ Testing Player jumping."""
         mouseButtons, keys, dt = args
@@ -93,9 +97,14 @@ class Player(Actor):
         if keys[pygame.K_d]:
             self.facing_right = True
             self.image = self.frames["right"]
+            if self.cur_weapon is not None:
+                self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
+
         if keys[pygame.K_a]:
             self.facing_right = False
             self.image = pygame.transform.flip((self.frames["right"]), True, False)
+            if self.cur_weapon is not None:
+                self.cur_weapon.rect.x = self.cur_weapon.rect.x - 15
 
         if keys[pygame.K_SPACE] and (self.cur_state == states.Standing or self.cur_state == states.Running):
             self.jump()
@@ -236,8 +245,26 @@ class Player(Actor):
                         window.blit(self.cur_weapon.image,
                                     (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
                                     )
+
+                        # pygame.draw.rect(window,
+                        #                  (255, 0, 0),
+                        #                  (self.cur_weapon.rect.x - cameraPos[0] + 25,
+                        #                   self.cur_weapon.rect.y - cameraPos[1],
+                        #                   self.cur_weapon.rect.w,
+                        #                   self.cur_weapon.rect.h
+                        #                   ),
+                        #                  2)
             if not self.facing_right:
                 if self.cur_weapon.active:
                         window.blit(pygame.transform.flip(self.cur_weapon.image, True, False),
                                     (self.rect.x - cameraPos[0] - 15, self.rect.y - cameraPos[1])
                                     )
+
+                        # pygame.draw.rect(window,
+                        #                  (255, 0, 0),
+                        #                  (self.cur_weapon.rect.x - cameraPos[0] - 25,
+                        #                   self.cur_weapon.rect.y - cameraPos[1],
+                        #                   self.cur_weapon.rect.w,
+                        #                   self.cur_weapon.rect.h
+                        #                   ),
+                        #                  2)

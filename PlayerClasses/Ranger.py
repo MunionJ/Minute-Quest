@@ -27,5 +27,8 @@ class Ranger(Player):
         if self.cur_weapon.active:
             self.cur_weapon.update(dt)
 
+    def deal_dmg(self):
+        return self.stats["RANGE"] + self.cur_weapon.atk_pwr
+
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)

@@ -43,8 +43,10 @@ class Enemy(Actor):
         self.alive = True
         self.cur_state = states.Falling
         self.onSurface = False
-        self.hp = 1
+        self.stats["MAX_HP"] = 5
+        self.stats["CUR_HP"] = self.stats["MAX_HP"]
         self.damage = 4
+        self.invuln_timer = 0
         self.type = "ENEMY"
         self.sees_player = False
 
@@ -83,6 +85,8 @@ class Enemy(Actor):
             self.accel = -self.accel
 
         self.move(keys,dt)
+
+        self.invuln_timer -= dt
 
     def set_dead(self):
         """ Generic method for setting
@@ -135,12 +139,16 @@ class Enemy(Actor):
         self.sees_player = vision_collision
 
 
-    def take_damage(self):
+    def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
-        self.hp -= 1
-        if self.hp <= 0:
-            self.set_dead()
-        pass
+        print("Enemy.py: Line 106: Current HP: ", self.stats["CUR_HP"])
+        if self.stats["CUR_HP"] > 0 >= self.invuln_timer:
+            if self.stats["CUR_HP"] - player.deal_dmg() <= 0:
+                self.stats["CUR_HP"] = 0
+                self.set_dead()
+            else:
+                self.stats["CUR_HP"] -= player.deal_dmg()
+            self.invuln_timer = INVULN_TIMER
 
     def attack(self):
         """Method allows the enemy attack the player when in close enough range"""

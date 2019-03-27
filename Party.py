@@ -31,20 +31,25 @@ class Party:
             party member."""
 
         if self.last_active > 3:
+
             if key == pygame.K_w:
                 count = 0
-                while not self.party_members[self.party_index].alive and count < len(self.party_members):
+                while count < len(self.party_members):
                     self.party_index -= 1
                     if self.party_index < 0:
                         self.party_index = len(self.party_members) - 1
+                    if self.party_members[self.party_index].alive:
+                        break
                     count += 1
                 self.last_active = 0
             elif key == pygame.K_s:
                 count = 0
-                while not self.party_members[self.party_index].alive and count < len(self.party_members):
+                while count < len(self.party_members):
                     self.party_index += 1
                     if self.party_index > len(self.party_members) - 1:
                         self.party_index = 0
+                    if self.party_members[self.party_index].alive:
+                        break
                     count += 1
                 self.last_active = 0
 
