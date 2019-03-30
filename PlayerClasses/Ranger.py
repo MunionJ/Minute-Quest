@@ -21,11 +21,37 @@ class Ranger(Player):
         self.cur_weapon.rect = self.rect
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
 
+    def use_ability(self, keys, mouseButtons):
+        """ Method for using class-specific ability."""
+        if keys[pygame.K_r] or mouseButtons[2]:
+            self.activate_stealth()
+
+    def activate_stealth(self):
+        super().use_ability()
+        self.invuln_timer = self.abilityCoolDown
+        if self.is_seen is True:
+            self.is_seen = False
+
+    def deactivate_stealth(self):
+        self.invuln_timer = 0
+        super().end_ability()
+
+    def stealth_update(self, dt):
+        self.currentAbilityTimer -= dt
+        if self.currentAbilityTimer <= 0:
+            self.deactivate_stealth()
+            self.currentAbilityTimer = self.abilityCoolDown
+        elif self.usingAbility is True and self.cur_weapon.active:
+            print('done')
+            self.deactivate_stealth()
+
     def update(self, *args):
         super().update(*args)
         mouseButtons, keys, dt = args
-        self.use_ability()
+        self.use_ability(keys, mouseButtons)
         self.basic_attack(mouseButtons, keys, dt)
+        if self.usingAbility is True:
+            self.stealth_update(dt)
         if self.cur_weapon.active:
             self.cur_weapon.update(dt)
 

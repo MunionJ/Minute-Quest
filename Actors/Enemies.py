@@ -118,7 +118,7 @@ class Enemy(Actor):
 
             # TODO Figure a way to draw without this flip, this flip stacks with the flip in the main loop causing a
             # double flip, this is the source of the lag
-            pygame.display.flip()
+            # pygame.display.flip()
           #  startx, starty = self.rect.center
 #
           #  line1 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),

@@ -37,7 +37,7 @@ class Player(Actor):
         self.facing_right = True
         self.usingAbility = False
         self.abilityCoolDown = 5
-        self.currentAbilityTimer = 0
+        self.currentAbilityTimer = 5
         self.type = "PLAYER"
         self.is_seen = False
 
