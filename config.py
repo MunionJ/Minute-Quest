@@ -14,6 +14,11 @@ PLAYER_FRICTION = -0.24
 JUMP_VEC = 7.5
 INVULN_TIMER = 0.5
 
+#Enemy Variables
+ENEMY_ACC = 1
+ENEMY_MAX_ACC = 2
+ENEMY_MAX_VEL = 30
+
 #Projectile Variables
 MAX_ACC = 3
 MAX_VELOCITY = 200
