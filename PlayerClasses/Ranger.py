@@ -20,10 +20,11 @@ class Ranger(Player):
         self.cur_weapon = self.weapons["bow"]
         self.cur_weapon.rect = self.rect
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
+        self.num_ability_uses = 2
 
     def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""
-        if keys[pygame.K_r] or mouseButtons[2]:
+        if keys[pygame.K_r] or mouseButtons[2] and self.num_ability_uses > 0:
             self.activate_stealth()
 
     def activate_stealth(self):
@@ -41,9 +42,12 @@ class Ranger(Player):
         if self.currentAbilityTimer <= 0:
             self.deactivate_stealth()
             self.currentAbilityTimer = self.abilityCoolDown
+            self.num_ability_uses -= 1
         elif self.usingAbility is True and self.cur_weapon.active:
             print('done')
             self.deactivate_stealth()
+            self.currentAbilityTimer = self.abilityCoolDown
+            self.num_ability_uses -= 1
 
     def update(self, *args):
         super().update(*args)
