@@ -1,4 +1,5 @@
 from Actors.Player import Player
+from Projectile import Projectile
 from Weapon import *
 
 
@@ -16,11 +17,18 @@ class Ranger(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.weapons["bow"] = Weapon("images/Weapons/bow.png", (32, 32))
+        self.weapons["bow"] = Weapon("images/Weapons/enchantedbow.png", (32, 32))
         self.cur_weapon = self.weapons["bow"]
         self.cur_weapon.rect = self.rect.copy()
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.num_ability_uses = 2
+
+    def basic_attack(self, mbuttons, keys, dt, projectiles):
+        super().basic_attack(mbuttons, keys, dt)
+        mosPos = pygame.mouse.get_pos()
+        p = Projectile(None, 150, 50, self.rect.midtop, mosPos)
+        projectiles.append(p)
+
 
     def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""
@@ -44,7 +52,6 @@ class Ranger(Player):
             self.currentAbilityTimer = self.abilityCoolDown
             self.num_ability_uses -= 1
         elif self.usingAbility is True and self.cur_weapon.active:
-            print('done')
             self.deactivate_stealth()
             self.currentAbilityTimer = self.abilityCoolDown
             self.num_ability_uses -= 1
@@ -53,7 +60,7 @@ class Ranger(Player):
         super().update(*args)
         mouseButtons, keys, dt, projectiles = args
         self.use_ability(keys, mouseButtons)
-        self.basic_attack(mouseButtons, keys, dt)
+        self.basic_attack(mouseButtons, keys, dt, projectiles)
         if self.usingAbility is True:
             self.stealth_update(dt)
         if self.cur_weapon.active:
