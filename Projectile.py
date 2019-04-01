@@ -18,9 +18,11 @@ class Projectile(pygame.sprite.Sprite):
         """
 
         super().__init__()
-        #self.image = pygame.image.load(fileName).convert_alpha() #TODO: change this to image file
-        self.image = pygame.Surface((width,height))
-        self.image.set_colorkey(pygame.color.THECOLORS['black'])
+        if fileName is not None:
+            self.image = pygame.image.load(fileName).convert_alpha() #TODO: change this to image file
+        else:
+            self.image = pygame.Surface((width,height))
+            self.image.set_colorkey(pygame.color.THECOLORS['black'])
         self.image = pygame.transform.scale(self.image, (width,height) )
         self.rect = self.image.get_rect()
         r = min(width,height)
