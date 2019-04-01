@@ -18,7 +18,7 @@ class Ranger(Player):
         self.stats["MAX_HP"] = stats[3]
         self.weapons["bow"] = Weapon("images/Weapons/bow.png", (32, 32))
         self.cur_weapon = self.weapons["bow"]
-        self.cur_weapon.rect = self.rect
+        self.cur_weapon.rect = self.rect.copy()
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.num_ability_uses = 2
 

@@ -19,9 +19,8 @@ class Wizard(Player):
         self.stats["MAX_HP"] = stats[3]
         self.weapons["staff"] = Weapon("images/Weapons/earthstaff.png", (40, 40))
         self.cur_weapon = self.weapons["staff"]
-        self.cur_weapon.rect = self.rect
-        self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
-        self.NumAbility = 1
+        self.cur_weapon.rect = self.rect.copy()
+        self.num_ability_uses = 1
         self.DelayTimer = 60
         self.TimeStop_timer = 5
         self.useAbility = False
@@ -56,9 +55,9 @@ class Wizard(Player):
         mouseButtons, keys, dt = args
         super().update(*args)
         if keys[pygame.K_r] or mouseButtons[2]:
-            if self.NumAbility > 0:
+            if self.num_ability_uses > 0:
                 self.use_ability()
-                self.NumAbility -= 1
+                self.num_ability_uses -= 1
         self.timer_update(dt)
         self.basic_attack(mouseButtons, keys, dt)
         if self.cur_weapon.active:

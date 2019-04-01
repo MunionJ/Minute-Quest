@@ -98,13 +98,13 @@ class Player(Actor):
             self.facing_right = True
             self.image = self.frames["right"]
             if self.cur_weapon is not None:
-                self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
+                self.cur_weapon.rect.bottomleft = self.rect.center
 
         if keys[pygame.K_a]:
             self.facing_right = False
             self.image = pygame.transform.flip((self.frames["right"]), True, False)
             if self.cur_weapon is not None:
-                self.cur_weapon.rect.x = self.cur_weapon.rect.x - 15
+                self.cur_weapon.rect.bottomright = self.rect.center
 
         if keys[pygame.K_SPACE] and (self.cur_state == states.Standing or self.cur_state == states.Running):
             self.jump()

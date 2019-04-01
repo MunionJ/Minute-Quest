@@ -64,11 +64,19 @@ class GameHUD:
                                                       ),
                                (x, y - 15)
                                )
+            # display character class name
             self.hud_surf.blit(self.small_font.render(char.class_name,
                                                       False,
                                                       (pygame.color.THECOLORS['white'])
                                                       ),
                                (x, y - 30)
+                               )
+            # display number of ability uses remaining
+            self.hud_surf.blit(self.small_font.render("Ability: " + str(char.num_ability_uses),
+                                                      False,
+                                                      (pygame.color.THECOLORS['white'])
+                                                      ),
+                               (x, y + 80)
                                )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,

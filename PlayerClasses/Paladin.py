@@ -18,17 +18,17 @@ class Paladin(Player):
         self.stats["MAX_HP"] = stats[3]
         self.weapons["axe"] = Weapon("images/Weapons/waraxe.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
-        self.cur_weapon.rect = self.rect
+        self.cur_weapon.rect = self.rect.copy()
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.healPercentage = (.1 + (1/20)*self.level)
-        self.numHeals = 1
+        self.num_ability_uses = 1
 
     def use_ability(self):
         """ Method for using class-specific ability."""
         super().use_ability()
 
-        if self.numHeals > 0:
-            self.numHeals -= 1
+        if self.num_ability_uses > 0:
+            self.num_ability_uses -= 1
 
     def deal_dmg(self):
         return self.stats["MELEE"] + self.cur_weapon.atk_pwr
@@ -45,7 +45,7 @@ class Paladin(Player):
         super().update(*args)
         mouseButtons, keys, dt = args
         if keys[pygame.K_r] or mouseButtons[2]:
-            if self.numHeals > 0:
+            if self.num_ability_uses > 0:
                 self.use_ability()
         self.basic_attack(mouseButtons, keys, dt)
         if self.cur_weapon.active:

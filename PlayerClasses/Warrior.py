@@ -24,10 +24,8 @@ class Warrior(Player):
 
         self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
-        self.cur_weapon.rect = self.rect
-        self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
-
-        self.num_rages = 3
+        self.cur_weapon.rect = self.rect.copy()
+        self.num_ability_uses = 3
         self.rage_timer = 0     # counts upward to self.max_rage_timer
         self.max_rage_time = 5
         self.rage_active = False
@@ -35,7 +33,7 @@ class Warrior(Player):
     def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""
         if keys[pygame.K_r] or mouseButtons[2]:     # mouseButtons[2] = right mouse button
-            if self.num_rages > 0:
+            if self.num_ability_uses > 0:
                 self.activate_rage()
 
     def deal_dmg(self):
@@ -46,7 +44,7 @@ class Warrior(Player):
         """ Method for applying the effects of rage."""
         if not self.rage_active:
             self.rage_active = True
-            self.num_rages -= 1
+            self.num_ability_uses -= 1
             self.stats["MELEE"] *= 2
             self.stats["CUR_HP"] += self.stats["MAX_HP"] // 4
 
