@@ -23,10 +23,11 @@ class Projectile(pygame.sprite.Sprite):
         else:
             self.image = pygame.Surface((width,height))
             self.image.set_colorkey(pygame.color.THECOLORS['black'])
+            pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0, 0, width, height))
         self.image = pygame.transform.scale(self.image, (width,height) )
         self.rect = self.image.get_rect()
         r = min(width,height)
-        pygame.draw.rect(self.image,pygame.color.THECOLORS['red'],(0,0,width,height))
+
         self.pos = vec(pos[0],pos[1])
         self.velocity = vec(0,0)
         self.accel = vec(0,0)
