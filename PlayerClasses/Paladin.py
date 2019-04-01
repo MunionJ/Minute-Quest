@@ -43,7 +43,7 @@ class Paladin(Player):
     def update(self, *args):
         """ Method called for per frame update"""
         super().update(*args)
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
         if keys[pygame.K_r] or mouseButtons[2]:
             if self.num_ability_uses > 0:
                 self.use_ability()

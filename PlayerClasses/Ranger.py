@@ -51,7 +51,7 @@ class Ranger(Player):
 
     def update(self, *args):
         super().update(*args)
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
         self.use_ability(keys, mouseButtons)
         self.basic_attack(mouseButtons, keys, dt)
         if self.usingAbility is True:

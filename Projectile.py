@@ -43,7 +43,7 @@ class Projectile(pygame.sprite.Sprite):
         :param args: list of mousebuttons,keys currently pressed ,deltatime
         :return:
         """
-        mosbuttons, keys, dt = args
+        dt = args[2]
         if self.targetObject:
             self.setHeading(self.targetObject.rect.center)
         self.move(dt)
@@ -129,7 +129,7 @@ if __name__ == "__main__":
         dt = clock.tick(60) / 1000
 
         # Get Player Input and Apply Physics
-        running = manager.process_input(dt,True)
+        running = manager.process_input(dt,True,projectiles)
 
         # END COLLISION HANDLING
 
@@ -141,16 +141,16 @@ if __name__ == "__main__":
                 if event.button == 1:
                     p = Projectile("test",20,10,(SCREEN_RES[0]>>1,SCREEN_RES[1]>>1),pygame.mouse.get_pos())
                     projectiles.append(p)
-                    manager.addGameObject(p)
 
         for p in projectiles:
             if not screen_rect.colliderect(p.rect):
-                manager.removeGameObject(p)
                 projectiles.remove(p)
 
         window.fill(bg_color)
         pygame.draw.circle(window, pygame.color.THECOLORS['blue'], (SCREEN_RES[0]>>1, SCREEN_RES[1]>>1), 15)
 
+        for p in projectiles:
+            p.draw(window, (0,0))
         for obj in manager.game_objects["game_objects"]:
             obj.draw(window, (0,0))
 

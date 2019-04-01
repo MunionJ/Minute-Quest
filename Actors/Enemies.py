@@ -119,7 +119,7 @@ class Enemy(Actor):
 
 
     def update(self, *args):
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
         super().update(*args)
 
         if self.cur_state == states.Standing and self.facing_right:

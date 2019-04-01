@@ -52,7 +52,7 @@ class Wizard(Player):
         """Overrides for base class update method.
             Has all the same functionality, just adds the time for Wizard
             mechanics for Wizard. """
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
         super().update(*args)
         if keys[pygame.K_r] or mouseButtons[2]:
             if self.num_ability_uses > 0:

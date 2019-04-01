@@ -67,7 +67,7 @@ class Warrior(Player):
         """ Override for base class update method.
             Has all the same functionality, just added rage
             mechanics for Warrior."""
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
         super().update(*args)
         self.use_ability(keys, mouseButtons)
         self.basic_attack(mouseButtons, keys, dt)

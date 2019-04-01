@@ -86,7 +86,7 @@ class Player(Actor):
 
     def update(self, *args):
         """ Testing Player jumping."""
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
 
         super().update(*args)
 

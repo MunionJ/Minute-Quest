@@ -62,7 +62,7 @@ class EventManager:
         for obj in self.game_objects['game_objects']:
             obj.toggleDebug()
 
-    def process_input(self, dt, updateEnemies):
+    def process_input(self, dt, updateEnemies, projectiles):
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
 
@@ -99,8 +99,8 @@ class EventManager:
                 elif game_pad.get_axis(0) > 0.25:
                     temp[pygame.K_d] = True
 
-                #for axis in range(game_pad.get_numaxes()):
-                    #print(axis, " ", game_pad.get_axis(axis))
+                for axis in range(game_pad.get_numaxes()):
+                    print(axis, ": ",game_pad.get_axis(axis))
 
                 for hat in range(game_pad.get_numhats()):
                     # PASSING FOR NOW UNTIL WE START ACTUALLY TESTING GAMEPAD
@@ -142,12 +142,14 @@ class EventManager:
 
         mouseButtons = pygame.mouse.get_pressed()
         for obj in self.game_objects['game_objects']:
-            if obj.type == "ENEMY":
+            if obj.type == "ENEMY" or obj.type == "PROJECTILE":
                 if updateEnemies:
-                    obj.update(mouseButtons, keys, dt)
+                    obj.update(mouseButtons, keys, dt, projectiles)
             else:
-                obj.update(mouseButtons, keys, dt)
+                obj.update(mouseButtons, keys, dt, projectiles)
 
+        for obj in projectiles:
+            obj.update(mouseButtons, keys, dt, projectiles)
         #pygame.event.pump()
         return True
 

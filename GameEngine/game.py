@@ -66,7 +66,7 @@ class Game:
                         self.gameOver()
                     break
 
-                self.running = self.manager.process_input(dt, (not (self.player.class_name=="WIZARD" and self.player.usingAbility)))
+                self.running = self.manager.process_input(dt, (not (self.player.class_name=="WIZARD" and self.player.usingAbility)), self.projectiles)
                 self.running = self.manager.poll_input(dt)
                 self.player_swap_cd(dt)
                 cur_pos = self.player.rect
