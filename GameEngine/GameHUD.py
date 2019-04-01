@@ -120,7 +120,7 @@ class GameHUD:
     def update(self, *args):
         """ Updates remaining time for given playable
             segment ( dungeon, town, etc. )"""
-        mouseButtons, keys, dt = args
+        mouseButtons, keys, dt, projectiles = args
         self.timer -= dt
 
         if self.timer < 10:
