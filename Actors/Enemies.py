@@ -51,24 +51,42 @@ class Enemy(Actor):
         self.invuln_timer = 0
         self.type = "ENEMY"
         self.sees_player = False
+        self.shouldJump = False
         self.vision_range = 250
 
     def move(self, keys, dt): #TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
         if self.sees_player:
+            if self.shouldJump:
+                self.jump()
+                self.shouldJump = False
+
             if self.facing_right:
                 self.accel.x += ENEMY_ACC*dt
             else:
                 self.accel.x -= ENEMY_ACC*dt
             self.velocity += self.accel
+
             if self.velocity.length() > ENEMY_MAX_VEL:
                 self.velocity.scale_to_length(ENEMY_MAX_VEL)
+
+
         else:
             #self.facing_right = True
             self.accel = vec(0,0)
             self.velocity = vec(0,self.velocity.y)
 
+    def jump(self):
+        """ Generic jump method. Can be
+            overridden later."""
 
+        if self.facing_right:
+            self.image = self.frames["rjump"]
+        if not self.facing_right:
+            self.image = pygame.transform.flip(self.frames['rjump'], True, False)
+        if self.onSurface:
+            self.velocity += 1.5*self.jump_vector
+            self.jumpFrameCount = self.jumpFrames
 
     def determineState(self):
         if self.velocity.x < 0:
@@ -242,6 +260,11 @@ class Enemy(Actor):
                 self.facing_right = False
             else:
                 self.facing_right = True
+
+            if player.pos.y < self.pos.y:
+                self.shouldJump = True
+            else:
+                self.shouldJump = False;
 
 
 
