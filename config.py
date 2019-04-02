@@ -21,7 +21,7 @@ ENEMY_MAX_VEL = 30
 
 #Projectile Variables
 MAX_ACC = 3
-MAX_VELOCITY = 200
+MAX_VELOCITY = 400
 
 #Maximum offset of pixels between an actor on a surface to determine if a player is on a surface
 PIXEL_DIFFERENCE = 2
