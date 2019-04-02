@@ -52,6 +52,7 @@ class Player(Actor):
 
         self.jumpFrameCount = 0
         self.jumpFrames = 2
+        self.camera_offset = None
 
     def basic_attack(self, mbuttons, keys, dt):
         """ Generic attack method. Will be
@@ -235,6 +236,7 @@ class Player(Actor):
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
+        self.camera_offset = cameraPos
         window.blit(self.image, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))
         if self.debug:
             debug = pygame.Rect(int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]), self.rect.w, self.rect.h)

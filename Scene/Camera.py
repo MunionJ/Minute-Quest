@@ -82,7 +82,7 @@ class Camera():
             the game screen."""
         self.debug = not self.debug
 
-    def draw(self, screen, player, enemy_list):
+    def draw(self, screen, player, enemy_list, projectiles):
         """
             Draws game Scene by passing camera offset
             :param screen: screen to draw to
@@ -103,6 +103,8 @@ class Camera():
             overlay.fill((255,255,255))
             overlay.set_alpha(alphaLevel)
             screen.blit(overlay,(0,0))
+        for p in projectiles:
+            p.draw(screen, self.pos)
 
 
     def update(self,*args):

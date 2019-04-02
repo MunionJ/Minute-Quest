@@ -1,6 +1,7 @@
 from Actors.Player import Player
 from Projectile import Projectile
 from Weapon import *
+import config
 
 
 class Ranger(Player):
@@ -22,12 +23,20 @@ class Ranger(Player):
         self.cur_weapon.rect = self.rect.copy()
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.num_ability_uses = 2
+        self.base_attack_cooldown = 0.5
+        self.last_base_attack = 0
 
     def basic_attack(self, mbuttons, keys, dt, projectiles):
-        super().basic_attack(mbuttons, keys, dt)
-        mosPos = pygame.mouse.get_pos()
-        p = Projectile(None, 150, 50, self.rect.midtop, mosPos)
-        projectiles.append(p)
+        if mbuttons[0]:
+            if self.last_base_attack <= 0 and self.camera_offset is not None:
+                super().basic_attack(mbuttons, keys, dt)
+                mosPos = pygame.mouse.get_pos()
+                tX = mosPos[0] + self.camera_offset[0]
+                tY = mosPos[1] + self.camera_offset[1]
+                p = Projectile(None, 16,16, self.rect.midtop, (tX,tY))
+                projectiles.append(p)
+                self.last_base_attack = self.base_attack_cooldown
+        self.last_base_attack -= dt
 
 
     def use_ability(self, keys, mouseButtons):

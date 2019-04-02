@@ -95,6 +95,8 @@ class Game:
                         self.player.heal_party(self.party_list)
 
                 self.collisionHandling(dt)
+                self.addProjectiles()
+
                 #Win Condition
                 if not self.player.alive:
                     prevRect = self.player.rect
@@ -117,7 +119,7 @@ class Game:
                 self.camera.setCameraPosition(self.player.rect.center)
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player, self.enemiesByRoom)
+                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
 
@@ -157,11 +159,28 @@ class Game:
         currentRoomIndex = None
         roomWidth = self.dungeon.rooms[0].bgImageRect.w
         tiles = pygame.sprite.Group()
+
+        cur_index = 0
         for i in range(len(self.dungeon.rooms)):
             if self.player.rect.colliderect(self.dungeon.rooms[i].bgImageRect):
-                tiles.add(self.dungeon.rooms[i].walls.sprites())
+                cur_index = i
+                break
+        tiles.add(self.dungeon.rooms[cur_index].walls.sprites())
 
         self.collisionCheck(tiles,dt)
+
+        for p in self.projectiles:
+            if not p.rect.colliderect(self.dungeon.rooms[cur_index].bgImageRect):
+                if self.manager.hasReferenceToGameObject(p):
+                    self.manager.removeGameObject(p)
+                    self.projectiles.remove(p)
+                    continue
+
+            for tile in tiles:
+                if tile.rect.colliderect(p.rect):
+                    if self.manager.hasReferenceToGameObject(p):
+                        self.manager.removeGameObject(p)
+                        self.projectiles.remove(p)
 
     def collisionCheck(self,tiles,dt):
 
@@ -203,6 +222,17 @@ class Game:
                 if self.prev_room != room:
                     self.prev_room = room
                     self.HUD.reset_objective_timer()
+
+                for enemy in room.enemies:
+                    for p in self.projectiles:
+                        if p.rect.colliderect(enemy.rect):
+                            enemy.take_damage(p)
+                            if self.manager.hasReferenceToGameObject(p):
+                                self.manager.removeGameObject(p)
+                                self.projectiles.remove(p)
+                                if not enemy.alive:
+                                    room.enemies.remove(enemy)
+
                 for enemy in room.enemies:
                     if(not self.manager.hasReferenceToGameObject(enemy)):
                         self.manager.addGameObject(enemy)
@@ -260,6 +290,11 @@ class Game:
                 for enemy in room.enemies:
                     if self.manager.hasReferenceToGameObject(enemy):
                         self.manager.removeGameObject(enemy)
+
+    def addProjectiles(self):
+        for p in self.projectiles:
+            if not self.manager.hasReferenceToGameObject(p):
+                self.manager.addGameObject(p)
 
     def gameWin(self):
         "Award Experience and level up"

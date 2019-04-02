@@ -27,7 +27,6 @@ class Projectile(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (width,height) )
         self.rect = self.image.get_rect()
         r = min(width,height)
-
         self.pos = vec(pos[0],pos[1])
         self.velocity = vec(0,0)
         self.accel = vec(0,0)
@@ -63,6 +62,12 @@ class Projectile(pygame.sprite.Sprite):
         self.pos += self.velocity * dt
         self.rect.center = (int(self.pos.x),int(self.pos.y))
 
+    def deal_dmg(self):
+        """
+        Deals set damage to the enemy
+        :return: number amount of damage to deal
+        """
+        return self.damage
 
     def setHeading(self,pos):
         """
