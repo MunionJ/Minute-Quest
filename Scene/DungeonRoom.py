@@ -27,7 +27,7 @@ class DungeonRoom:
         self.totalMapWidth = self.header_data['width'] * self.header_data['tilewidth']
         self.totalMapHeight = self.header_data['height'] * self.header_data['tileheight']
         r, g, b, a = tuple(self.header_data['background_color']) if 'background_color' in self.header_data.keys() else (
-        0, 0, 0, 255)
+            0, 0, 0, 255)
         self.bg_color = pygame.Color(r, g, b, a)
         self.boundary = pygame.Rect(0, 0, self.totalMapWidth, self.totalMapHeight)
         tilewidth = self.header_data['tilewidth']
@@ -42,6 +42,7 @@ class DungeonRoom:
         self.walls = pygame.sprite.Group()
         self.enemies = []
         self.objective_complete = False
+        self.puzzle = False
 
         for i in range(len(self.layer_data)):
             layer = self.layer_data[i]
@@ -104,13 +105,40 @@ class DungeonRoom:
             elif room_type[1] == "project puzzle room.txt":
                 return type + "Beat Original Puzzle"
 
-    def draw(self,screen,cameraPos):
-        screen.blit(self.bgImage,(int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))
+    def roomObj(self, screen, player):
+        room_type = self.file_name.split("/")
+        room_type = room_type[2:]
+        while self.objective_complete == False and room_type[0] == "EnemyRooms":
+            updated_rect = player.rect.clamp(screen)
+            player.set_pos(updated_rect)
+            if len(self.enemies) == 0:
+                self.objective_complete = True
+        while self.objective_complete == False and room_type[0] == "PuzzleRooms":
+            if room_type[1] == "map_puzzle_daniel.txt":
+                updated_rect = player.rect.clamp(screen)
+                player.set_pos(updated_rect)
+                if self.puzzle:
+                    self.objective_complete = True
+            elif room_type[1] == "MinuteQuestRoom3.txt":
+                updated_rect = player.rect.clamp(screen)
+                player.set_pos(updated_rect)
+                if self.puzzle:
+                    self.objective_complete = True
+            elif room_type[1] == "project puzzle room.txt":
+                updated_rect = player.rect.clamp(screen)
+                player.set_pos(updated_rect)
+                if self.puzzle:
+                    self.objective_complete = True
+        if self.objective_complete:
+            player.set_pos(player)
+        pass
+
+    def draw(self, screen, cameraPos):
+        screen.blit(self.bgImage, (int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))
 
         for wall in self.walls:
             # TODO Fix tile draw code
-            wall.draw(screen,cameraPos)
-
+            wall.draw(screen, cameraPos)
 
         for enemy in self.enemies:
             screen.blit(
