@@ -48,6 +48,14 @@ class GameHUD:
                                   (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
                                   bar_height)
                                  )
+                # draw xp bar
+                pygame.draw.rect(self.hud_surf,
+                                 pygame.color.THECOLORS['green3'],
+                                 (x,
+                                  y + 70,
+                                  (char.cur_xp / char.xp_to_level) * bar_width,
+                                  bar_height)
+                                 )
             else:
                 # gray out hp bar for inactive members
                 pygame.draw.rect(self.hud_surf,
@@ -55,6 +63,14 @@ class GameHUD:
                                  (x,
                                   y,
                                   (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
+                                  bar_height)
+                                 )
+                # gray out xp bar for inactive members
+                pygame.draw.rect(self.hud_surf,
+                                 pygame.color.THECOLORS['gray'],
+                                 (x,
+                                  y + 70,
+                                  (char.cur_xp / char.xp_to_level) * bar_width,
                                   bar_height)
                                  )
             # draw numerical values for each party member's HP
@@ -76,13 +92,19 @@ class GameHUD:
                                                       False,
                                                       (pygame.color.THECOLORS['white'])
                                                       ),
-                               (x, y + 80)
+                               (x, y + 100)
                                )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
                              pygame.color.THECOLORS["white"],
                              (x, y, bar_width, bar_height),
                              2)
+            # draw outline of xp bar
+            pygame.draw.rect(self.hud_surf,
+                             pygame.color.THECOLORS['white'],
+                             (x, y + 70, bar_width, bar_height),
+                             2)
+            # draw player sprite
             self.hud_surf.blit(char.rframes[1],
                                (x, y + 20)
                                )
