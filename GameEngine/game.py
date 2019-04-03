@@ -1,7 +1,6 @@
-from Actors.Player import *
 from Scene.Camera import *
 from GameEngine.GameHUD import *
-from Party import *
+from Actors.Party import *
 from Actors.Enemies import *
 
 
@@ -170,14 +169,14 @@ class Game:
         self.collisionCheck(tiles,dt)
 
         for p in self.projectiles:
-            if not p.rect.colliderect(self.dungeon.rooms[cur_index].bgImageRect):
+            if not p.hitbox.colliderect(self.dungeon.rooms[cur_index].bgImageRect):
                 if self.manager.hasReferenceToGameObject(p):
                     self.manager.removeGameObject(p)
                     self.projectiles.remove(p)
                     continue
 
             for tile in tiles:
-                if tile.rect.colliderect(p.rect):
+                if tile.rect.colliderect(p.hitbox):
                     if self.manager.hasReferenceToGameObject(p):
                         self.manager.removeGameObject(p)
                         self.projectiles.remove(p)
@@ -225,7 +224,7 @@ class Game:
 
                 for enemy in room.enemies:
                     for p in self.projectiles:
-                        if p.rect.colliderect(enemy.rect):
+                        if p.hitbox.colliderect(enemy.rect):
                             enemy.take_damage(p)
                             if self.manager.hasReferenceToGameObject(p):
                                 self.manager.removeGameObject(p)

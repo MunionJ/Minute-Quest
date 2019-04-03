@@ -1,7 +1,6 @@
 from Actors.Player import Player
-from Projectile import Projectile
+from Projectiles.Arrow import Arrow
 from Weapon import *
-import config
 
 
 class Ranger(Player):
@@ -33,7 +32,7 @@ class Ranger(Player):
                 mosPos = pygame.mouse.get_pos()
                 tX = mosPos[0] + self.camera_offset[0]
                 tY = mosPos[1] + self.camera_offset[1]
-                p = Projectile('images/Weapons/arrow.png', 32, 32, self.rect.midtop, (tX, tY))
+                p = Arrow('images/Weapons/arrow.png', 32, 32, self.rect.center, (tX, tY))
                 projectiles.append(p)
                 self.last_base_attack = self.base_attack_cooldown
         self.last_base_attack -= dt

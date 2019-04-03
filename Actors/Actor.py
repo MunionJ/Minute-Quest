@@ -67,6 +67,9 @@ class Actor(pygame.sprite.Sprite):
         self.rect.center = (int(self.pos.x), int(self.pos.y))
 
     def moveY(self,dt):
+
+        if self.velocity.y >= MAX_Y_VEL:
+            self.velocity.y = MAX_Y_VEL
         self.velocity.y += self.accel.y
 
         # self.velocity.length() returns the Euclidean length of the vector

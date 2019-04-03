@@ -24,7 +24,8 @@ class Projectile(pygame.sprite.Sprite):
             self.image = pygame.Surface((width,height))
             self.image.set_colorkey(pygame.color.THECOLORS['black'])
             pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0, 0, width, height))
-        self.image = pygame.transform.scale(self.image, (width,height) )
+        self.image = pygame.transform.scale(self.image, (width,height))
+        self.blit_image = self.image.copy()
         self.rect = self.image.get_rect()
         r = min(width,height)
         self.pos = vec(pos[0],pos[1])
@@ -34,10 +35,12 @@ class Projectile(pygame.sprite.Sprite):
         self.speed = speed
         self.targetObject = targetGameObject
         self.heading = None
+        self.blitHeading = None
         self.setHeading(targetPos)
         self.damage = damage
         self.type = "PROJECTILE"
         self.rect.center = (int(self.pos[0]),int(self.pos[1]))
+        self.rotateIMG()
 
 
     def update(self, *args):
@@ -58,9 +61,9 @@ class Projectile(pygame.sprite.Sprite):
         """
 
         self.velocity += self.accel * dt
-        self.velocity.scale_to_length(MAX_VELOCITY)
+        self.velocity.scale_to_length(self.speed)
         self.pos += self.velocity * dt
-        self.rect.center = (int(self.pos.x),int(self.pos.y))
+        self.rect.center = (int(self.pos.x), int(self.pos.y))
 
     def deal_dmg(self):
         """
@@ -83,10 +86,14 @@ class Projectile(pygame.sprite.Sprite):
         heading %= 2*math.pi
         self.accel.x = self.speed*math.cos(heading)
         self.accel.y = -self.speed*math.sin(heading)
+        self.blitHeading = math.degrees(heading)
         self.heading = heading
 
     def rotateIMG(self):
         """Rotate image surface to face heading"""
+        self.blit_image = pygame.transform.rotate(self.blit_image, self.blitHeading - 45)
+        self.rect = self.blit_image.get_rect()
+        self.rect.center = (int(self.pos.x), int(self.pos.y))
 
     def draw(self,screen,cameraPos):
         """
@@ -95,7 +102,7 @@ class Projectile(pygame.sprite.Sprite):
         :param cameraPos: offset of camera from worldview
         :return: void
         """
-        screen.blit(self.image, (int(self.rect.center[0] - cameraPos[0]), int(self.rect.center[1]-cameraPos[1])))
+        screen.blit(self.blit_image, (int(self.rect[0] - cameraPos[0]), int(self.rect[1]-cameraPos[1])))
 
 
 if __name__ == "__main__":
