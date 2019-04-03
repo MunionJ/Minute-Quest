@@ -1,5 +1,6 @@
 import pygame
 import copy
+import random
 from Actors.Player import Player
 from Weapon import Weapon
 
@@ -62,6 +63,11 @@ class Warrior(Player):
         self.rage_timer += dt
         if self.rage_timer >= self.max_rage_time:
             self.deactivate_rage()
+
+    def gain_level(self):
+        super().gain_level()
+        self.stats["MAX_HP"] += random.randint(5, 10)
+        self.stats["MELEE"] += random.randint(2, 3)
 
     def update(self, *args):
         """ Override for base class update method.

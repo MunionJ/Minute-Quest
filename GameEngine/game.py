@@ -280,9 +280,15 @@ class Game:
                     if self.player.cur_weapon.active:
                         for enemy in room.enemies:
                             if self.player.cur_weapon.rect.colliderect(enemy.rect):
-                                print("game.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
+                                #print("game.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
                                 enemy.take_damage(self.player)
                                 if not enemy.alive:
+                                    # give xp to each party member
+                                    for char in self.party_list.party_members:
+                                        if self.player == char:
+                                            char.gain_xp(enemy, 1.25)
+                                        else:
+                                            char.gain_xp(enemy)
                                     room.enemies.remove(enemy)
 
 

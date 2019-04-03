@@ -10,7 +10,7 @@ class Player(Actor):
         super().__init__(start_pos)
         self.playerHeight = 48
         self.level = 1
-        self.cur_xp = 0
+        self.cur_xp = 800
         self.xp_to_level = 1000
         self.alive = True
         self.t_anim = time.time() + 0.125 #timer used for animations
@@ -219,11 +219,11 @@ class Player(Actor):
             a Player status to dead."""
         self.alive = False
 
-    def gain_xp(self, enemy_obj):
+    def gain_xp(self, enemy_obj, multiplier=1):
         """ Generic method for gaining
             xp."""
         # xp gain formula: enemy base xp value * (enemy level / player level)
-        self.cur_xp += (enemy_obj.xp_value * (enemy_obj.level / self.level))
+        self.cur_xp += (enemy_obj.xp_value * (enemy_obj.level / self.level)) * multiplier
         while self.cur_xp >= self.xp_to_level:
             self.gain_level()
             self.cur_xp -= self.xp_to_level

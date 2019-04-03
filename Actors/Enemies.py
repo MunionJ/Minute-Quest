@@ -273,7 +273,6 @@ class Enemy(Actor):
 
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
-        print("Enemy.py: Line 106: Current HP: ", self.stats["CUR_HP"])
         if self.stats["CUR_HP"] > 0 and  self.invuln_timer <= 0:
             if self.stats["CUR_HP"] - player.deal_dmg() <= 0:
                 self.stats["CUR_HP"] = 0
