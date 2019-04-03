@@ -83,6 +83,18 @@ class Party:
 
         self.active_member = self.party_members[self.party_index]
 
+    def award_xp(self, enemy_list):
+        """ Method for distributing xp to the party."""
+        for enemy in enemy_list:
+            for member in self.party_members:
+                if member.alive:
+                    if self.active_member == member:
+                        member.gain_xp(enemy, 1.25)
+                    else:
+                        member.gain_xp(enemy)
+
+
+
     def calc_avg_level(self):
         """ Method for calculating average
             level of the party."""

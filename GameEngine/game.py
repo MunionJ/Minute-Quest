@@ -293,13 +293,7 @@ class Game:
                 for enemy in room.enemies:
                     if self.manager.hasReferenceToGameObject(enemy):
                         self.manager.removeGameObject(enemy)
-        for enemy in flagged_enemies:
-            for char in self.party_list.party_members:
-                if char.alive:
-                    if self.player == char:
-                        char.gain_xp(enemy, 1.25)
-                    else:
-                        char.gain_xp(enemy)
+        self.party_list.award_xp(flagged_enemies)
         flagged_enemies.clear()
 
     def addProjectiles(self):
