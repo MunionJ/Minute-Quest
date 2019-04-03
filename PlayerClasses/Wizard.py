@@ -32,6 +32,9 @@ class Wizard(Player):
     def deal_dmg(self):
         return self.stats["MAGIC"]
 
+    def gain_level(self):
+        super().gain_level()
+
     def ability_timer(self, dt):
         """Does the timer for both the ability itself and the cool down timer for using it again"""
         if self.TimeStop:

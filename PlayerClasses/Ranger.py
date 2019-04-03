@@ -65,6 +65,9 @@ class Ranger(Player):
             self.currentAbilityTimer = self.abilityCoolDown
             self.num_ability_uses -= 1
 
+    def gain_level(self):
+        super().gain_level()
+
     def update(self, *args):
         super().update(*args)
         mouseButtons, keys, dt, projectiles = args

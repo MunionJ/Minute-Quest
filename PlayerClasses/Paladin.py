@@ -33,6 +33,9 @@ class Paladin(Player):
     def deal_dmg(self):
         return self.stats["MELEE"] + self.cur_weapon.atk_pwr
 
+    def gain_level(self):
+        super().gain_level()
+
     def heal_party(self,party):
         for member in party.party_members:
             if member.alive:
