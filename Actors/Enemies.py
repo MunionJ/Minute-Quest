@@ -48,7 +48,7 @@ class Enemy(Actor):
         self.onSurface = False
         self.stats["MAX_HP"] = 5
         self.stats["CUR_HP"] = self.stats["MAX_HP"]
-        self.damage = 4
+        self.stats["MELEE"] = 3
         self.invuln_timer = 0
         self.type = "ENEMY"
         self.sees_player = False

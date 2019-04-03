@@ -74,11 +74,11 @@ class Player(Actor):
             player takes damage. Can be
             overridden if need be."""
         if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
-            if self.stats["CUR_HP"] - enemy_object.damage <= 0:
+            if self.stats["CUR_HP"] - enemy_object.stats["MELEE"] <= 0:
                 self.stats["CUR_HP"] = 0
                 self.alive = False
             else:
-                self.stats["CUR_HP"] -= enemy_object.damage
+                self.stats["CUR_HP"] -= enemy_object.stats["MELEE"]
                 self.receive_knockback(enemy_object)
             self.invuln_timer = INVULN_TIMER
 
