@@ -95,6 +95,13 @@ class GameHUD:
                                                       ),
                                (x, y + 100)
                                )
+            # display character level
+            self.hud_surf.blit(self.small_font.render("LV: " + str(char.level),
+                                                      False,
+                                                      (pygame.color.THECOLORS['white'])
+                                                      ),
+                               (x + 30, y + 60)
+                               )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
                              pygame.color.THECOLORS["white"],
