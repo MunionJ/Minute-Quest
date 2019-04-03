@@ -19,9 +19,17 @@ class Player(Actor):
                         pygame.image.load(img + "/right2.png"),
                         pygame.image.load(img + "/right3.png"),
                         pygame.image.load(img + "/right2.png")]
+        #self.swingframes = [pygame.image.load(img + "/swing1.png")]
         self.frames = {"right": pygame.image.load(img + "/right1.png"),
                        "rjump": pygame.image.load(img + "/jump1.png"),}
+
         # dictionary of frames.  the values will be updating to make animations
+        #for i in self.swingframes:
+        #    rect = self.swingframes[i].get_rect()
+        #    width = int(rect.w*(self.playerHeight/rect.h))
+        #    height = self.playerHeight
+        #    self.swingframes[i] = pygame.transform.scale(self.swingframes[i], (width, height))
+        #    self.swingframes[i] = self.swingframes[i].convert_alpha()
         for i in self.frames:
             rect = self.frames[i].get_rect()
             width = int(rect.w*(self.playerHeight/rect.h))
@@ -56,6 +64,8 @@ class Player(Actor):
         self.jumpFrameCount = 0
         self.jumpFrames = 2
         self.camera_offset = None
+        self.weapon_cords = (0,0)
+        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also increases the degrees rotated.
 
     def basic_attack(self, mbuttons, keys, dt):
         """ Generic attack method. Will be
@@ -63,9 +73,15 @@ class Player(Actor):
             classes later (maybe)."""
         if self.class_name != "RANGER":
             self.weapon_rotated = pygame.transform.rotate(self.cur_weapon.image,
-                                                      45 + ((self.swing_time - pygame.time.get_ticks()) / 1000) * 180)
+                                                      45 - ((pygame.time.get_ticks() - self.swing_time) / self.attack_duration) * 160)
+        if pygame.time.get_ticks() - self.attack_duration > self.swing_time:
+            self.cur_weapon.active = False
         if mbuttons[0]:
-            if pygame.time.get_ticks() - 1000 > self.swing_time:
+            if pygame.time.get_ticks() - self.attack_duration > self.swing_time:
+               # if self.facing_right:
+               #     self.image = self.swingframes[0]
+               # if not self.facing_right:
+               #     self.image = pygame.transform.flip(self.swingframes[0], True, False)
                 self.cur_weapon.active = True
                 self.swing_time = pygame.time.get_ticks()
 
@@ -257,7 +273,8 @@ class Player(Actor):
             if self.facing_right:
                 if self.cur_weapon.active:
                         window.blit(self.weapon_rotated,
-                                    (self.rect.x - cameraPos[0], self.rect.y - cameraPos[1]-15)
+                                    (self.rect.x - cameraPos[0] + 10, self.rect.y - cameraPos[1] - 10 + ((pygame.time.get_ticks() - self.swing_time) / self.attack_duration) * 23)
+                                    # this moves the y cord of the weapon as it rotates. hacky way to match rotation. doesnt really work.
                                     )
 
                         # pygame.draw.rect(window,
@@ -271,7 +288,7 @@ class Player(Actor):
             if not self.facing_right:
                 if self.cur_weapon.active:
                         window.blit((pygame.transform.flip(self.weapon_rotated, True, False)),
-                                    (self.rect.x - cameraPos[0]-20, self.rect.y - cameraPos[1]-15))
+                                    (self.rect.x - cameraPos[0]-20, self.rect.y - cameraPos[1] - 10 + ((pygame.time.get_ticks() - self.swing_time) / self.attack_duration) * 23))
 
 
                         # pygame.draw.rect(window,
