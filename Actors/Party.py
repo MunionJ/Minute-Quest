@@ -86,4 +86,6 @@ class Party:
     def calc_avg_level(self):
         """ Method for calculating average
             level of the party."""
-        pass
+        for char in self.party_members:
+            self.avg_level += char.level
+        self.avg_level /= len(self.party_members)

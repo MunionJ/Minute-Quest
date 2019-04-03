@@ -22,6 +22,7 @@ class Paladin(Player):
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
         self.healPercentage = (.1 + (1/20)*self.level)
         self.num_ability_uses = 1
+        self.weapon_rotated = self.cur_weapon.image
 
     def use_ability(self):
         """ Method for using class-specific ability."""

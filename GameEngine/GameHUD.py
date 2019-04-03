@@ -26,6 +26,7 @@ class GameHUD:
         y = 30
         bar_width = 75
         bar_height = 15
+        xp_bar_height = 10
         self.hud_surf.fill((0, 0, 0))
         for char in party_list.party_members:
             if char == party_list.active_member:
@@ -54,7 +55,7 @@ class GameHUD:
                                  (x,
                                   y + 70,
                                   (char.cur_xp / char.xp_to_level) * bar_width,
-                                  bar_height)
+                                  xp_bar_height)
                                  )
             else:
                 # gray out hp bar for inactive members
@@ -71,7 +72,7 @@ class GameHUD:
                                  (x,
                                   y + 70,
                                   (char.cur_xp / char.xp_to_level) * bar_width,
-                                  bar_height)
+                                  xp_bar_height)
                                  )
             # draw numerical values for each party member's HP
             self.hud_surf.blit(self.small_font.render(str(char.stats["CUR_HP"]) + ' / ' + str(char.stats["MAX_HP"]),
@@ -94,6 +95,13 @@ class GameHUD:
                                                       ),
                                (x, y + 100)
                                )
+            # display character level
+            self.hud_surf.blit(self.small_font.render("LV: " + str(char.level),
+                                                      False,
+                                                      (pygame.color.THECOLORS['white'])
+                                                      ),
+                               (x + 30, y + 60)
+                               )
             # draw outline of hp bar
             pygame.draw.rect(self.hud_surf,
                              pygame.color.THECOLORS["white"],
@@ -102,7 +110,7 @@ class GameHUD:
             # draw outline of xp bar
             pygame.draw.rect(self.hud_surf,
                              pygame.color.THECOLORS['white'],
-                             (x, y + 70, bar_width, bar_height),
+                             (x, y + 70, bar_width, xp_bar_height),
                              2)
             # draw player sprite
             self.hud_surf.blit(char.rframes[1],

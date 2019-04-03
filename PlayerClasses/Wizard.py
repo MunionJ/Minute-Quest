@@ -24,6 +24,7 @@ class Wizard(Player):
         self.DelayTimer = 60
         self.TimeStop_timer = 5
         self.useAbility = False
+        self.weapon_rotated = self.cur_weapon.image
 
     def use_ability(self):
         """Gives the Wizard the power to use his abilities"""

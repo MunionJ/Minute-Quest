@@ -183,6 +183,8 @@ class Game:
 
     def collisionCheck(self,tiles,dt):
 
+        # keep track of killed enemies to award xp
+        flagged_enemies = []
         self.player.moveX(dt)
         collisions = pygame.sprite.spritecollide(self.player, tiles, False)
         if collisions:
@@ -230,6 +232,7 @@ class Game:
                                 self.manager.removeGameObject(p)
                                 self.projectiles.remove(p)
                                 if not enemy.alive:
+                                    flagged_enemies.append(enemy)
                                     room.enemies.remove(enemy)
 
                 for enemy in room.enemies:
@@ -282,12 +285,7 @@ class Game:
                                 #print("game.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
                                 enemy.take_damage(self.player)
                                 if not enemy.alive:
-                                    # give xp to each party member
-                                    for char in self.party_list.party_members:
-                                        if self.player == char:
-                                            char.gain_xp(enemy, 1.25)
-                                        else:
-                                            char.gain_xp(enemy)
+                                    flagged_enemies.append(enemy)
                                     room.enemies.remove(enemy)
 
 
@@ -295,6 +293,14 @@ class Game:
                 for enemy in room.enemies:
                     if self.manager.hasReferenceToGameObject(enemy):
                         self.manager.removeGameObject(enemy)
+        for enemy in flagged_enemies:
+            for char in self.party_list.party_members:
+                if char.alive:
+                    if self.player == char:
+                        char.gain_xp(enemy, 1.25)
+                    else:
+                        char.gain_xp(enemy)
+        flagged_enemies.clear()
 
     def addProjectiles(self):
         for p in self.projectiles:
