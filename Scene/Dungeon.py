@@ -24,23 +24,25 @@ class Dungeon:
 
             roomType = None
 
-            if dice == 0:
-                roomType = "LootRooms"
+            while roomType == None:
 
-            elif dice < 41:
-                roomType = "EnemyRooms"
+                if dice == 0 and len(tempChoices['LootRooms']) > 0:
+                    roomType = "LootRooms"
 
-            elif dice < 82:
-                roomType = "PlatformRooms"
+                elif dice < 41 and len(tempChoices['EnemyRooms']) > 0:
+                    roomType = "EnemyRooms"
 
-            else:
-                roomType = "PuzzleRooms"
+                elif dice < 82 and len(tempChoices['PlatformRooms']) > 0:
+                    roomType = "PlatformRooms"
+
+                elif len(tempChoices['PuzzleRooms']) > 0:
+                    roomType = "PuzzleRooms"
 
             tempChoices = self.removeEmptyChoices(tempChoices)
             roomName = random.choice(tempChoices[roomType])
             tempChoices[roomType].remove(roomName)
             dungeonName = "./maps/{0}/{1}".format(roomType, roomName)
-
+            print(dungeonName)
             sprite_sheet = self.assignSpriteSheet(roomName)
             if sprite_sheet == None:
                 raise TypeError("Map Name Not Found in Config " + roomName)
