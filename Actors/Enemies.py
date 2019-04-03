@@ -6,10 +6,11 @@ vec = pygame.math.Vector2
 class Enemy(Actor):
     """Basic enemy class that creates the properties/methods shared across all enemies."""
 
-    def __init__(self, spawn_point, img):
+    def __init__(self, spawn_point, img, xp_val=100):
         super().__init__(spawn_point)
         self.enemyHeight = 48
         self.level = 1
+        self.xp_value = xp_val
         self.alive = True
         self.t_anim = time.time() + 0.125  # timer used for animations
         self.anim = 0  # which frame of animations are active.
