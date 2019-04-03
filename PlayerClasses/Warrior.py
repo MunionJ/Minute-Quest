@@ -30,6 +30,7 @@ class Warrior(Player):
         self.rage_timer = 0     # counts upward to self.max_rage_timer
         self.max_rage_time = 5
         self.rage_active = False
+        self.weapon_rotated = self.cur_weapon.image
 
     def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""

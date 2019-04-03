@@ -42,7 +42,8 @@ class Player(Actor):
         self.currentAbilityTimer = 5
         self.type = "PLAYER"
         self.is_seen = False
-
+        self.swing_time = 0
+        self.swing_cooldown = 2
         # weapon dictionary with weapon name as key,
         # weapon object as value
         self.weapons = {}
@@ -60,8 +61,13 @@ class Player(Actor):
         """ Generic attack method. Will be
             overridden by more specialized
             classes later (maybe)."""
+        if self.class_name != "RANGER":
+            self.weapon_rotated = pygame.transform.rotate(self.cur_weapon.image,
+                                                      45 + ((self.swing_time - pygame.time.get_ticks()) / 1000) * 180)
         if mbuttons[0]:
-            self.cur_weapon.active = True
+            if pygame.time.get_ticks() - 1000 > self.swing_time:
+                self.cur_weapon.active = True
+                self.swing_time = pygame.time.get_ticks()
 
     def receive_dmg(self, enemy_object):
         """ Generic method for when a
@@ -246,12 +252,12 @@ class Player(Actor):
         window.blit(self.image, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))
         if self.debug:
             debug = pygame.Rect(int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]), self.rect.w, self.rect.h)
-            pygame.draw.rect(window,pygame.color.THECOLORS['red'],debug,1)
+            pygame.draw.rect(window, pygame.color.THECOLORS['red'], debug, 1)
         if self.cur_weapon is not None:
             if self.facing_right:
                 if self.cur_weapon.active:
-                        window.blit(self.cur_weapon.image,
-                                    (self.rect.x - cameraPos[0] + 15, self.rect.y - cameraPos[1])
+                        window.blit(self.weapon_rotated,
+                                    (self.rect.x - cameraPos[0], self.rect.y - cameraPos[1]-15)
                                     )
 
                         # pygame.draw.rect(window,
@@ -264,9 +270,9 @@ class Player(Actor):
                         #                  2)
             if not self.facing_right:
                 if self.cur_weapon.active:
-                        window.blit(pygame.transform.flip(self.cur_weapon.image, True, False),
-                                    (self.rect.x - cameraPos[0] - 15, self.rect.y - cameraPos[1])
-                                    )
+                        window.blit((pygame.transform.flip(self.weapon_rotated, True, False)),
+                                    (self.rect.x - cameraPos[0]-20, self.rect.y - cameraPos[1]-15))
+
 
                         # pygame.draw.rect(window,
                         #                  (255, 0, 0),
