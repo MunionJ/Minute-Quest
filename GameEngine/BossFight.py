@@ -1,7 +1,9 @@
-from Scene.Camera import *
-from GameEngine.GameHUD import *
-from Actors.Party import *
-from Actors.Enemies import *
+from Scene.Camera import Camera
+from GameEngine.GameHUD import GameHUD
+from Actors.Party import Party
+from Actors.Enemies import Enemy
+from Scene.BossRoom import BossRoom
+import pygame
 
 
 class Game:
@@ -10,7 +12,7 @@ class Game:
         self.window = game_window
         self.manager = event_mgr
         self.running = False
-        self.dungeon = Dungeon(4)
+        self.dungeon = BossRoom()
         self.party_list = Party(self.dungeon.playerSpawn)
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
@@ -30,7 +32,7 @@ class Game:
         for room in self.dungeon.rooms:
             enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
-                enemy = Enemy(enemyspawnpoint.midbottom, "images/Characters/enemy1")
+                enemy = Boss(enemyspawnpoint.midbottom, "images/Characters/enemy1")
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
@@ -278,11 +280,11 @@ class Game:
                             self.player.receive_dmg(enemy)
 
                 if self.player.cur_weapon is not None:
-                    #print("game.py: Line 244: ", self.player.cur_weapon.active)
+                    #print("DungeonRun.py: Line 244: ", self.player.cur_weapon.active)
                     if self.player.cur_weapon.active:
                         for enemy in room.enemies:
                             if self.player.cur_weapon.rect.colliderect(enemy.rect):
-                                #print("game.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
+                                #print("DungeonRun.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
                                 enemy.take_damage(self.player)
                                 if not enemy.alive:
                                     flagged_enemies.append(enemy)

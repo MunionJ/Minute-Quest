@@ -1,7 +1,7 @@
 from Actors.Player import Player
 import pygame
 from Weapon import Weapon
-
+from Projectiles.FireBall import FireBall
 
 class Wizard(Player):
     """
@@ -25,6 +25,20 @@ class Wizard(Player):
         self.TimeStop_timer = 5
         self.useAbility = False
         self.weapon_rotated = self.cur_weapon.image
+        self.base_attack_cooldown = 0.5
+        self.last_base_attack = 0
+
+    def basic_attack(self, mbuttons, keys, dt, projectiles):
+        if mbuttons[0]:
+            if self.last_base_attack <= 0 and self.camera_offset is not None:
+                super().basic_attack(mbuttons, keys, dt)
+                mosPos = pygame.mouse.get_pos()
+                tX = mosPos[0] + self.camera_offset[0]
+                tY = mosPos[1] + self.camera_offset[1]
+                p = FireBall('images/Weapons/fireball.png', 40, 20, self.rect.center, (tX, tY))
+                projectiles.append(p)
+                self.last_base_attack = self.base_attack_cooldown
+        self.last_base_attack -= dt
 
     def use_ability(self):
         """Gives the Wizard the power to use his abilities"""
@@ -63,7 +77,7 @@ class Wizard(Player):
                 self.use_ability()
                 self.num_ability_uses -= 1
         self.timer_update(dt)
-        self.basic_attack(mouseButtons, keys, dt)
+        self.basic_attack(mouseButtons, keys, dt, projectiles)
         if self.cur_weapon.active:
             self.cur_weapon.update(dt)
 

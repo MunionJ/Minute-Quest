@@ -117,8 +117,6 @@ class Enemy(Actor):
         if not self.onSurface:
             self.changeState(states.Falling)
 
-
-
     def update(self, *args):
         mouseButtons, keys, dt, projectiles = args
         super().update(*args)
@@ -266,10 +264,6 @@ class Enemy(Actor):
                 self.shouldJump = True
             else:
                 self.shouldJump = False;
-
-
-
-
 
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""

@@ -3,7 +3,7 @@ from MenuSystem.LandingMenu import *
 from MenuSystem.ControlsMenu import *
 from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
-from GameEngine.game import *
+from GameEngine.DungeonRun import *
 
 class GameManager:
 
