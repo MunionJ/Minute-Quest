@@ -52,7 +52,7 @@ class GameManager:
                 pygame.display.update()
 
     def RunDungeon(self):
-        self.game = Game(self.eventmanager, self.gameWindow)
+        self.game = DungeonRun(self.eventmanager, self.gameWindow)
         self.game.start_game()
         self.game.launch_game()
 

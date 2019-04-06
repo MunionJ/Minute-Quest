@@ -4,7 +4,7 @@ from Actors.Party import *
 from Actors.Enemies import *
 
 
-class Game:
+class DungeonRun:
 
     def __init__(self, event_mgr, game_window):
         self.window = game_window
