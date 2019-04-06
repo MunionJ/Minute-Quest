@@ -66,6 +66,10 @@ class Enemy(Actor):
                 self.accel.x += ENEMY_ACC*dt
             else:
                 self.accel.x -= ENEMY_ACC*dt
+
+            if self.accel.length() > MAX_ACC:
+                self.accel.scale_to_length(MAX_ACC)
+
             self.velocity += self.accel
 
             if self.velocity.length() > ENEMY_MAX_VEL:
@@ -249,10 +253,10 @@ class Enemy(Actor):
                 break;
             count += 1
 
-        #     pygame.draw.rect(window,pygame.color.THECOLORS['gold'],                   #DEBUG
-        #          (int(point.x - cameraPos[0]),int(point.y - cameraPos[1]),1,1)
-        #                  )
-        # pygame.display.update()
+            pygame.draw.rect(window,pygame.color.THECOLORS['gold'],                   #DEBUG
+                 (int(point.x - cameraPos[0]),int(point.y - cameraPos[1]),1,1)
+                         )
+        pygame.display.update()
 
         if self.sees_player:
             if player.pos.x < self.pos.x:
@@ -263,7 +267,7 @@ class Enemy(Actor):
             if player.pos.y < self.pos.y:
                 self.shouldJump = True
             else:
-                self.shouldJump = False;
+                self.shouldJump = False
 
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""

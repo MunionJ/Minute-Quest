@@ -4,6 +4,7 @@ from MenuSystem.ControlsMenu import *
 from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
+from GameEngine.BossFight import BossFight
 
 class GameManager:
 
@@ -56,6 +57,11 @@ class GameManager:
         self.game.start_game()
         self.game.launch_game()
 
+    def startBossFight(self):
+        self.game = BossFight(self.eventmanager, self.gameWindow)
+        self.game.start_game()
+        self.game.launch_game()
+
     def determineState(self,currentMenu):
         if currentMenu == None:
             return
@@ -78,8 +84,12 @@ class GameManager:
         elif self.currentMenuState == menu.NewGame:
             if selected == "Main Menu":
                 newMenuOption = menu.Main
-            elif selected == "Enter Dungeon":
-                self.RunDungeon()
+            else:
+                if selected == "Enter Dungeon":
+                    self.RunDungeon()
+                elif selected == "Fight The Boss":
+                    print("Game Manager, line 85: Selected Boss Fight");
+                    self.startBossFight()
                 newMenuOption = menu.NewGame
         elif self.currentMenuState == menu.Loading:
             if selected == "New Game":

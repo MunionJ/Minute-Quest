@@ -119,6 +119,7 @@ class DungeonRun:
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
                 self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
+                self.fadeEffect()
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
 
@@ -308,3 +309,15 @@ class DungeonRun:
     def gameOver(self):
         "The Player's Experience gets reset"
         self.running = False
+
+    def fadeEffect(self):
+        finalRoomX = self.dungeon.rooms[len(self.dungeon.rooms)-1].bgImageRect.x
+        if self.player.rect.x > finalRoomX:
+            #Fade to White
+            fullP = self.dungeon.dungeonExit.x - finalRoomX
+            curP = self.player.rect.x - finalRoomX
+            alphaLevel = int(255*(curP/fullP))
+            overlay = pygame.Surface(SCREEN_RES)
+            overlay.fill((255,255,255))
+            overlay.set_alpha(alphaLevel)
+            self.window.blit(overlay,(0,0))

@@ -1,7 +1,7 @@
 from Scene.Camera import Camera
 from GameEngine.GameHUD import GameHUD
 from Actors.Party import Party
-from Actors.Enemies import Enemy
+from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
 from config import SCREEN_RES, PIXEL_DIFFERENCE
 import pygame
@@ -33,7 +33,7 @@ class BossFight:
         for room in self.dungeon.rooms:
             enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
-                enemy = Boss(enemyspawnpoint.midbottom, "images/Characters/enemy1")
+                enemy = Boss(enemyspawnpoint.midbottom, "./images/Characters/enemy1")
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
@@ -45,6 +45,7 @@ class BossFight:
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
         self.projectiles = []
+        self.boss = self.enemiesByRoom[1][0]
 
     def start_game(self):
         self.running = True
@@ -70,12 +71,17 @@ class BossFight:
 
                 self.running = self.manager.process_input(dt, (not (self.player.class_name=="WIZARD" and self.player.usingAbility)), self.projectiles)
                 self.running = self.manager.poll_input(dt)
+
+                #Swaps Another Party Member to the active Player Position
                 self.player_swap_cd(dt)
                 cur_pos = self.player.rect
                 self.manager.removeGameObject(self.player)
                 self.player = self.party_list.active_member
                 self.manager.addGameObject(self.player)
                 self.player.set_pos(cur_pos)
+
+                if self.player.rect.x > self.dungeon.rooms[1].bgImageRect.x:
+                    self.lock_player_in_room()
 
                 for room in self.dungeon.rooms:
                     if len(room.enemies) > 0:
@@ -85,10 +91,6 @@ class BossFight:
                                 if distance.length() < 200:
                                     enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
                                 #do i have line of sight
-                # events = pygame.event.get()
-                # for event in events:
-                #     if event.type == pygame.QUIT:
-                #         self.running = False
 
                 if self.player.usingAbility:
                     if self.player.class_name == "WIZARD":
@@ -99,7 +101,7 @@ class BossFight:
                 self.collisionHandling(dt)
                 self.addProjectiles()
 
-                #Win Condition
+
                 if not self.player.alive:
                     prevRect = self.player.rect
                     self.manager.removeGameObject(self.player)
@@ -108,7 +110,8 @@ class BossFight:
                     self.player.set_pos(prevRect)
                     self.manager.addGameObject(self.player)
 
-                if self.player.pos.x >= self.dungeon.dungeonExit.left:
+                #Win Condition
+                if not self.boss.alive:
                     self.gameWin()
 
                 #Lose Conditions
@@ -124,6 +127,15 @@ class BossFight:
                 self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
+
+    def lock_player_in_room(self):
+        updated = self.player.rect.clamp(self.dungeon.rooms[1].bgImageRect)
+        self.player.rect = updated
+        self.player.pos.x, self.player.pos.y = self.player.rect.center
+
+
+    def let_player_pass(self,nextRoom):
+        pass
 
     def player_swap_cd(self, dt):
         """ 3 second cooldown on switching

@@ -93,16 +93,6 @@ class Camera():
         #screen.blit(self.dungeon.dirtBacground,(0,self.dungeon.dungeonExit.y-self.pos[1]))
         self.dungeon.draw(screen,self.pos)
         player.draw(screen,self.pos)
-        finalRoomX = self.dungeon.rooms[len(self.dungeon.rooms)-1].bgImageRect.x
-        if player.rect.x > finalRoomX:
-            #Fade to White
-            fullP = self.dungeon.dungeonExit.x - finalRoomX
-            curP = player.rect.x - finalRoomX
-            alphaLevel = int(255*(curP/fullP))
-            overlay = pygame.Surface(SCREEN_RES)
-            overlay.fill((255,255,255))
-            overlay.set_alpha(alphaLevel)
-            screen.blit(overlay,(0,0))
         for p in projectiles:
             p.draw(screen, self.pos)
 

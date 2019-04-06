@@ -75,6 +75,8 @@ class DungeonRoom:
                             )
                             self.walls.add(tile)
                         elif i == 2:  # Spawner Layer
+                            if tilecode != 0:
+                                print("DungeonRoom ln 79: ",tilecode)
                             if tilecode in ENEMIES_SPAWNS:
                                 enemySpawnPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                                 self.enemySpawnPoints.append(enemySpawnPoint)
