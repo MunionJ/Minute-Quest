@@ -3,10 +3,11 @@ from GameEngine.GameHUD import GameHUD
 from Actors.Party import Party
 from Actors.Enemies import Enemy
 from Scene.BossRoom import BossRoom
+from config import SCREEN_RES, PIXEL_DIFFERENCE
 import pygame
 
 
-class Game:
+class BossFight:
 
     def __init__(self, event_mgr, game_window):
         self.window = game_window
