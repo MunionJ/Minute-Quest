@@ -79,9 +79,9 @@ class DungeonRun:
                         if room.bgImageRect.colliderect(self.player.rect):
                             for enemy in room.enemies:
                                 distance = self.player.pos - enemy.pos
-                                if distance.length() < 200:
+                                if distance.length() < ENEMY_VISION_RANGE:
                                     enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-                                #do i have line of sight
+
                 # events = pygame.event.get()
                 # for event in events:
                 #     if event.type == pygame.QUIT:
@@ -321,3 +321,4 @@ class DungeonRun:
             overlay.fill((255,255,255))
             overlay.set_alpha(alphaLevel)
             self.window.blit(overlay,(0,0))
+

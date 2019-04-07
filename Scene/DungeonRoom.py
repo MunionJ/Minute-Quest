@@ -107,39 +107,44 @@ class DungeonRoom:
             elif room_type[1] == "project puzzle room.txt":
                 return type + "Beat Original Puzzle"
 
-    def roomObj(self, screen, player):
+
+    def roomObj(self, screen, player, playerBoundary):
         room_type = self.file_name.split("/")
         room_type = room_type[2:]
-        while self.objective_complete == False and room_type[0] == "EnemyRooms":
-            updated_rect = player.rect.clamp(screen)
-            player.set_pos(updated_rect)
-            if len(self.enemies) == 0:
+        if self.objective_complete == False:
+            if room_type[0] == "EnemyRooms":
+                updated_rect = player.rect.clamp(playerBoundary)
+                player.set_pos(updated_rect)
+                if len(self.enemies) == 0:
+                    self.objective_complete = True
+            elif room_type[0] == "PuzzleRooms":
+                if room_type[1] == "map_puzzle_daniel.txt":
+                    updated_rect = player.rect.clamp(playerBoundary)
+                    player.set_pos(updated_rect)
+                    if self.puzzle:
+                        self.objective_complete = True
+                elif room_type[1] == "MinuteQuestRoom3.txt":
+                    updated_rect = player.rect.clamp(playerBoundary)
+                    player.set_pos(updated_rect)
+                    if self.puzzle:
+                        self.objective_complete = True
+                elif room_type[1] == "project puzzle room.txt":
+                    updated_rect = player.rect.clamp(playerBoundary)
+                    player.set_pos(updated_rect)
+                    if self.puzzle:
+                        self.objective_complete = True
+            elif room_type[0] == "PlatformRooms":
+                if player.rect.colliderect(self.exitPoint):
+                    self.objective_complete = True
+            else:   #Leaves Loot Rooms, Entrance, and Exit
                 self.objective_complete = True
-        while self.objective_complete == False and room_type[0] == "PuzzleRooms":
-            if room_type[1] == "map_puzzle_daniel.txt":
-                updated_rect = player.rect.clamp(screen)
-                player.set_pos(updated_rect)
-                if self.puzzle:
-                    self.objective_complete = True
-            elif room_type[1] == "MinuteQuestRoom3.txt":
-                updated_rect = player.rect.clamp(screen)
-                player.set_pos(updated_rect)
-                if self.puzzle:
-                    self.objective_complete = True
-            elif room_type[1] == "project puzzle room.txt":
-                updated_rect = player.rect.clamp(screen)
-                player.set_pos(updated_rect)
-                if self.puzzle:
-                    self.objective_complete = True
         if self.objective_complete:
-            player.set_pos(player)
-        pass
+            playerBoundary.unionRect(self.bgImageRect)
 
     def draw(self, screen, cameraPos):
         screen.blit(self.bgImage, (int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))
 
         for wall in self.walls:
-            # TODO Fix tile draw code
             wall.draw(screen, cameraPos)
 
         for enemy in self.enemies:
