@@ -34,14 +34,14 @@ class Objective:
                 self.announcement = type + "Beat Original Puzzle"
         elif self.room_type == "boss rooms":
             self.announcement = ""
-        else:
+        else: #Leaves Entrance and Exit Rooms
             self.completed = True
 
     def isComplete(self):
         return self.completed
 
+
     def evaluateObjective(self,player,playerBoundary,currentRoom,enemyList):
-        #if self.room_type ==
 
         complete = False
         if self.room_type == "EnemyRooms":
