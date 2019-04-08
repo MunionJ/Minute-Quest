@@ -41,7 +41,6 @@ class Ranger(Player):
                 self.last_base_attack = self.base_attack_cooldown
         self.last_base_attack -= dt
 
-
     def use_ability(self, keys, mouseButtons):
         """ Method for using class-specific ability."""
         if keys[pygame.K_r] or mouseButtons[2] and self.num_ability_uses > 0:
@@ -69,20 +68,21 @@ class Ranger(Player):
             self.num_ability_uses -= 1
 
     def gain_level(self):
-        super().gain_level()
-        hp_gain = random.randint(4, 12)
-        self.stats["MAX_HP"] += hp_gain
-        self.stats["CUR_HP"] += hp_gain
-        self.stats["MELEE"] += random.randint(0, 2)
-        self.stats["RANGE"] += random.randint(1, 2)
-        self.stats["MAGIC"] += random.randint(0, 1)
-        if self.level == 10 or self.level == 20:
-            with open("stat_dump.txt", 'a') as file:
-                file.write(self.class_name + '\n')
-                file.write("\tLEVEL:" + str(self.level) + '\n')
-                for key in self.stats.keys():
-                    if key != "CUR_HP":
-                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
+        if self.level < self.max_level:
+            super().gain_level()
+            hp_gain = random.randint(4, 12)
+            self.stats["MAX_HP"] += hp_gain
+            self.stats["CUR_HP"] += hp_gain
+            self.stats["MELEE"] += random.randint(0, 2)
+            self.stats["RANGE"] += random.randint(1, 3)
+            self.stats["MAGIC"] += random.randint(0, 1)
+            if self.level == 10 or self.level == 20:
+                with open("stat_dump.txt", 'a') as file:
+                    file.write(self.class_name + '\n')
+                    file.write("\tLEVEL:" + str(self.level) + '\n')
+                    for key in self.stats.keys():
+                        if key != "CUR_HP":
+                            file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def update(self, *args):
         super().update(*args)

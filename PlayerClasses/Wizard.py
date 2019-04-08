@@ -51,21 +51,22 @@ class Wizard(Player):
         return self.stats["MAGIC"]
 
     def gain_level(self):
-        super().gain_level()
-        hp_gain = random.randint(3, 9)
-        self.stats["MAX_HP"] += hp_gain
-        self.stats["CUR_HP"] += hp_gain
-        self.stats["MELEE"] += random.randint(0, 1)
-        self.stats["RANGE"] += random.randint(0, 1)
-        self.stats["MAGIC"] += random.randint(2, 3)
-        self.TimeStop_timer += (1 / 20) * 5
-        if self.level == 10 or self.level == 20:
-            with open("stat_dump.txt", 'a') as file:
-                file.write(self.class_name + '\n')
-                file.write("\tLEVEL:" + str(self.level) + '\n')
-                for key in self.stats.keys():
-                    if key != "CUR_HP":
-                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
+        if self.level < self.max_level:
+            super().gain_level()
+            hp_gain = random.randint(3, 9)
+            self.stats["MAX_HP"] += hp_gain
+            self.stats["CUR_HP"] += hp_gain
+            self.stats["MELEE"] += random.randint(0, 1)
+            self.stats["RANGE"] += random.randint(0, 1)
+            self.stats["MAGIC"] += random.randint(2, 3)
+            self.TimeStop_timer += (1 / 20) * 5
+            if self.level == 10 or self.level == 20:
+                with open("stat_dump.txt", 'a') as file:
+                    file.write(self.class_name + '\n')
+                    file.write("\tLEVEL:" + str(self.level) + '\n')
+                    for key in self.stats.keys():
+                        if key != "CUR_HP":
+                            file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def ability_timer(self, dt):
         """Does the timer for both the ability itself and the cool down timer for using it again"""

@@ -39,20 +39,21 @@ class Paladin(Player):
         return self.stats["MELEE"] + self.cur_weapon.atk_pwr
 
     def gain_level(self):
-        super().gain_level()
-        hp_gain = random.randint(6, 18)
-        self.stats["MAX_HP"] += hp_gain
-        self.stats["CUR_HP"] += hp_gain
-        self.stats["MELEE"] += random.randint(1, 2)
-        self.stats["RANGE"] += random.randint(0, 1)
-        self.stats["MAGIC"] += random.randint(1, 2)
-        if self.level == 10 or self.level == 20:
-            with open("stat_dump.txt", 'a') as file:
-                file.write(self.class_name + '\n')
-                file.write("\tLEVEL:" + str(self.level) + '\n')
-                for key in self.stats.keys():
-                    if key != "CUR_HP":
-                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
+        if self.level < self.max_level:
+            super().gain_level()
+            hp_gain = random.randint(6, 18)
+            self.stats["MAX_HP"] += hp_gain
+            self.stats["CUR_HP"] += hp_gain
+            self.stats["MELEE"] += random.randint(1, 2)
+            self.stats["RANGE"] += random.randint(0, 1)
+            self.stats["MAGIC"] += random.randint(1, 2)
+            if self.level == 10 or self.level == 20:
+                with open("stat_dump.txt", 'a') as file:
+                    file.write(self.class_name + '\n')
+                    file.write("\tLEVEL:" + str(self.level) + '\n')
+                    for key in self.stats.keys():
+                        if key != "CUR_HP":
+                            file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def heal_party(self,party):
         for member in party.party_members:
