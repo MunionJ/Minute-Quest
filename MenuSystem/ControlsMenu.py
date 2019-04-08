@@ -10,8 +10,14 @@ class ControlsMenu(pygame.sprite.Sprite):
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
         self.controller = pygame.image.load("images/controller.png")
+        self.controller = pygame.transform.scale(self.controller,
+                                                 (int(self.controller.get_width() // 1.3),
+                                                  int(self.controller.get_height() // 1.3))
+                                                 )
         self.rect = self.screen.get_rect()
         self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf', 20)
+        self.control_font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf', 40)
+        self.gamepad_font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf', 30)
         self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf', 75)
         self.headertextColor = pygame.color.THECOLORS['white']
         self.bg_color = pygame.color.THECOLORS['black']
@@ -54,30 +60,150 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def createKeyBoardDisplay(self):
         """Describe Inputs for Users using Keyboard"""
+        xpos = 360
+        ypos = 100
 
         self.keyboardControls.fill((0, 0, 0))
-        text = pygame.font.Font.render(self.font,
-                                       "The ad keys move the character while ws keys will go through the party, ", 12,
-                                       (255, 255, 255))
-        text2 = pygame.font.Font.render(self.font,
-                                       "and space is jump ", 12,
-                                       (255, 255, 255))
-        self.keyboardControls.blit(text, (300,100))
-        self.keyboardControls.blit(text2, (300, 120))
+        text = self.control_font.render("[A] - Move Left ",
+                                        False,
+                                        pygame.color.THECOLORS['white'])
+        text2 = self.control_font.render("[D] - Move Right ",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text3 = self.control_font.render("[S] - Next character ",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text4 = self.control_font.render("[W] - Previous character ",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text5 = self.control_font.render("[Space] - Jump ",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text6 = self.control_font.render("[Left-Mouse] - Attack",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text7 = self.control_font.render("[Right-Mouse] - Use Ability",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        texts = [text, text2, text3, text4, text5, text6, text7]
+        for i in range(len(texts)):
+            self.keyboardControls.blit(texts[i], (xpos, ypos))
+            ypos += 40
+
     def createGamePadDisplay(self):
         """Describe Inputs for Users using Gamepad"""
-        controller: object = self.controller
         self.gamepadControls.fill((0, 0, 0))
-        self.gamepadControls.blit(controller, (300, 200))
-        text = pygame.font.Font.render(self.font,
-                                       "The joystick moves along with the d pad up goes "
-                                       "through party the a button is jump, ",
-                                       12, (255,255,255))
-        text2 = pygame.font.Font.render(self.font,
-                                       "and the B button is attack. ",
-                                       12, (255, 255, 255))
-        self.gamepadControls.blit(text, (300, 100))
-        self.gamepadControls.blit(text2, (300, 120))
+        self.gamepadControls.blit(self.controller, (360, 300))
+        text = self.gamepad_font.render("Jump",
+                                        False,
+                                        pygame.color.THECOLORS['white'])
+        text2 = self.gamepad_font.render("Attack",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text3 = self.gamepad_font.render("Use Ability",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text4 = self.gamepad_font.render("Movement",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text5 = self.gamepad_font.render("Previous character",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text6 = self.gamepad_font.render("Next character",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+
+        # blit jump
+        self.gamepadControls.blit(text, (700, 250))
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (720, 290),
+                         (720, 410),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (720, 410),
+                         (670, 410),
+                         2)
+        # blit attack
+        self.gamepadControls.blit(text2, (580, 250))
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (630, 290),
+                         (630, 366),
+                         2)
+
+        # blit use ability
+        self.gamepadControls.blit(text3, (620, 220))
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (658, 260),
+                         (658, 340),
+                         2)
+
+        # blit movement
+        self.gamepadControls.blit(text4, (410, 200))
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (460, 240),
+                         (460, 380),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (440, 380),
+                         (480, 380),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (440, 380),
+                         (450, 370),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (440, 380),
+                         (450, 390),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (480, 380),
+                         (470, 370),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (480, 380),
+                         (470, 390),
+                         2)
+
+        # blit previous character
+        self.gamepadControls.blit(text5, (420, 150))
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (508, 190),
+                         (508, 425),
+                         2)
+
+        # blit next character
+        self.gamepadControls.blit(text6, (630, 150))
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (670, 190),
+                         (670, 220),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (670, 220),
+                         (550, 220),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (550, 220),
+                         (550, 460),
+                         2)
+        pygame.draw.line(self.gamepadControls,
+                         pygame.color.THECOLORS['white'],
+                         (550, 460),
+                         (510, 460),
+                         2)
 
     def placeButtons(self):
         """Place buttons on screen"""
