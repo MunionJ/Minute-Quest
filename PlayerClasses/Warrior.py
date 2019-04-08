@@ -9,6 +9,8 @@ class Warrior(Player):
     """ The playable Warrior character class. This
         character will be the melee damage specialist."""
 
+    stats = [3, 1, 1, 35]
+
     def __init__(self, start_pos, img="images/Characters/"
                                       "warrior", stats=[3, 1, 1, 35]):
         super().__init__(start_pos, img)

@@ -9,6 +9,8 @@ class Paladin(Player):
     Paladin class: specializes in tanking and healing
     """
 
+    stats = [2, 1, 2, 32]
+
     def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 32]):
         super().__init__(start_pos, img)
 
