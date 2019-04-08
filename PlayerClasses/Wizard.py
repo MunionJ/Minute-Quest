@@ -1,5 +1,6 @@
 from Actors.Player import Player
 import pygame
+import random
 from Weapon import Weapon
 from Projectiles.FireBall import FireBall
 
@@ -8,7 +9,7 @@ class Wizard(Player):
     Wizard class, specializes in magic attacks.
     """
 
-    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 3, 20]):
+    def __init__(self, start_pos, img="images/Characters/wizard", stats=[1, 1, 3, 17]):
         super().__init__(start_pos, img)
 
         self.class_name = "WIZARD"
@@ -49,6 +50,8 @@ class Wizard(Player):
 
     def gain_level(self):
         super().gain_level()
+        self.stats["MAX_HP"] += random.randint(3, 6)
+        self.stats["MAGIC"] += random.randint(2, 3)
 
     def ability_timer(self, dt):
         """Does the timer for both the ability itself and the cool down timer for using it again"""

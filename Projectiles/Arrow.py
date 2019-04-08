@@ -4,7 +4,7 @@ import pygame
 
 class Arrow(Projectile):
 
-    def __init__(self, fileName, width, height, pos, targetPos, damage=5, speed=150, targetGameObject=None):
+    def __init__(self, fileName, width, height, pos, targetPos, damage=1, speed=150, targetGameObject=None):
         super().__init__(fileName, width, height, pos, targetPos, damage, speed, targetGameObject)
         self.hitbox = None
         self.determine_hitbox()

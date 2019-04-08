@@ -10,7 +10,7 @@ class Warrior(Player):
         character will be the melee damage specialist."""
 
     def __init__(self, start_pos, img="images/Characters/"
-                                      "warrior", stats=[3, 1, 1, 30]):
+                                      "warrior", stats=[3, 1, 1, 35]):
         super().__init__(start_pos, img)
         # CONSTRUCTOR PARAMETERS #
         # stats: a list of initial stats in the order [MELEE, RANGE, MAGIC, MAX_HP]
@@ -68,7 +68,7 @@ class Warrior(Player):
     def gain_level(self):
         super().gain_level()
         self.stats["MAX_HP"] += random.randint(5, 10)
-        self.stats["MELEE"] += random.randint(2, 3)
+        self.stats["MELEE"] += random.randint(1, 3)
 
     def update(self, *args):
         """ Override for base class update method.

@@ -1,6 +1,7 @@
 from Actors.Player import Player
 from Projectiles.Arrow import Arrow
 from Weapon import *
+import random
 
 
 class Ranger(Player):
@@ -8,7 +9,7 @@ class Ranger(Player):
     Ranger class, specializes in ranged attacks.
     """
 
-    def __init__(self, start_pos, img="images/Characters/ranger", stats=[1, 3, 1, 15]):
+    def __init__(self, start_pos, img="images/Characters/ranger", stats=[1, 3, 1, 22]):
         super().__init__(start_pos, img)
 
         self.class_name = "RANGER"
@@ -67,6 +68,8 @@ class Ranger(Player):
 
     def gain_level(self):
         super().gain_level()
+        self.stats["MAX_HP"] += random.randint(4, 8)
+        self.stats["RANGE"] += random.randint(1, 3)
 
     def update(self, *args):
         super().update(*args)

@@ -5,7 +5,7 @@ vec = pygame.math.Vector2
 
 class Projectile(pygame.sprite.Sprite):
 
-    def __init__(self, fileName, width, height, pos, targetPos, damage=5, speed=150, targetGameObject=None):
+    def __init__(self, fileName, width, height, pos, targetPos, damage=1, speed=150, targetGameObject=None):
         """
         :param width: width of projectile
         :param height: height of projectile

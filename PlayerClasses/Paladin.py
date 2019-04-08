@@ -1,13 +1,15 @@
 from Actors.Player import Player
 from Weapon import Weapon
 import pygame
+import random
+
 
 class Paladin(Player):
     """
     Paladin class: specializes in tanking and healing
     """
 
-    def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 25]):
+    def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 32]):
         super().__init__(start_pos, img)
 
         self.class_name = "PALADIN"
@@ -36,6 +38,8 @@ class Paladin(Player):
 
     def gain_level(self):
         super().gain_level()
+        self.stats["MAX_HP"] += random.randint(6, 12)
+        self.stats["MELEE"] += random.randint(1, 3)
 
     def heal_party(self,party):
         for member in party.party_members:
