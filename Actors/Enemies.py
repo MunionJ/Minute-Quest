@@ -127,7 +127,7 @@ class Enemy(Actor):
 
     def update(self, *args):
         mouseButtons, keys, dt, projectiles = args
-        super().update(*args)
+        self.apply_physics(dt)
      #   if self.t_anim > pygame.time.get_ticks() - self.now:
      #       self.anim += 1
      #       if self.anim > 4:

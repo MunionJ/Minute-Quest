@@ -88,7 +88,7 @@ class BossFight:
                         if room.bgImageRect.colliderect(self.player.rect):
                             for enemy in room.enemies:
                                 distance = self.player.pos - enemy.pos
-                                if distance.length() < 200:
+                                if distance.length() < enemy.vision_range:
                                     enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
                                 #do i have line of sight
 
