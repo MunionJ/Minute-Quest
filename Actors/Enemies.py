@@ -4,7 +4,6 @@ import math
 import random
 vec = pygame.math.Vector2
 
-
 class Enemy(Actor):
     """Basic enemy class that creates the properties/methods shared across all enemies."""
 
@@ -78,6 +77,7 @@ class Enemy(Actor):
 
             if self.velocity.length() > ENEMY_MAX_VEL:
                 self.velocity.scale_to_length(ENEMY_MAX_VEL)
+
 
         else:
             #self.facing_right = True

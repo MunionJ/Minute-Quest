@@ -45,6 +45,7 @@ class DungeonRun:
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
         self.projectiles = []
+        self.playerBoundary = self.dungeon.rooms[0].bgImageRect
 
     def start_game(self):
         self.running = True
@@ -77,14 +78,18 @@ class DungeonRun:
                 self.manager.addGameObject(self.player)
                 self.player.set_pos(cur_pos)
 
-                for room in self.dungeon.rooms:
-                    if len(room.enemies) > 0:
-                        if room.bgImageRect.colliderect(self.player.rect):
-                            for enemy in room.enemies:
-                                distance = self.player.pos - enemy.pos
-                                if distance.length() < ENEMY_VISION_RANGE:
-                                    enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-
+                for i in range(len(self.dungeon.rooms)):
+                    room = self.dungeon.rooms[i]
+                    if room.bgImageRect.colliderect(self.player.rect):
+                        if len(room.enemies) > 0:
+                                for enemy in room.enemies:
+                                    distance = self.player.pos - enemy.pos
+                                    if distance.length() < ENEMY_VISION_RANGE:
+                                        enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
+                        if i+1 < len(self.dungeon.rooms):
+                            self.playerBoundary = room.objective.evaluateObjective(self.player,self.playerBoundary, self.dungeon.rooms[i+1], room.enemies)
+                            rect = self.player.rect.clamp(self.playerBoundary)
+                            self.player.set_pos(rect)
                 # events = pygame.event.get()
                 # for event in events:
                 #     if event.type == pygame.QUIT:
@@ -152,7 +157,7 @@ class DungeonRun:
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
                 hasCollided = True
-                objective = room.determineObj()
+                objective = room.objective.getAnnouncement()
                 self.HUD.getRoomObj(objective)
                 break
 
