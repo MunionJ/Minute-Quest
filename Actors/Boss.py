@@ -61,6 +61,7 @@ class Boss(Actor):
             self.vision_range = 400
             self.now = pygame.time.get_ticks()
             self.target_vector = None
+            self.hitWall = False
 
         def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 

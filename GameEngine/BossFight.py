@@ -1,4 +1,5 @@
 from Scene.Camera import Camera
+from Scene.Objective import *
 from GameEngine.GameHUD import GameHUD
 from Actors.Party import Party
 from Actors.Boss import Boss
@@ -163,8 +164,11 @@ class BossFight:
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
                 hasCollided = True
-                objective = room.determineObj()
-                self.HUD.getRoomObj(objective)
+
+                # This code causes issues, was previously calling DungeonRoom method that no longer exists, now needs to
+                #  call Objective method for determine objective
+                # objective = Objective.evaluateObjective()
+                # self.HUD.getRoomObj(objective)
                 break
 
         if not hasCollided:
