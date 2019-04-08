@@ -93,8 +93,6 @@ class GameManager:
                 self.Party_Load = None
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
-                self.Loadsave()
-                pickle.load(self.Party_Load, open(self.f_name, "rb"))
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
             elif selected == "Exit":
@@ -115,7 +113,8 @@ class GameManager:
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
                 #TODO:: make method to pull up menu to select game save
-                self.loadSave()
+                self.Loadsave()
+                pickle.load(self.Party_Load, open(self.f_name, "rb"))
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
