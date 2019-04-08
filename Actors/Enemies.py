@@ -1,15 +1,17 @@
 from Actors.Actor import *
 import time
 import math
+import random
 vec = pygame.math.Vector2
+
 
 class Enemy(Actor):
     """Basic enemy class that creates the properties/methods shared across all enemies."""
 
-    def __init__(self, spawn_point, img, xp_val=100):
+    def __init__(self, spawn_point, img, xp_val=100, lvl=1):
         super().__init__(spawn_point)
         self.enemyHeight = 48
-        self.level = 1
+        self.level = lvl
         self.xp_value = xp_val
         self.alive = True
         self.t_anim = time.time() + 0.125  # timer used for animations
@@ -46,9 +48,11 @@ class Enemy(Actor):
         self.alive = True
         self.cur_state = states.Falling
         self.onSurface = False
-        self.stats["MAX_HP"] = 5
+        self.stats["MAX_HP"] = 5 * self.level
         self.stats["CUR_HP"] = self.stats["MAX_HP"]
         self.stats["MELEE"] = 3
+        for i in range(self.level):
+            self.stats["MELEE"] += random.randint(0, 1)
         self.invuln_timer = 0
         self.type = "ENEMY"
         self.sees_player = False
@@ -74,7 +78,6 @@ class Enemy(Actor):
 
             if self.velocity.length() > ENEMY_MAX_VEL:
                 self.velocity.scale_to_length(ENEMY_MAX_VEL)
-
 
         else:
             #self.facing_right = True

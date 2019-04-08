@@ -93,11 +93,10 @@ class Party:
                     else:
                         member.gain_xp(enemy)
 
-
-
     def calc_avg_level(self):
         """ Method for calculating average
             level of the party."""
         for char in self.party_members:
             self.avg_level += char.level
         self.avg_level /= len(self.party_members)
+        return int(self.avg_level)  # call this when assigning level to enemies

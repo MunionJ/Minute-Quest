@@ -3,7 +3,7 @@ import pygame
 
 class Boss(Enemy):
 
-    def __init__(self, spawn_point, img, xp_val=100):
+    def __init__(self, spawn_point, img, xp_val=500, lvl=1):
         """
 
         :param spawn_point: x,y position in world to place boss
