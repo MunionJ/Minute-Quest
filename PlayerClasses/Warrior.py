@@ -69,7 +69,9 @@ class Warrior(Player):
 
     def gain_level(self):
         super().gain_level()
-        self.stats["MAX_HP"] += random.randint(5, 10)
+        hp_gain = random.randint(5, 15)
+        self.stats["MAX_HP"] += hp_gain
+        self.stats["CUR_HP"] += hp_gain
         self.stats["MELEE"] += random.randint(1, 3)
         self.stats["RANGE"] += random.randint(0, 1)
         self.stats["MAGIC"] += random.randint(0, 1)

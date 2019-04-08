@@ -70,7 +70,9 @@ class Ranger(Player):
 
     def gain_level(self):
         super().gain_level()
-        self.stats["MAX_HP"] += random.randint(4, 8)
+        hp_gain = random.randint(4, 12)
+        self.stats["MAX_HP"] += hp_gain
+        self.stats["CUR_HP"] += hp_gain
         self.stats["MELEE"] += random.randint(0, 2)
         self.stats["RANGE"] += random.randint(1, 2)
         self.stats["MAGIC"] += random.randint(0, 1)
