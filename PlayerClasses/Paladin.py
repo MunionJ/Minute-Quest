@@ -42,6 +42,13 @@ class Paladin(Player):
         super().gain_level()
         self.stats["MAX_HP"] += random.randint(6, 12)
         self.stats["MELEE"] += random.randint(1, 3)
+        if self.level == 10 or self.level == 20:
+            with open("stat_dump.txt", 'a') as file:
+                file.write(self.class_name + '\n')
+                file.write("\tLEVEL:" + str(self.level) + '\n')
+                for key in self.stats.keys():
+                    if key != "CUR_HP":
+                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def heal_party(self,party):
         for member in party.party_members:

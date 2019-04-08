@@ -5,7 +5,7 @@
 from Scene.MapLoader import loadMap
 from config import *
 from Scene.Tile import *
-
+from Scene.Objective import Objective
 
 class DungeonRoom:
     """ This class generates a tile-based map
@@ -41,7 +41,7 @@ class DungeonRoom:
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
         self.enemies = []
-        self.objective_complete = False
+        self.objective = Objective(file_name)
         self.puzzle = False
 
         for i in range(len(self.layer_data)):
@@ -75,8 +75,6 @@ class DungeonRoom:
                             )
                             self.walls.add(tile)
                         elif i == 2:  # Spawner Layer
-                            if tilecode != 0:
-                                print("DungeonRoom ln 79: ",tilecode)
                             if tilecode in ENEMIES_SPAWNS:
                                 enemySpawnPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                                 self.enemySpawnPoints.append(enemySpawnPoint)
@@ -84,62 +82,6 @@ class DungeonRoom:
                                 self.exitPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             elif tilecode in PLAYER_SPAWNS:
                                 self.playerSpawn = pygame.Rect(3 * tilewidth, y * tileheight, tilewidth, tileheight)
-
-    def determineObj(self):
-        """
-        Determines the objective for a specific room.
-        :return: String describing objective
-        """
-        room_type = self.file_name.split("/")
-        room_type = room_type[2:]
-        if room_type[0] == "EnemyRooms":
-            return "Kill All Enemies!"
-        elif room_type[0] == "LootRooms":
-            return "Loot!"
-        elif room_type[0] == "PlatformRooms":
-            return "Platform!"
-        elif room_type[0] == "PuzzleRooms":
-            type = "Puzzle: "
-            if room_type[1] == "map_puzzle_daniel.txt":
-                return type + "Combination Key Press"
-            elif room_type[1] == "MinuteQuestRoom3.txt":
-                return type + "Find the Key to the Exit"
-            elif room_type[1] == "project puzzle room.txt":
-                return type + "Beat Original Puzzle"
-
-
-    def roomObj(self, screen, player, playerBoundary):
-        room_type = self.file_name.split("/")
-        room_type = room_type[2:]
-        if self.objective_complete == False:
-            if room_type[0] == "EnemyRooms":
-                updated_rect = player.rect.clamp(playerBoundary)
-                player.set_pos(updated_rect)
-                if len(self.enemies) == 0:
-                    self.objective_complete = True
-            elif room_type[0] == "PuzzleRooms":
-                if room_type[1] == "map_puzzle_daniel.txt":
-                    updated_rect = player.rect.clamp(playerBoundary)
-                    player.set_pos(updated_rect)
-                    if self.puzzle:
-                        self.objective_complete = True
-                elif room_type[1] == "MinuteQuestRoom3.txt":
-                    updated_rect = player.rect.clamp(playerBoundary)
-                    player.set_pos(updated_rect)
-                    if self.puzzle:
-                        self.objective_complete = True
-                elif room_type[1] == "project puzzle room.txt":
-                    updated_rect = player.rect.clamp(playerBoundary)
-                    player.set_pos(updated_rect)
-                    if self.puzzle:
-                        self.objective_complete = True
-            elif room_type[0] == "PlatformRooms":
-                if player.rect.colliderect(self.exitPoint):
-                    self.objective_complete = True
-            else:   #Leaves Loot Rooms, Entrance, and Exit
-                self.objective_complete = True
-        if self.objective_complete:
-            playerBoundary.unionRect(self.bgImageRect)
 
     def draw(self, screen, cameraPos):
         screen.blit(self.bgImage, (int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))

@@ -72,6 +72,13 @@ class Ranger(Player):
         super().gain_level()
         self.stats["MAX_HP"] += random.randint(4, 8)
         self.stats["RANGE"] += random.randint(1, 3)
+        if self.level == 10 or self.level == 20:
+            with open("stat_dump.txt", 'a') as file:
+                file.write(self.class_name + '\n')
+                file.write("\tLEVEL:" + str(self.level) + '\n')
+                for key in self.stats.keys():
+                    if key != "CUR_HP":
+                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def update(self, *args):
         super().update(*args)

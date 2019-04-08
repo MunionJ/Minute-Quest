@@ -4,7 +4,6 @@ import math
 import random
 vec = pygame.math.Vector2
 
-
 class Enemy(Actor):
     """Basic enemy class that creates the properties/methods shared across all enemies."""
 
@@ -48,7 +47,7 @@ class Enemy(Actor):
         self.alive = True
         self.cur_state = states.Falling
         self.onSurface = True
-        self.stats["MAX_HP"] = 5 * self.level
+        self.stats["MAX_HP"] = 7 * self.level
         self.stats["CUR_HP"] = self.stats["MAX_HP"]
         self.stats["MELEE"] = 3
         for i in range(self.level):
@@ -78,6 +77,7 @@ class Enemy(Actor):
 
             if self.velocity.length() > ENEMY_MAX_VEL:
                 self.velocity.scale_to_length(ENEMY_MAX_VEL)
+
 
         else:
             #self.facing_right = True

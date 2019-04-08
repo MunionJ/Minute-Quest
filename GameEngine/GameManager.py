@@ -114,6 +114,9 @@ class GameManager:
                 newMenuOption = menu.NewGame
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
+                #TODO:: make method to pull up menu to select game save
+                self.loadSave()
+                newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
             elif selected == "Exit":
