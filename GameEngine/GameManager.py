@@ -5,6 +5,10 @@ from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
+from PlayerClasses.Paladin import *
+from PlayerClasses.Ranger import *
+from PlayerClasses.Warrior import *
+from PlayerClasses.Wizard import *
 import pickle
 
 class GameManager:
@@ -25,7 +29,7 @@ class GameManager:
         pygame.display.set_caption(GAME_NAME)
         self.gameWindow = pygame.display.set_mode(SCREEN_RES)
         self.bg_color = pygame.color.THECOLORS['black']
-        self.Partyload = None
+        self.Party_Load = None
 
     def LoadMenu(self,menuOption):
         currentMenu = self.menuOptions[self.currentMenuState] if self.currentMenuState != None else menu.Main
@@ -65,8 +69,12 @@ class GameManager:
         self.game.launch_game()
 
     def Loadsave(self):
-        self.Partyload = [self.stats]
-        pickle.dump(self.Partyload)
+        self.Party_Load = []
+        self.Party_Load = self.Party_Load.append(Paladin.stats)
+        self.Party_Load = self.Party_Load.append(Ranger.stats)
+        self.Party_Load = self.Party_Load.append(Warrior.stats)
+        self.Party_Load = self.Party_Load.append(Wizard.stats)
+        pickle.dump(self.Party_Load)
 
     def determineState(self,currentMenu):
         if currentMenu == None:
@@ -84,7 +92,7 @@ class GameManager:
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
                 self.Loadsave()
-                pickle.load(self.Partyload)
+                pickle.load(self.Party_Load)
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
             elif selected == "Exit":
