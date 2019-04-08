@@ -38,7 +38,7 @@ class Wizard(Player):
                 mosPos = pygame.mouse.get_pos()
                 tX = mosPos[0] + self.camera_offset[0]
                 tY = mosPos[1] + self.camera_offset[1]
-                p = FireBall('images/Weapons/fireball.png', 40, 20, self.rect.center, (tX, tY))
+                p = FireBall('images/Weapons/fireball.png', 40, 20, self.rect.center, (tX, tY), self.stats["MAGIC"])
                 projectiles.append(p)
                 self.last_base_attack = self.base_attack_cooldown
         self.last_base_attack -= dt
@@ -53,6 +53,8 @@ class Wizard(Player):
     def gain_level(self):
         super().gain_level()
         self.stats["MAX_HP"] += random.randint(3, 6)
+        self.stats["MELEE"] += random.randint(0, 1)
+        self.stats["RANGE"] += random.randint(0, 1)
         self.stats["MAGIC"] += random.randint(2, 3)
         if self.level == 10 or self.level == 20:
             with open("stat_dump.txt", 'a') as file:
