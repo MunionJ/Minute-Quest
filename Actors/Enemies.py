@@ -13,12 +13,12 @@ class Enemy(Actor):
         self.level = lvl
         self.xp_value = xp_val
         self.alive = True
-        self.t_anim = time.time() + 0.125  # timer used for animations
+        self.t_anim = 125  # timer used for animations
         self.anim = 0  # which frame of animations are active.
         self.rframes = [pygame.image.load(img + "/right1.png"),
                         pygame.image.load(img + "/right2.png"),
                         pygame.image.load(img + "/right3.png"),
-                        pygame.image.load(img + "/right2.png")]
+                        pygame.image.load(img + "/right4.png")]
         self.frames = {"right": pygame.image.load(img + "/right1.png"),
                        "rjump": pygame.image.load(img + "/jump1.png"), }
         # dictionary of frames.  the values will be updating to make animations
@@ -57,6 +57,7 @@ class Enemy(Actor):
         self.sees_player = False
         self.shouldJump = False
         self.vision_range = 250
+        self.now = pygame.time.get_ticks()
 
     def move(self, keys, dt): #TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
@@ -127,15 +128,21 @@ class Enemy(Actor):
     def update(self, *args):
         mouseButtons, keys, dt, projectiles = args
         super().update(*args)
+     #   if self.t_anim > pygame.time.get_ticks() - self.now:
+     #       self.anim += 1
+     #       if self.anim > 4:
+     #           self.anim = 0
+     #       self.now = pygame.time.get_ticks()
+
 
         if self.cur_state == states.Standing and self.facing_right:
             self.img = self.rframes[0]
         if self.cur_state == states.Standing and not self.facing_right:
             self.img = pygame.transform.flip(self.frames['right'], True, False)
         if self.cur_state == states.Running and self.facing_right:
-            self.img = self.rframes[0]
+            self.img = self.rframes[self.anim]
         if self.cur_state == states.Running and not self.facing_right:
-            self.img = pygame.transform.flip(self.frames['right'], True, False)
+            self.img = pygame.transform.flip(self.rframes[self.anim], True, False)
 
         self.move(keys,dt)
 
