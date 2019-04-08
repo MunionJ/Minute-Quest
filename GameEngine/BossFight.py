@@ -33,7 +33,7 @@ class BossFight:
         for room in self.dungeon.rooms:
             enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
-                enemy = Boss(enemyspawnpoint.midbottom, "./images/Characters/enemy1")
+                enemy = Boss(enemyspawnpoint.midbottom, "./images/Characters/boss1")
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
