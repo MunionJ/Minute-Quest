@@ -52,8 +52,12 @@ class Boss(Actor):
             self.stats["MAX_HP"] = 20 * self.level
             self.stats["CUR_HP"] = self.stats["MAX_HP"]
             self.stats["MELEE"] = 3
+            self.stats["RANGE"] = 3
+            self.stats["MAGIC"] = 3
             for i in range(self.level):
-                self.stats["MELEE"] += random.randint(0, 1)
+                self.stats["MELEE"] += random.randint(1, 2)
+                self.stats["RANGE"] += random.randint(1, 2)
+                self.stats["MAGIC"] += random.randint(1, 2)
             self.invuln_timer = 0
             self.type = "ENEMY"
             self.sees_player = False
