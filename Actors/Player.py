@@ -12,6 +12,7 @@ class Player(Actor):
         self.playerHeight = 48
         self.class_name = ""
         self.level = 1
+        self.max_level = 20
         self.cur_xp = 19500
         self.xp_to_level = 1000
         self.alive = True

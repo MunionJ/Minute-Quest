@@ -56,6 +56,7 @@ class Wizard(Player):
         self.stats["MELEE"] += random.randint(0, 1)
         self.stats["RANGE"] += random.randint(0, 1)
         self.stats["MAGIC"] += random.randint(2, 3)
+        self.TimeStop_timer += (1 / 20) * 5
         if self.level == 10 or self.level == 20:
             with open("stat_dump.txt", 'a') as file:
                 file.write(self.class_name + '\n')
