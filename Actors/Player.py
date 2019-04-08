@@ -2,6 +2,7 @@ import random
 import time
 from Actors.Actor import *
 
+
 class Player(Actor):
     """ The player class which will be controlled
         by the user."""
@@ -9,8 +10,9 @@ class Player(Actor):
     def __init__(self, start_pos, img):
         super().__init__(start_pos)
         self.playerHeight = 48
+        self.class_name = ""
         self.level = 1
-        self.cur_xp = 800
+        self.cur_xp = 19500
         self.xp_to_level = 1000
         self.alive = True
         self.t_anim = time.time() + 0.125 #timer used for animations

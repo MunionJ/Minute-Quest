@@ -48,7 +48,7 @@ class Enemy(Actor):
         self.alive = True
         self.cur_state = states.Falling
         self.onSurface = True
-        self.stats["MAX_HP"] = 5 * self.level
+        self.stats["MAX_HP"] = 7 * self.level
         self.stats["CUR_HP"] = self.stats["MAX_HP"]
         self.stats["MELEE"] = 3
         for i in range(self.level):
