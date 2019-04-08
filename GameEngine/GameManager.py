@@ -89,6 +89,7 @@ class GameManager:
         if self.currentMenuState == menu.Main:
             if selected == "New Game":
                 newMenuOption = menu.NewGame
+                self.Party_Load = None
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
                 self.Loadsave()
