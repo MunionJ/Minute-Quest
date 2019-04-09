@@ -13,7 +13,7 @@ class Player(Actor):
         self.class_name = ""
         self.level = 1
         self.max_level = 20
-        self.cur_xp = 19500
+        self.cur_xp = 0
         self.xp_to_level = 1000
         self.alive = True
         self.t_anim = time.time() + 0.125 #timer used for animations
