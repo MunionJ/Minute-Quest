@@ -23,12 +23,17 @@ class Objective:
         elif self.room_type == "PuzzleRooms":
             type = "Puzzle: "
             if self.room_name == "map_puzzle_daniel.txt":
-                self.announcement = type + "Combination Key Press"
-                validInputs = [("W",pygame.K_w),("S",pygame.K_s),("JUMP",pygame.K_SPACE),("ATTACK",(1,0,0))]
+                toAnnounce = []
+                validInputs = [("A",pygame.K_a),("D",pygame.K_d),("JUMP",pygame.K_SPACE),("ATTACK",(1,0,0))]
                 self.targetInputs = []
                 self.playerInputs = []
+                self.inputIndex = 0
                 for i in range(5):
-                    self.targetInputs.append(random.choice(validInputs))
+                    c = random.choice(validInputs)
+                    self.targetInputs.append(c[1])
+                    toAnnounce.append(c[0])
+
+                self.announcement = ",".join(toAnnounce)
 
             elif self.room_name == "MinuteQuestRoom3.txt":
                 self.announcement = type + "Find the Key to the Exit"
@@ -59,19 +64,18 @@ class Objective:
         elif self.room_type == "PuzzleRooms":
             type = "Puzzle: "
             if self.room_name == "map_puzzle_daniel.txt":
-                events = pygame.event.get()
-                for e in events:
-                    if e.type == pygame.KEYDOWN:
-                        if self.targetInputs[0][1] == e.key:
-                            self.playerInputs.append(e.key)
-                        else:
-                            self.playerInputs = []
-                    elif e.type == pygame.MOUSEBUTTONDOWN:
-                        if self.targetInputs[0][1] == e.button:
-                            self.playerInputs.append(e.button)
-                        else:
-                            self.playerInputs = []
+                keys = pygame.key.get_pressed()
+                mouseButtons = pygame.mouse.get_pressed()
+                if self.targetInputs[self.inputIndex] == (1,0,0):
+                   if mouseButtons == self.targetInputs[self.inputIndex]:
+                       self.playerInputs.append(mouseButtons)
+                       self.inputIndex += 1
+                else:
+                    if keys[self.targetInputs[self.inputIndex]]:
+                        self.playerInputs.append(self.targetInputs[self.inputIndex])
+                        self.inputIndex += 1
 
+                print(self.playerInputs, self.targetInputs)
                 if len(self.targetInputs) == len(self.playerInputs):
                     complete = True
 
