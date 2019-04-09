@@ -85,7 +85,20 @@ class ControlsMenu(pygame.sprite.Sprite):
         text7 = self.control_font.render("[Right-Mouse] - Use Ability",
                                          False,
                                          pygame.color.THECOLORS['white'])
-        texts = [text, text2, text3, text4, text5, text6, text7]
+        text8 = self.control_font.render("[1] - Select character 1",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text9 = self.control_font.render("[2] - Select character 2",
+                                         False,
+                                         pygame.color.THECOLORS['white'])
+        text10 = self.control_font.render("[3] - Select character 3",
+                                          False,
+                                          pygame.color.THECOLORS['white'])
+        text11 = self.control_font.render("[4] - Select character 4",
+                                          False,
+                                          pygame.color.THECOLORS['white'])
+
+        texts = [text, text2, text3, text4, text5, text6, text7, text8, text9, text10, text11]
         for i in range(len(texts)):
             self.keyboardControls.blit(texts[i], (xpos, ypos))
             ypos += 40
