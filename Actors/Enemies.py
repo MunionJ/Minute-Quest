@@ -128,11 +128,13 @@ class Enemy(Actor):
     def update(self, *args):
         mouseButtons, keys, dt, projectiles = args
         self.apply_physics(dt)
-     #   if self.t_anim > pygame.time.get_ticks() - self.now:
-     #       self.anim += 1
-     #       if self.anim > 4:
-     #           self.anim = 0
-     #       self.now = pygame.time.get_ticks()
+
+        while time.time() > self.t_anim:
+            self.anim += 1
+            if self.anim > len(self.rframes) - 1:
+                self.anim = 0
+            self.frames["right"] = self.rframes[self.anim]
+            self.t_anim = time.time() + 0.25
 
 
         if self.cur_state == states.Standing and self.facing_right:

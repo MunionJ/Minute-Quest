@@ -5,13 +5,14 @@ import math
 import random
 from Actors.PlayerStates import PlayerStates as states
 from config import *
+from Projectiles.Arrow import Arrow
 
 vec = pygame.math.Vector2
 class Boss(Actor):
 
         def __init__(self, spawn_point, img, xp_val=200, lvl=1):
             super().__init__(spawn_point)
-            self.enemyHeight = 48
+            self.enemyHeight = 94
             self.level = lvl
             self.xp_value = xp_val
             self.alive = True
@@ -66,6 +67,8 @@ class Boss(Actor):
             self.now = pygame.time.get_ticks()
             self.target_vector = None
             self.hitWall = False
+            self.rocks_fell = False
+            self.cycle_projectiles = 30
 
         def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
@@ -130,6 +133,7 @@ class Boss(Actor):
                 else:
                     self.changeState(states.Standing)
 
+
             if not self.onSurface:
                 self.changeState(states.Falling)
 
@@ -141,6 +145,13 @@ class Boss(Actor):
             if self.stats["CUR_HP"] >= 0.5*self.stats["MAX_HP"]:
                 self.stage_one_tactics(dt,projectiles)
             self.invuln_timer -= dt
+
+            while time.time() > self.t_anim:
+                self.anim += 1
+                if self.anim > len(self.rframes) - 1:
+                    self.anim = 0
+                self.frames["right"] = self.rframes[self.anim]
+                self.t_anim = time.time() + 0.25
 
         def set_dead(self):
             """ Generic method for setting
@@ -289,14 +300,23 @@ class Boss(Actor):
         def stage_one_tactics(self, dt, projectiles):
             if self.target_vector != None:
                 if self.target_vector.x < 0:
-                    #run left
-                    pass
+                    self.accel.x -= ENEMY_ACC * dt
+                    self.velocity += self.accel
                 else:
-                    #run right
-                    pass
+                    self.accel.x += ENEMY_ACC * dt
+                    self.velocity += self.accel
+
             if self.hitWall:
-                #summon projectiles
-                pass
+                if not self.rocks_fell:
+                    tX = random.randint(32, 3200)
+                    tY = 0
+                    p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), self.stats["RANGE"])
+                    projectiles.append(p)
+                    print(len(projectiles))
+                    if len(projectiles) > self.cycle_projectiles:
+                        self.rocks_fell = True
+                        self.cycle_projectiles += 20
+
 
 
 
@@ -304,13 +324,16 @@ class Boss(Actor):
         def handleXCollision(self, other_rect):
             if self.velocity.x > 0:
                 if self.rect.left < other_rect.right:
+                    self.hitWall = True
                     self.rect.right = other_rect.left
                     self.hitVerticalWall()
                     self.hitWall = True
             elif self.velocity.x < 0:
                 if self.rect.right > other_rect.left:
+                    self.hitWall = True
                     self.rect.left = other_rect.right
                     self.hitVerticalWall()
                     self.hitWall = True
             else:
                 self.hitWall = False
+                self.rocks_fell = False
