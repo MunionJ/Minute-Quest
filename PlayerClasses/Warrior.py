@@ -74,7 +74,7 @@ class Warrior(Player):
             self.stats["MELEE"] += random.randint(1, 3)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(0, 1)
-            self.max_rage_time += (1 / 20) * 5
+            self.max_rage_time += (1 / self.max_level) * 5
             if self.level == 10 or self.level == 20:
                 with open("stat_dump.txt", 'a') as file:
                     file.write(self.class_name + '\n')
