@@ -80,6 +80,10 @@ class Dungeon:
                 point.x += x_offset
                 point.y -= y_offset
 
+            for key in currentRoom.possibleKeys:
+                key.rect.x += x_offset
+                key.rect.y -= y_offset
+
             x, y = currentRoom.exitPoint.topleft
             x += x_offset
             y -= y_offset

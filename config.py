@@ -4,7 +4,7 @@ GAME_NAME = "Minute Quest"
 PLAYER_SPAWNS = [79, 13, 356, 212, 216, 181]
 PLAYER_EXITS = [96, 55, 360, 223, 199, 182]
 ENEMIES_SPAWNS = [69, 6016, 206, 104, 214, 206]
-POSSIBLE_KEYS = [94]
+POSSIBLE_KEYS = 93
 
 # Player Variables
 PLAYER_GRAV = 1.2
@@ -59,8 +59,8 @@ ROOMS = {
     "PlatformRooms": [
         # "AB_plat_map1.txt", unwinnable
         "map_platformer_daniel.txt",
-        #"MinuteQuestRoom2.txt", #bugs game if second room
-        "MQ_test_map_platforming.txt",
+        "MinuteQuestRoom2.txt", #bugs game if second room
+        #"MQ_test_map_platforming.txt",
         "project platform room.txt"
     ],
     "PuzzleRooms": [

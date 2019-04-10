@@ -6,6 +6,8 @@ from Scene.MapLoader import loadMap
 from config import *
 from Scene.Tile import *
 from Scene.Objective import Objective
+import random
+
 
 class DungeonRoom:
     """ This class generates a tile-based map
@@ -38,6 +40,8 @@ class DungeonRoom:
         self.bgImageRect = self.bgImage.get_rect()
         self.exitPoint = None
         self.enemySpawnPoints = []
+        self.possibleKeys = []
+        self.selectedKey = []
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
         self.enemies = []
@@ -82,6 +86,23 @@ class DungeonRoom:
                                 self.exitPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             elif tilecode in PLAYER_SPAWNS:
                                 self.playerSpawn = pygame.Rect(3 * tilewidth, y * tileheight, tilewidth, tileheight)
+                            elif tilecode is POSSIBLE_KEYS:
+                                tileImage = pygame.Surface((tilewidth, tileheight))
+                                tileImage.blit(
+                                    self.sprite_sheet,
+                                    (0, 0),
+                                    pygame.Rect(top_x, top_y, tilewidth, tileheight)
+                                )
+                                tileImage.set_colorkey(self.bg_color)
+                                tile = Tile(
+                                    tileImage,
+                                    pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
+                                )
+                                print(x, y)
+                                self.possibleKeys.append(tile)
+
+        if len(self.possibleKeys) > 0:
+            self.selectedKey.append(random.choice(self.possibleKeys))
 
     def draw(self, screen, cameraPos):
         screen.blit(self.bgImage, (int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))
@@ -94,3 +115,6 @@ class DungeonRoom:
                 enemy.img,
                 (enemy.rect.x - cameraPos[0], enemy.rect.y - cameraPos[1])
             )
+
+        for key in self.selectedKey:
+            key.draw(screen, cameraPos)

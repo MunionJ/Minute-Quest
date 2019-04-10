@@ -81,13 +81,14 @@ class DungeonRun:
                 for i in range(len(self.dungeon.rooms)):
                     room = self.dungeon.rooms[i]
                     if room.bgImageRect.colliderect(self.player.rect):
+                        print(room.selectedKey, room.possibleKeys)
                         if len(room.enemies) > 0:
                                 for enemy in room.enemies:
                                     distance = self.player.pos - enemy.pos
                                     if distance.length() < ENEMY_VISION_RANGE:
                                         enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
                         if i+1 < len(self.dungeon.rooms):
-                            self.playerBoundary = room.objective.evaluateObjective(self.player,self.playerBoundary, self.dungeon.rooms[i+1], room.enemies)
+                            self.playerBoundary = room.objective.evaluateObjective(self.player,self.playerBoundary, self.dungeon.rooms[i+1], room.enemies, room.selectedKey)
                             rect = self.player.rect.clamp(self.playerBoundary)
                             self.player.set_pos(rect)
                 # events = pygame.event.get()

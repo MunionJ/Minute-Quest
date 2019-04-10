@@ -3,6 +3,7 @@ import random
 
 #TODO::Needs Integrated into Dungeon Room
 
+
 class Objective:
 
     def __init__(self,file_name):
@@ -33,7 +34,7 @@ class Objective:
                     self.targetInputs.append(c[1])
                     toAnnounce.append(c[0])
 
-                self.announcement = ",".join(toAnnounce)
+                self.announcement = ", ".join(toAnnounce)
 
             elif self.room_name == "MinuteQuestRoom3.txt":
                 self.announcement = type + "Find the Key to the Exit"
@@ -50,7 +51,7 @@ class Objective:
     def getAnnouncement(self):
         return self.announcement
 
-    def evaluateObjective(self, player, playerBoundary=None, nextRoom=None, enemyList=None):
+    def evaluateObjective(self, player, playerBoundary=None, nextRoom=None, enemyList=None, selectedKey=None):
         complete = False
         if self.completed:
             return playerBoundary
@@ -80,8 +81,9 @@ class Objective:
                     complete = True
 
             elif self.room_name == "MinuteQuestRoom3.txt":
-                #add in find key logic
-                pass
+                if len(selectedKey) < 1:
+                    complete = True
+
             elif self.room_name == "project puzzle room.txt":
                 #add in puzzle logic
                 pass
@@ -90,7 +92,6 @@ class Objective:
                 complete = True
         else:
             complete = True
-
 
         if complete and not self.completed:
             self.completed = True
