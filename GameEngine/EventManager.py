@@ -65,6 +65,7 @@ class EventManager:
     def process_input(self, dt, updateEnemies, projectiles):
         """ This method processes user input."""
         keys = pygame.key.get_pressed()
+        mouseButtons = pygame.mouse.get_pressed()
 
         if keys[pygame.K_ESCAPE]:
             return False
@@ -77,9 +78,9 @@ class EventManager:
             #                : 8 = 'L3', 9 = 'R3'
             #   Axes:
             #               0 - left joystick x axis    (1 = right, -1 = left)
-            #               1 - left joystick y axis    (1 = right, -1 = left)
+            #               1 - left joystick y axis    (1 = down, -1 = up)
             #               2 - right joystick x axis   (1 = right, -1 = left)
-            #               3 - right joystick y axis   (1 = right, -1 = left)
+            #               3 - right joystick y axis   (1 = down, -1 = up)
             #               4 - right trigger           (1 is pressed, -1 released) Initialized to 0
             #               5 - left trigger            (1 is pressed, -1 released) Initialized to 0
             #
@@ -89,10 +90,11 @@ class EventManager:
             #          (0,1) Up,    (0,-1) Down
 
             temp = [x for x in keys]
+            temp2 = [x for x in mouseButtons]
             for game_pad in self.joySticks:     #Maybe Handle Multiplayer in the future...
 
 
-                D_PAD = game_pad.get_hat(0)
+                #D_PAD = game_pad.get_hat(0)
 
                 if game_pad.get_axis(0) < -0.25:
                     temp[pygame.K_a] = True
@@ -100,7 +102,8 @@ class EventManager:
                     temp[pygame.K_d] = True
 
                 for axis in range(game_pad.get_numaxes()):
-                    print(axis, ": ",game_pad.get_axis(axis))
+                    #print(axis, ": ",game_pad.get_axis(axis))
+                    pass
 
                 for hat in range(game_pad.get_numhats()):
                     # PASSING FOR NOW UNTIL WE START ACTUALLY TESTING GAMEPAD
@@ -108,10 +111,12 @@ class EventManager:
                     #print(hat, " ", game_pad.get_hat(hat))
 
                 # check vertical axis on left analog stick
-                if D_PAD[1] > 0:
-                    temp[pygame.K_w] = True
-                elif D_PAD[1] < 0:
-                    temp[pygame.K_s] = True
+                # if D_PAD[1] > 0:
+                #     print(D_PAD[1])
+                #     temp[pygame.K_w] = True
+                # elif D_PAD[1] < 0:
+                #     print(D_PAD[1])
+                #     temp[pygame.K_s] = True
 
                 for i in range(game_pad.get_numbuttons()):
                     if(game_pad.get_button(i)):
@@ -125,8 +130,9 @@ class EventManager:
                 if game_pad.get_button(2):
                     temp[pygame.K_KP_ENTER] = True
                     temp[pygame.K_RETURN] = True
+                    temp2[0] = True
                 if game_pad.get_button(3):
-                    pass
+                    temp2[2] = True
                 if game_pad.get_button(5):
                     pass
                 if game_pad.get_button(6):
@@ -139,8 +145,8 @@ class EventManager:
                     pass
 
                 keys = tuple(temp)
+                mouseButtons = tuple(temp2)
 
-        mouseButtons = pygame.mouse.get_pressed()
         for obj in self.game_objects['game_objects']:
             if obj.type == "ENEMY" or obj.type == "PROJECTILE":
                 if updateEnemies:
@@ -155,6 +161,16 @@ class EventManager:
 
     def poll_input(self,dt):
         e = pygame.event.poll()
+        evt = None
+
+        # capture D-PAD up and down inputs
+        for game_pad in self.joySticks:
+            D_PAD = game_pad.get_hat(0)
+
+            if D_PAD[1] > 0:
+                evt = pygame.K_w
+            elif D_PAD[1] < 0:
+                evt = pygame.K_s
 
         if e.type == pygame.QUIT:
             return False
@@ -166,6 +182,11 @@ class EventManager:
             else:
                 for obj in self.game_objects['party_objects']:
                     obj.update(e.key, dt)
+                    
+        # if we got a D-PAD input
+        elif evt is not None:
+            for obj in self.game_objects['party_objects']:
+                obj.update(evt, dt)
 
         return True
 
