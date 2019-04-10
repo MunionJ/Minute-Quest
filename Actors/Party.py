@@ -23,7 +23,7 @@ class Party:
         self.active_member = self.party_members[self.party_index]
         self.last_active = 3    # time in seconds
         self.wealth = None
-        self.avg_level = 0
+        self.avg_level = 1
         self.cur_dungeon = None
 
     def update(self, key, dt):
@@ -99,4 +99,4 @@ class Party:
         for char in self.party_members:
             self.avg_level += char.level
         self.avg_level /= len(self.party_members)
-        return int(self.avg_level)  # call this when assigning level to enemies
+        self.avg_level = int(self.avg_level)

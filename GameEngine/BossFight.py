@@ -34,7 +34,10 @@ class BossFight:
         for room in self.dungeon.rooms:
             enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
-                enemy = Boss(enemyspawnpoint.midbottom, "./images/Characters/boss1")
+                enemy = Boss(enemyspawnpoint.midbottom,
+                             "./images/Characters/boss1",
+                             200,
+                             self.party_list.avg_level + 1) # make Boss 1 level higher than party average
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
@@ -114,6 +117,7 @@ class BossFight:
                 #Win Condition
                 if not self.boss.alive:
                     self.gameWin()
+                    self.party_list.calc_avg_level()
 
                 #Lose Conditions
                 if self.outOfBounds(self.player.rect.center) or self.allPlayersDead():

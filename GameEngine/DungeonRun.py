@@ -33,7 +33,7 @@ class DungeonRun:
                 enemy = Enemy(enemyspawnpoint.midbottom,
                               "images/Characters/enemy1",
                               100,
-                              self.party_list.calc_avg_level()
+                              self.party_list.avg_level
                               )
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
