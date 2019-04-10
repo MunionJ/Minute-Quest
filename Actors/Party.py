@@ -23,7 +23,7 @@ class Party:
         self.active_member = self.party_members[self.party_index]
         self.last_active = 3    # time in seconds
         self.wealth = None
-        self.avg_level = None
+        self.avg_level = 0
         self.cur_dungeon = None
 
     def update(self, key, dt):
