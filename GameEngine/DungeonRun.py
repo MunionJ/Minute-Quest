@@ -313,6 +313,7 @@ class DungeonRun:
 
     def gameWin(self):
         "Award Experience and level up"
+        self.manager.cleanup()
         self.running = False
 
     def gameOver(self):

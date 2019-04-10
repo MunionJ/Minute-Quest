@@ -117,7 +117,6 @@ class BossFight:
                 #Win Condition
                 if not self.boss.alive:
                     self.gameWin()
-                    self.party_list.calc_avg_level()
 
                 #Lose Conditions
                 if self.outOfBounds(self.player.rect.center) or self.allPlayersDead():
@@ -326,6 +325,8 @@ class BossFight:
 
     def gameWin(self):
         "Award Experience and level up"
+        self.party_list.calc_avg_level()
+        self.manager.cleanup()
         self.running = False
 
     def gameOver(self):
