@@ -69,6 +69,10 @@ class Boss(Actor):
             self.hitWall = False
             self.rocks_fell = False
             self.cycle_projectiles = 30
+            self.projectile_Cooldown = 2
+            self.last_summon = 0
+            self.direction_timer = 0
+            self.direction_cooldown = 4
 
         def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
@@ -77,10 +81,10 @@ class Boss(Actor):
                     self.jump()
                     self.shouldJump = False
 
-                if self.facing_right:
-                    self.accel.x += ENEMY_ACC * dt
-                else:
-                    self.accel.x -= ENEMY_ACC * dt
+                #if self.facing_right:
+                #    self.accel.x += ENEMY_ACC * dt
+                #else:
+                #    self.accel.x -= ENEMY_ACC * dt
 
                 if self.accel.length() > MAX_ACC:
                     self.accel.scale_to_length(MAX_ACC)
@@ -101,9 +105,9 @@ class Boss(Actor):
                 overridden later."""
 
             if self.facing_right:
-                self.image = self.frames["rjump"]
+                self.img = self.frames["rjump"]
             if not self.facing_right:
-                self.image = pygame.transform.flip(self.frames['rjump'], True, False)
+                self.img = pygame.transform.flip(self.frames['rjump'], True, False)
             if self.onSurface:
                 self.velocity += 1.5 * self.jump_vector
                 self.jumpFrameCount = self.jumpFrames
@@ -111,9 +115,11 @@ class Boss(Actor):
         def determineState(self):
             if self.velocity.x < 0:
                 self.facing_right = False
+                self.img = pygame.transform.flip(self.frames["right"], True, False)
 
             if self.velocity.x > 0:
                 self.facing_right = True
+                self.img = self.frames["right"]
 
             if self.velocity.y > 0:
                 self.changeState(states.Falling)
@@ -152,6 +158,11 @@ class Boss(Actor):
                     self.anim = 0
                 self.frames["right"] = self.rframes[self.anim]
                 self.t_anim = time.time() + 0.25
+
+            self.projectile_Cooldown -= dt
+            self.direction_timer -= dt
+            if self.hitWall:
+                self.direction_timer = 0
 
         def set_dead(self):
             """ Generic method for setting
@@ -246,7 +257,9 @@ class Boss(Actor):
             tile = wallTiles.sprites()[0]
             halfdist = tile.rect.w >> 2
             dir = vec(halfdist * math.cos(heading), halfdist * math.sin(heading))
-            self.target_vector = dir
+            if self.direction_timer <= 0:
+                self.target_vector = dir
+                self.direction_timer = self.direction_cooldown
             detecting = True
             count = 0
             while count < self.vision_range:
@@ -301,21 +314,24 @@ class Boss(Actor):
             if self.target_vector != None:
                 if self.target_vector.x < 0:
                     self.accel.x -= ENEMY_ACC * dt
-                    self.velocity += self.accel
                 else:
                     self.accel.x += ENEMY_ACC * dt
-                    self.velocity += self.accel
 
+
+            #falling rocks logic. only works once currently.
             if self.hitWall:
-                if not self.rocks_fell:
-                    tX = random.randint(32, 3200)
-                    tY = 0
-                    p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), self.stats["RANGE"])
-                    projectiles.append(p)
-                    print(len(projectiles))
-                    if len(projectiles) > self.cycle_projectiles:
-                        self.rocks_fell = True
-                        self.cycle_projectiles += 20
+                if self.last_summon <= 0:
+                    self.last_summon = self.projectile_Cooldown
+                    for i in range(30):
+                        tX = random.randint(32, 3200)
+                        tY = 0
+                        p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), 0)
+                        projectiles.append(p)
+                    self.hitWall = False
+
+
+
+
 
 
 
@@ -334,6 +350,3 @@ class Boss(Actor):
                     self.rect.left = other_rect.right
                     self.hitVerticalWall()
                     self.hitWall = True
-            else:
-                self.hitWall = False
-                self.rocks_fell = False
