@@ -5,10 +5,6 @@ from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
-from PlayerClasses.Paladin import *
-from PlayerClasses.Ranger import *
-from PlayerClasses.Warrior import *
-from PlayerClasses.Wizard import *
 import pickle
 
 class GameManager:
@@ -60,7 +56,7 @@ class GameManager:
                 pygame.display.update()
 
     def RunDungeon(self):
-        self.game = DungeonRun(self.eventmanager, self.gameWindow)
+        self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
 
@@ -69,13 +65,11 @@ class GameManager:
         self.game.start_game()
         self.game.launch_game()
 
-    def Loadsave(self):
-        self.Party_Load = []
-        self.Party_Load = self.Party_Load.append(Paladin.stats)
-        self.Party_Load = self.Party_Load.append(Ranger.stats)
-        self.Party_Load = self.Party_Load.append(Warrior.stats)
-        self.Party_Load = self.Party_Load.append(Wizard.stats)
+    def save_game(self):
         pickle.dump(self.Party_Load, open(self.f_name, "wb"))
+
+    def Loadsave(self):
+        pickle.load(open(self.f_name, "rb"))
 
     def determineState(self,currentMenu):
         if currentMenu == None:
@@ -92,7 +86,8 @@ class GameManager:
                 newMenuOption = menu.NewGame
                 self.Party_Load = None
             elif selected == "Load Game":
-                newMenuOption = menu.Loading
+                self.Loadsave()
+                newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
             elif selected == "Exit":
@@ -106,7 +101,10 @@ class GameManager:
                 elif selected == "Fight The Boss":
                     print("Game Manager, line 85: Selected Boss Fight");
                     self.startBossFight()
+                elif selected == "Save Game":
+                    self.save_game()
                 newMenuOption = menu.NewGame
+
         elif self.currentMenuState == menu.Loading:
             if selected == "New Game":
                 newMenuOption = menu.NewGame
@@ -114,7 +112,6 @@ class GameManager:
                 newMenuOption = menu.Loading
                 #TODO:: make method to pull up menu to select game save
                 self.Loadsave()
-                pickle.load(self.Party_Load, open(self.f_name, "rb"))
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls

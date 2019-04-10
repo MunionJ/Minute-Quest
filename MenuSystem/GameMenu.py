@@ -1,6 +1,7 @@
 import pygame
 from config import *
 from MenuSystem.Button import Button
+import pickle
 
 
 class GameMenu(pygame.sprite.Sprite):
@@ -92,7 +93,8 @@ class GameMenu(pygame.sprite.Sprite):
         if key == pygame.K_RETURN:
             if self.buttonOptions[self.current_index] == "Main Menu" or \
                     self.buttonOptions[self.current_index] == "Enter Dungeon" or \
-                        self.buttonOptions[self.current_index] == "Fight The Boss":
+                        self.buttonOptions[self.current_index] == "Fight The Boss" or \
+                    self.buttonOptions[self.current_index] == "Save Game":
                 self.setMenuSelection()
 
 

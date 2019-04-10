@@ -217,3 +217,10 @@ class EventManager:
     def updateMenus(self,key):
         for menu in self.game_objects['game_menus']:
             menu.update(key)
+
+    def cleanup(self):
+        """ Method for cleaning out game objects and enemy objects
+            after finishing a dungeon run or boss fight.
+        """
+        self.game_objects['game_objects'].clear()
+        self.game_objects['enemy_objects'].clear()

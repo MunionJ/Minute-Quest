@@ -22,7 +22,7 @@ class Paladin(Player):
         self.cur_weapon = self.weapons["axe"]
         self.cur_weapon.rect = self.rect.copy()
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
-        self.healPercentage = (.1 + (1/20)*self.level)
+        self.healPercentage = (.1 + (1/self.max_level)*self.level)
         self.num_ability_uses = 1
         self.weapon_rotated = self.cur_weapon.image
 
@@ -45,6 +45,7 @@ class Paladin(Player):
             self.stats["MELEE"] += random.randint(1, 2)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(1, 2)
+            self.healPercentage += (1 / self.max_level ** 1.333)
             if self.level == 10 or self.level == 20:
                 with open("stat_dump.txt", 'a') as file:
                     file.write(self.class_name + '\n')
@@ -52,10 +53,11 @@ class Paladin(Player):
                     for key in self.stats.keys():
                         if key != "CUR_HP":
                             file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
+                    file.write('\t' + "HEAL: " + str(round(self.healPercentage * 100, 2)) + "%\n")
 
     def heal_party(self,party):
         for member in party.party_members:
-            if member.alive:
+            if member.alive and member.stats['CUR_HP'] < member.stats['MAX_HP']:
                 member.healPlayer(int(member.stats["MAX_HP"]*self.healPercentage))
 
         super().end_ability()
