@@ -301,8 +301,10 @@ class Boss(Actor):
             if self.target_vector != None:
                 if self.target_vector.x < 0:
                     self.accel.x -= ENEMY_ACC * dt
+                    self.velocity += self.accel
                 else:
                     self.accel.x += ENEMY_ACC * dt
+                    self.velocity += self.accel
 
             if self.hitWall:
                 if not self.rocks_fell:
