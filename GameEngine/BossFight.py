@@ -35,7 +35,7 @@ class BossFight:
             enemy_list = []
             for enemyspawnpoint in room.enemySpawnPoints:
                 enemy = Boss(enemyspawnpoint.midbottom,
-                             "./images/Characters/boss1",
+                             "./images/Characters/boss2",
                              200,
                              self.party_list.avg_level + 1) # make Boss 1 level higher than party average
                 enemy_list.append(enemy)
