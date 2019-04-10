@@ -9,8 +9,6 @@ class Ranger(Player):
     Ranger class, specializes in ranged attacks.
     """
 
-    stats = [1, 3, 1, 22]
-
     def __init__(self, start_pos, img="images/Characters/ranger", stats=[1, 3, 1, 22]):
         super().__init__(start_pos, img)
 
