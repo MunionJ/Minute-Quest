@@ -23,12 +23,12 @@ class Warrior(Player):
         self.stats["MAX_HP"] = stats[3]
         self.base_stats = copy.deepcopy(self.stats)
 
-        self.weapons["axe"] = Weapon("images/Weapons/w_axe_war_0.png", (40, 40))
+        self.weapons["axe"] = Weapon("images/Weapons/battlehammer.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
         self.cur_weapon.rect = self.rect.copy()
         self.num_ability_uses = 3
         self.rage_timer = 0     # counts upward to self.max_rage_timer
-        self.max_rage_time = 5
+        self.max_rage_time = 5.25
         self.rage_active = False
         self.weapon_rotated = self.cur_weapon.image
 
@@ -82,6 +82,7 @@ class Warrior(Player):
                     for key in self.stats.keys():
                         if key != "CUR_HP":
                             file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
+                    file.write('\t' + "MAX RAGE TIME: " + str(round(self.max_rage_time, 2)) + " SECONDS\n")
 
     def update(self, *args):
         """ Override for base class update method.
