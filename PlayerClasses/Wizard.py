@@ -24,7 +24,7 @@ class Wizard(Player):
         self.cur_weapon.rect = self.rect.copy()
         self.num_ability_uses = 1
         self.DelayTimer = 60
-        self.TimeStop_timer = 5
+        self.TimeStop_timer = 5.25
         self.useAbility = False
         self.weapon_rotated = self.cur_weapon.image
         self.base_attack_cooldown = 0.5
