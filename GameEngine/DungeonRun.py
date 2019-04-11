@@ -93,7 +93,7 @@ class DungeonRun:
                         if i + 1 < len(self.dungeon.rooms):
                             self.playerBoundary = room.objective.evaluateObjective(self.player, self.playerBoundary,
                                                                                    self.dungeon.rooms[i + 1],
-                                                                                   room.enemies)
+                                                                                   room.enemies, room.selectedKey)
                             rect = self.player.rect.clamp(self.playerBoundary)
                             self.player.set_pos(rect)
                 # events = pygame.event.get()
@@ -238,6 +238,10 @@ class DungeonRun:
                 if self.prev_room != room:
                     self.prev_room = room
                     self.HUD.reset_objective_timer()
+
+                for key in room.selectedKey:
+                    if self.player.rect.colliderect(key.rect):
+                        room.selectedKey.remove(key)
 
                 for enemy in room.enemies:
                     for p in self.projectiles:

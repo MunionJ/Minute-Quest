@@ -51,7 +51,7 @@ class Objective:
     def getAnnouncement(self):
         return self.announcement
 
-    def evaluateObjective(self, player, playerBoundary=None, nextRoom=None, enemyList=None, selectedKey=None):
+    def evaluateObjective(self, player, playerBoundary=None, nextRoom=None, enemyList=None, selectedKey=[]):
         complete = False
         if self.completed:
             return playerBoundary
