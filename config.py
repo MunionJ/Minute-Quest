@@ -68,7 +68,7 @@ ROOMS = {
     ],
     "PuzzleRooms": [
         "map_puzzle_daniel.txt",
-        "project puzzle room.txt",
+        # "project puzzle room.txt",
         "MinuteQuestRoom3.txt"
     ]
 }

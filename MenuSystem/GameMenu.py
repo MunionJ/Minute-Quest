@@ -22,7 +22,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.margin = 10
 
         self.screen.fill(self.bg_color)
-        self.header = self.headerFont.render("Minute Quest",False,self.headertextColor)
+        self.header = self.headerFont.render("Minute Quest", False, self.headertextColor)
         self.headerRect = self.header.get_rect()
         self.headerRect.topleft = (self.margin, self.margin)
         self.buttonOptions = [
@@ -35,7 +35,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.buttons = []
         for option in self.buttonOptions:
             text = self.font.render(option,False,self.buttonTextColor)
-            self.buttons.append( Button(text, 0, 0, 300, 50, self.buttonColor,self.buttonSelectColor) )
+            self.buttons.append(Button(text, 0, 0, 300, 50, self.buttonColor,self.buttonSelectColor) )
 
         self.placeButtons()
         self.current_index = 0
@@ -44,6 +44,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.selectedOption = None
         self.keyboardControls = pygame.Surface(SCREEN_RES)
         self.gamepadControls = pygame.Surface(SCREEN_RES)
+        self.bg_image = pygame.image.load('images/DungeonBg.png')
 
     def Reset(self):
         self.current_index = 0
@@ -63,7 +64,7 @@ class GameMenu(pygame.sprite.Sprite):
         for button in self.buttons:
             x = self.margin + button.rect.w//2
             y = current_y
-            button.updateLocation(x,y)
+            button.updateLocation(x, y)
             current_y += button.rect.h + 5
 
     def update(self,key):
@@ -79,7 +80,6 @@ class GameMenu(pygame.sprite.Sprite):
                 self.buttons[self.current_index].deselect()
                 self.current_index += 1
                 self.buttons[self.current_index].select()
-
 
         if self.buttonOptions[self.current_index] == "Enter the Dungeon":
             pass
@@ -97,7 +97,6 @@ class GameMenu(pygame.sprite.Sprite):
                     self.buttonOptions[self.current_index] == "Save Game":
                 self.setMenuSelection()
 
-
     def getMenuSelection(self):
         return self.selectedOption
 
@@ -105,12 +104,13 @@ class GameMenu(pygame.sprite.Sprite):
         self.selectedOption = self.buttonOptions[self.current_index]
 
     def draw(self, window):
-        self.screen.fill(self.bg_color)
-        self.screen.blit(self.header,self.headerRect)
+        self.screen.blit(self.bg_image, (0, 0))
+        self.screen.blit(self.header, self.headerRect)
         for button in self.buttons:
             button.draw(self.screen)
 
-        window.blit(self.screen,self.rect)
+        window.blit(self.screen, self.rect)
+
 
 if __name__ == "__main__":
     import os

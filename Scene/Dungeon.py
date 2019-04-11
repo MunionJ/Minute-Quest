@@ -40,7 +40,6 @@ class Dungeon:
 
             if i == 0:
                 roomType = "PuzzleRooms"
-                roomName = "MinuteQuestRoom3"
 
             tempChoices = self.removeEmptyChoices(tempChoices)
             roomName = random.choice(tempChoices[roomType])
