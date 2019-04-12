@@ -66,10 +66,12 @@ class GameManager:
         self.game.launch_game()
 
     def save_game(self):
-        pickle.dump(self.Party_Load, open(self.f_name, "wb"))
+        with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
+            pickle.dump(self.Party_Load, output, pickle.HIGHEST_PROTOCOL)
 
     def Loadsave(self):
-        pickle.load(open(self.f_name, "rb"))
+        with open(self.f_name, 'rb') as input:
+            self.Party_Load = pickle.load(input)
 
     def determineState(self,currentMenu):
         if currentMenu == None:
@@ -98,9 +100,11 @@ class GameManager:
             else:
                 if selected == "Enter Dungeon":
                     self.RunDungeon()
+                    self.eventmanager.cleanup()
                 elif selected == "Fight The Boss":
-                    print("Game Manager, line 85: Selected Boss Fight");
+                    #print("Game Manager, line 85: Selected Boss Fight");
                     self.startBossFight()
+                    self.eventmanager.cleanup()
                 elif selected == "Save Game":
                     self.save_game()
                 newMenuOption = menu.NewGame

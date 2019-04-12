@@ -3,7 +3,6 @@ import random
 
 #TODO::Needs Integrated into Dungeon Room
 
-
 class Objective:
 
     def __init__(self,file_name):
@@ -51,10 +50,10 @@ class Objective:
     def getAnnouncement(self):
         return self.announcement
 
-    def evaluateObjective(self, player, playerBoundary=None, nextRoom=None, enemyList=None, selectedKey=[]):
+    def evaluateObjective(self, player, enemyList, selectedKey):
         complete = False
         if self.completed:
-            return playerBoundary
+            return
         if self.room_type == "EnemyRooms":
             if(len(enemyList) == 0):
                 complete = True
@@ -76,7 +75,6 @@ class Objective:
                         self.playerInputs.append(self.targetInputs[self.inputIndex])
                         self.inputIndex += 1
 
-                print(self.playerInputs, self.targetInputs)
                 if len(self.targetInputs) == len(self.playerInputs):
                     complete = True
 
@@ -93,10 +91,7 @@ class Objective:
         else:
             complete = True
 
+
         if complete and not self.completed:
             self.completed = True
-            return nextRoom.bgImageRect.union(playerBoundary)
-
-        elif not complete and not self.completed:
-            return playerBoundary
 

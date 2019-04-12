@@ -12,7 +12,6 @@ class Camera():
         self.dungeon = dungeon
         self.pos = (0,0)
         self.prevPos = (0,0)
-        self.boundary = dungeon.boundary
         self.view = pygame.Surface(SCREEN_RES)
         self.rect = self.view.get_rect()
         self.debug = False

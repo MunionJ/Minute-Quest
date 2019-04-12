@@ -48,7 +48,6 @@ class DungeonRun:
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
         self.projectiles = []
-        self.playerBoundary = self.dungeon.rooms[0].bgImageRect
 
     def start_game(self):
         self.running = True
@@ -86,16 +85,27 @@ class DungeonRun:
                     room = self.dungeon.rooms[i]
                     if room.bgImageRect.colliderect(self.player.rect):
                         if len(room.enemies) > 0:
-                            for enemy in room.enemies:
-                                distance = self.player.pos - enemy.pos
-                                if distance.length() < ENEMY_VISION_RANGE:
-                                    enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-                        if i + 1 < len(self.dungeon.rooms):
-                            self.playerBoundary = room.objective.evaluateObjective(self.player, self.playerBoundary,
-                                                                                   self.dungeon.rooms[i + 1],
-                                                                                   room.enemies, room.selectedKey)
-                            rect = self.player.rect.clamp(self.playerBoundary)
-                            self.player.set_pos(rect)
+                                for enemy in room.enemies:
+                                    if not enemy.alive:
+                                        if self.manager.hasReferenceToGameObject(enemy):
+                                            self.manager.removeGameObject(enemy)
+                                            room.enemies.remove(enemy)
+                                    else:
+                                        distance = self.player.pos - enemy.pos
+                                        if distance.length() < ENEMY_VISION_RANGE:
+                                            enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
+                        room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey)
+                        if not room.objective.isComplete():
+                            if self.player.rect.left > room.playerSpawn.right:
+                                if room.exitDoor == None:
+                                    room.lockDoors(self.player)
+                        else:
+                            if self.manager.hasReferenceToGameObject(room.exitDoor):
+                                self.manager.removeGameObject(room.exitDoor)
+                            if room.exitDoor != None:
+                                room.walls.remove(room.exitDoor)
+                                room.unlockDoor()
+
                 # events = pygame.event.get()
                 # for event in events:
                 #     if event.type == pygame.QUIT:
@@ -339,3 +349,4 @@ class DungeonRun:
             overlay.fill((255, 255, 255))
             overlay.set_alpha(alphaLevel)
             self.window.blit(overlay, (0, 0))
+
