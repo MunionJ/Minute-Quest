@@ -90,6 +90,11 @@ class Dungeon:
             y -= y_offset
             currentRoom.exitPoint.topleft = (x, y)
 
+            x,y = currentRoom.playerSpawn.topleft
+            x = rect1.right
+            y -= y_offset
+            currentRoom.playerSpawn.topleft = (x,y)
+
             x_offset += currentRoom.totalMapWidth
             smallest_y = min(currentRoom.bgImageRect.top,prevRoom.bgImageRect.top)
             largest_y = max(currentRoom.bgImageRect.bottom,prevRoom.bgImageRect.bottom)

@@ -40,7 +40,7 @@ class Objective:
             elif self.room_name == "project puzzle room.txt":
                 self.announcement = type + "Beat Original Puzzle"
         elif self.room_type == "boss rooms":
-            self.announcement = ""
+            self.announcement = "Defeat the Boss"
 
         #ignore Entrance and Exit rooms
 

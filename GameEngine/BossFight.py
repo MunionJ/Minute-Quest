@@ -84,17 +84,29 @@ class BossFight:
                 self.manager.addGameObject(self.player)
                 self.player.set_pos(cur_pos)
 
-                if self.player.rect.x > self.dungeon.rooms[1].bgImageRect.x:
-                    self.lock_player_in_room()
-
                 for room in self.dungeon.rooms:
                     if len(room.enemies) > 0:
                         if room.bgImageRect.colliderect(self.player.rect):
                             for enemy in room.enemies:
-                                distance = self.player.pos - enemy.pos
-                                if distance.length() < enemy.vision_range:
-                                    enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-                                #do i have line of sight
+                                if not enemy.alive:
+                                    if self.manager.hasReferenceToGameObject(enemy):
+                                        self.manager.removeGameObject(enemy)
+                                        room.enemies.remove(enemy)
+                                else:   #do i have line of sight
+                                    distance = self.player.pos - enemy.pos
+                                    if distance.length() < enemy.vision_range:
+                                        enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
+
+                            room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey)
+                            if not room.objective.isComplete():
+                                if room.exitDoor == None:
+                                    room.lockDoors(self.player)
+                            else:
+                                if self.manager.hasReferenceToGameObject(room.exitDoor):
+                                    self.manager.removeGameObject(room.exitDoor)
+                                if room.exitDoor != None:
+                                    room.walls.remove(room.exitDoor)
+                                    room.unlockDoor()
 
                 if self.player.usingAbility:
                     if self.player.class_name == "WIZARD":
@@ -131,12 +143,6 @@ class BossFight:
                 self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
-
-    def lock_player_in_room(self):
-        updated = self.player.rect.clamp(self.dungeon.rooms[1].bgImageRect)
-        self.player.rect = updated
-        self.player.pos.x, self.player.pos.y = self.player.rect.center
-
 
     def let_player_pass(self,nextRoom):
         pass

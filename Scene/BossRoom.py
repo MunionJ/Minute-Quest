@@ -13,8 +13,6 @@ class BossRoom:
         self.rooms.append(entrance)
 
         bossRoom = DungeonRoom("./maps/boss rooms/boss room1.txt", "./images/walls1.png")
-        print("BossRoom ln 16: ",bossRoom.playerSpawn, bossRoom.exitPoint)
-        bossRoom.playerSpawn = bossRoom.exitPoint.copy()
         self.rooms.append(bossRoom)
 
         self.playerSpawn = self.rooms[0].playerSpawn
@@ -50,8 +48,10 @@ class BossRoom:
             y -= y_offset
             currentRoom.exitPoint.topleft = (x, y)
 
-            currentRoom.boundary.x += x_offset
-            currentRoom.boundary.y += y_offset
+            x,y = currentRoom.playerSpawn.topleft
+            x = rect1.right
+            y -= y_offset
+            currentRoom.playerSpawn.topleft = (x,y)
 
             x_offset += currentRoom.totalMapWidth
             smallest_y = min(currentRoom.bgImageRect.top,prevRoom.bgImageRect.top)
@@ -61,9 +61,10 @@ class BossRoom:
         self.totalDungeonHeight = largest_y - smallest_y
         self.smallest_y = smallest_y
 
-        self.boundary = pygame.Rect(0, smallest_y, self.totalDungeonWidth, self.totalDungeonHeight)
-        self.playerBounds = self.boundary
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
+        for room in self.rooms:
+            print("Start: {0} Exit: {1}",room.playerSpawn, room.exitPoint)
+
 
     def draw(self,screen, cameraPos):
         """

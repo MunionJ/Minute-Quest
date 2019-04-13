@@ -106,13 +106,13 @@ class DungeonRoom:
 
     def lockDoors(self, player):
         if not self.objective.isComplete():
-            if player.rect.x > self.playerSpawn.right:
+            if player.rect.left > self.playerSpawn.right:
                 tilewidth = self.header_data['tilewidth']
                 tileheight = self.header_data['tileheight']
                 doorSurf = pygame.image.load("./images/Interactive Objects/simpledoor.png").convert_alpha()
                 doorSurf = pygame.transform.scale(doorSurf,(tilewidth,4*tileheight))
                 doorRect = doorSurf.get_rect()
-                doorRect.midbottom = self.exitPoint.midbottom
+                doorRect.midbottom = self.playerSpawn.midbottom if self.file_name.startswith("./maps/boss") else self.exitPoint.midbottom
                 self.exitDoor = Door(doorSurf, doorRect)
                 self.walls.add(self.exitDoor)
 
