@@ -45,6 +45,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.keyboardControls = pygame.Surface(SCREEN_RES)
         self.gamepadControls = pygame.Surface(SCREEN_RES)
         self.bg_image = pygame.image.load('images/DungeonBg.png')
+        self.ambient_sound = pygame.mixer.Sound('Sounds/water_ambience.wav')
 
     def Reset(self):
         self.current_index = 0
@@ -66,6 +67,9 @@ class GameMenu(pygame.sprite.Sprite):
             y = current_y
             button.updateLocation(x, y)
             current_y += button.rect.h + 5
+
+    def play_sounds(self):
+        self.ambient_sound.play()
 
     def update(self,key):
         """Evaluate action based on user keypress"""

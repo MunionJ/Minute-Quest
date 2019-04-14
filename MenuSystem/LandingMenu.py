@@ -61,6 +61,9 @@ class LandingMenu(pygame.sprite.Sprite):
             button.updateLocation(x,y)
             current_y += gap_y + button.rect.h
 
+    def play_sounds(self):
+        pass
+
     def update(self,key):
         if key == pygame.K_w or key == pygame.K_a:
             if self.current_index > 0:

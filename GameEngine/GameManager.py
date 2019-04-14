@@ -53,6 +53,7 @@ class GameManager:
 
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
+                self.menuOptions[self.currentMenuState].play_sounds()
                 pygame.display.update()
 
     def RunDungeon(self):
