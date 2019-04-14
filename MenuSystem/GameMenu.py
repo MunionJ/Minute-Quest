@@ -69,7 +69,11 @@ class GameMenu(pygame.sprite.Sprite):
             current_y += button.rect.h + 5
 
     def play_sounds(self):
-        self.ambient_sound.play()
+        self.ambient_sound.set_volume(.1)
+        self.ambient_sound.play(-1)
+
+    def stop_sounds(self):
+        pass
 
     def update(self,key):
         """Evaluate action based on user keypress"""
