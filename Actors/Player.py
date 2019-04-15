@@ -312,7 +312,7 @@ class Player(Actor):
             if self.dmg_display_timer < self.dmg_display_max_time:
                 dt = 0.016
                 self.dmg_display_timer += dt
-                font = pygame.font.SysFont("Times New Roman", 25)
+                font = pygame.font.SysFont("Times New Roman", 32)
                 surf = font.render(str(self.most_recent_dmg),
                                    False,
                                    pygame.color.THECOLORS['white']
