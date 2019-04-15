@@ -68,12 +68,22 @@ class GameMenu(pygame.sprite.Sprite):
             button.updateLocation(x, y)
             current_y += button.rect.h + 5
 
+    def play_music(self):
+        # pygame.mixer.music.load('Sounds/Music/Loop_NatureGoddess_00.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_01.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_02.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_03.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_04.ogg')
+        # pygame.mixer.music.set_volume(0.1)
+        # pygame.mixer.music.play()
+        pass
+
     def play_sounds(self):
         self.ambient_sound.set_volume(.1)
-        self.ambient_sound.play(-1)
+        self.ambient_sound.play()
 
     def stop_sounds(self):
-        pass
+        self.ambient_sound.stop()
 
     def update(self,key):
         """Evaluate action based on user keypress"""
@@ -106,6 +116,7 @@ class GameMenu(pygame.sprite.Sprite):
                 self.setMenuSelection()
 
     def getMenuSelection(self):
+        self.stop_sounds()
         return self.selectedOption
 
     def setMenuSelection(self):

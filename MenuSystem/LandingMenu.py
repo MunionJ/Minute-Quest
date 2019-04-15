@@ -61,6 +61,9 @@ class LandingMenu(pygame.sprite.Sprite):
             button.updateLocation(x,y)
             current_y += gap_y + button.rect.h
 
+    def play_music(self):
+        pass
+
     def play_sounds(self):
         pass
 
@@ -85,6 +88,7 @@ class LandingMenu(pygame.sprite.Sprite):
             self.setMenuSelection(self.buttonOptions[self.current_index])
 
     def getMenuSelection(self):
+        self.stop_sounds()
         return self.selectedOption
 
     def setMenuSelection(self, selected=None):
