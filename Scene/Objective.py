@@ -83,7 +83,7 @@ class Objective:
                     complete = True
 
             elif self.room_name == "project puzzle room.txt":
-                #add in puzzle logic
+                complete = True
                 pass
         elif self.room_type == "boss rooms":
             if len(enemyList) == 0:
