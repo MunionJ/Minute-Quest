@@ -307,6 +307,27 @@ class Boss(Actor):
         def draw(self, window, cameraPos):
             super().draw(window, cameraPos)
             window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+            if self.alive:
+                font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 30)
+                surf = font.render(str(self.stats["CUR_HP"]) + " / " + str(self.stats["MAX_HP"]),
+                                   False,
+                                   pygame.color.THECOLORS['white']
+                                   )
+                bar_width = 400
+                bar_height = 30
+                bar_x = 200
+                bar_y = window.get_height() - 80
+                hp_bar_outline = pygame.Rect(bar_x,
+                                             bar_y,
+                                             bar_width,
+                                             bar_height)
+                hp_bar = pygame.Rect(bar_x,
+                                     bar_y,
+                                     (self.stats["CUR_HP"] / self.stats["MAX_HP"]) * bar_width,
+                                     bar_height)
+                pygame.draw.rect(window, pygame.color.THECOLORS['red'], hp_bar)
+                pygame.draw.rect(window, pygame.color.THECOLORS['white'], hp_bar_outline, 2)
+                window.blit(surf, (bar_x + (bar_width / 2.5), bar_y + (bar_height / 5)))
 
         def stage_one_tactics(self, dt, projectiles):
             if self.target_vector != None:
