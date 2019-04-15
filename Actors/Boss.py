@@ -257,9 +257,7 @@ class Boss(Actor):
             tile = wallTiles.sprites()[0]
             halfdist = tile.rect.w >> 2
             dir = vec(halfdist * math.cos(heading), halfdist * math.sin(heading))
-            if self.direction_timer <= 0:
-                self.target_vector = dir
-                self.direction_timer = self.direction_cooldown
+            self.target_vector = dir
             detecting = True
             count = 0
             while count < self.vision_range:
