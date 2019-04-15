@@ -57,6 +57,10 @@ class Enemy(Actor):
         self.sees_player = False
         self.shouldJump = False
         self.vision_range = 250
+        self.most_recent_dmg = 0
+        self.dmg_display_timer = 0
+        self.dmg_display_max_time = 0.8
+        self.dmg_display_y_offset = 0
         self.now = pygame.time.get_ticks()
 
     def move(self, keys, dt): #TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
@@ -283,12 +287,14 @@ class Enemy(Actor):
 
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
+        damage = player.deal_dmg()
         if self.stats["CUR_HP"] > 0 and  self.invuln_timer <= 0:
-            if self.stats["CUR_HP"] - player.deal_dmg() <= 0:
+            if self.stats["CUR_HP"] - damage <= 0:
                 self.stats["CUR_HP"] = 0
                 self.set_dead()
             else:
-                self.stats["CUR_HP"] -= player.deal_dmg()
+                self.stats["CUR_HP"] -= damage
+                self.most_recent_dmg = damage
             self.invuln_timer = INVULN_TIMER
 
     def attack(self):
@@ -297,4 +303,20 @@ class Enemy(Actor):
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
-        window.blit(self.img, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))
+        window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+        if self.most_recent_dmg > 0:
+            if self.dmg_display_timer < self.dmg_display_max_time:
+                dt = 0.016
+                self.dmg_display_timer += dt
+                font = pygame.font.SysFont("Times New Roman", 25)
+                surf = font.render(str(self.most_recent_dmg),
+                                   False,
+                                   pygame.color.THECOLORS['white']
+                                   )
+                window.blit(surf,
+                            (int(self.rect.x - cameraPos[0] + 10), int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
+                self.dmg_display_y_offset += 2
+            else:
+                self.most_recent_dmg = 0
+                self.dmg_display_timer = 0
+                self.dmg_display_y_offset = 0

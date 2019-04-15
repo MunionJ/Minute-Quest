@@ -72,7 +72,7 @@ class Player(Actor):
 
     def basic_attack(self, mbuttons, keys, dt):
         """ Generic attack method. Will be
-            overridden by more specialized
+            overridden by more specializedw
             classes later (maybe)."""
         if self.class_name != "RANGER":
             self.weapon_rotated = pygame.transform.rotate(self.cur_weapon.image,
