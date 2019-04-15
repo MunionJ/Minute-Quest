@@ -133,10 +133,7 @@ class DungeonRoom:
             wall.draw(screen, cameraPos)
 
         for enemy in self.enemies:
-            screen.blit(
-                enemy.img,
-                (enemy.rect.x - cameraPos[0], enemy.rect.y - cameraPos[1])
-            )
+            enemy.draw(screen, cameraPos)
 
         for key in self.selectedKey:
             key.draw(screen, cameraPos)

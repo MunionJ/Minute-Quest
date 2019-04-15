@@ -64,6 +64,11 @@ class Player(Actor):
         # figure out an exact time later
         self.invuln_timer = 0
 
+        self.most_recent_dmg = 0
+        self.dmg_display_timer = 0
+        self.dmg_display_max_time = 0.8
+        self.dmg_display_y_offset = 0
+
         self.jumpFrameCount = 0
         self.jumpFrames = 2
         self.camera_offset = None
@@ -92,6 +97,7 @@ class Player(Actor):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
+        self.most_recent_dmg = enemy_object.stats["MELEE"]
         if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
             if self.stats["CUR_HP"] - enemy_object.stats["MELEE"] <= 0:
                 self.stats["CUR_HP"] = 0
@@ -302,3 +308,19 @@ class Player(Actor):
                         #                   self.cur_weapon.rect.h
                         #                   ),
                         #                  2)
+        if self.most_recent_dmg > 0:
+            if self.dmg_display_timer < self.dmg_display_max_time:
+                dt = 0.016
+                self.dmg_display_timer += dt
+                font = pygame.font.SysFont("Times New Roman", 25)
+                surf = font.render(str(self.most_recent_dmg),
+                                   False,
+                                   pygame.color.THECOLORS['white']
+                                   )
+                window.blit(surf,
+                            (int(self.rect.x - cameraPos[0] + 10), int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
+                self.dmg_display_y_offset += 2
+            else:
+                self.most_recent_dmg = 0
+                self.dmg_display_timer = 0
+                self.dmg_display_y_offset = 0
