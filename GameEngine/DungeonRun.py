@@ -94,7 +94,7 @@ class DungeonRun:
                                         distance = self.player.pos - enemy.pos
                                         if distance.length() < ENEMY_VISION_RANGE:
                                             enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-                        room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey)
+                        room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey, room.Puzzlerects)
                         if not room.objective.isComplete():
                             if self.player.rect.left > room.playerSpawn.right:
                                 if room.exitDoor == None:
@@ -252,6 +252,14 @@ class DungeonRun:
                 for key in room.selectedKey:
                     if self.player.rect.colliderect(key.rect):
                         room.selectedKey.remove(key)
+
+                for rect in room.Puzzlerects:
+                    if self.player.rect.colliderect(PUZZLE_RECT1.rect):
+                        room.Puzzlerects.remove(PUZZLE_RECT1)
+                    elif self.player.rect.colliderect(PUZZLE_RECT2.rect):
+                        room.Puzzlerects.remove(PUZZLE_RECT2)
+                    elif self.player.rect.colliderect(PUZZLE_RECT3.rect):
+                        room.Puzzlerects.remove(PUZZLE_RECT2)
 
                 for enemy in room.enemies:
                     for p in self.projectiles:

@@ -1,6 +1,7 @@
 import pygame
 import random
 
+
 #TODO::Needs Integrated into Dungeon Room
 
 class Objective:
@@ -50,7 +51,7 @@ class Objective:
     def getAnnouncement(self):
         return self.announcement
 
-    def evaluateObjective(self, player, enemyList, selectedKey):
+    def evaluateObjective(self, player, enemyList, selectedKey, Puzzlerects):
         complete = False
         if self.completed:
             return
@@ -83,7 +84,8 @@ class Objective:
                     complete = True
 
             elif self.room_name == "project puzzle room.txt":
-                complete = True
+                if len(Puzzlerects) < 1:
+                    complete = True
                 pass
         elif self.room_type == "boss rooms":
             if len(enemyList) == 0:

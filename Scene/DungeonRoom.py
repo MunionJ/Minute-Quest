@@ -42,6 +42,7 @@ class DungeonRoom:
         self.enemySpawnPoints = []
         self.possibleKeys = []
         self.selectedKey = []
+        self.Puzzlerects = []
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
         self.enemies = []
@@ -79,6 +80,12 @@ class DungeonRoom:
                                 pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             )
                             self.walls.add(tile)
+                            if tile in PUZZLE_RECT1:
+                                self.Puzzlerects.append(tile)
+                            if tile in PUZZLE_RECT2:
+                                self.Puzzlerects.append(tile)
+                            if tile in PUZZLE_RECT3:
+                                self.Puzzlerects.append(tile)
                         elif i == 2:  # Spawner Layer
                             if tilecode in ENEMIES_SPAWNS:
                                 enemySpawnPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
