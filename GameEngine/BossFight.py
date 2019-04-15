@@ -97,7 +97,7 @@ class BossFight:
                                     if distance.length() < enemy.vision_range:
                                         enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
 
-                            room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey)
+                            room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey, room.Puzzlerects)
                             if not room.objective.isComplete():
                                 if room.exitDoor == None:
                                     room.lockDoors(self.player)

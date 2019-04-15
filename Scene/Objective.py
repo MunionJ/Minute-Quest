@@ -86,7 +86,6 @@ class Objective:
             elif self.room_name == "project puzzle room.txt":
                 if len(Puzzlerects) < 1:
                     complete = True
-                pass
         elif self.room_type == "boss rooms":
             if len(enemyList) == 0:
                 complete = True
