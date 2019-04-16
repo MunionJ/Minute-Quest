@@ -81,7 +81,7 @@ class Camera():
             the game screen."""
         self.debug = not self.debug
 
-    def draw(self, screen, player, enemy_list, projectiles):
+    def draw(self, screen, player, enemy_list, projectiles, particleEmitter):
         """
             Draws game Scene by passing camera offset
             :param screen: screen to draw to
@@ -90,7 +90,8 @@ class Camera():
             :return: void
         """
         #screen.blit(self.dungeon.dirtBacground,(0,self.dungeon.dungeonExit.y-self.pos[1]))
-        self.dungeon.draw(screen,self.pos)
+        self.dungeon.draw(screen, self.pos)
+        particleEmitter.draw(screen, self.pos)
         player.draw(screen,self.pos)
         for p in projectiles:
             p.draw(screen, self.pos)

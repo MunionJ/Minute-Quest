@@ -62,7 +62,7 @@ ROOMS = {
     "PlatformRooms": [
         # "AB_plat_map1.txt", unwinnable
         "map_platformer_daniel.txt",
-        "MinuteQuestRoom2.txt", #bugs game if second room
+        "MinuteQuestRoom2.txt",
         "MQ_test_map_platforming.txt",
         "project platform room.txt"
     ],

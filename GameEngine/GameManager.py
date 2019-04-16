@@ -6,6 +6,7 @@ from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
 import pickle
+from Actors.Party import Party
 
 class GameManager:
 
@@ -52,26 +53,30 @@ class GameManager:
             if self.running:
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
-                self.menuOptions[self.currentMenuState].play_sounds()
+#                self.menuOptions[self.currentMenuState].play_sounds()
                 pygame.display.update()
 
     def RunDungeon(self):
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.Party_Load = self.game.getPartyReference()
 
     def startBossFight(self):
         self.game = BossFight(self.eventmanager, self.gameWindow)
         self.game.start_game()
         self.game.launch_game()
+        self.Party_Load = self.game.partyInfoToPickle()
 
     def save_game(self):
-        with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
-            pickle.dump(self.Party_Load, output, pickle.HIGHEST_PROTOCOL)
+        if self.Party_Load != None:
+            with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
+                pickle.dump(self.Party_Load, output, protocol=pickle.HIGHEST_PROTOCOL)
 
     def Loadsave(self):
         with open(self.f_name, 'rb') as input:
             self.Party_Load = pickle.load(input)
+            print(self.Party_Load)
 
     def determineState(self,currentMenu):
         if currentMenu == None:
@@ -106,6 +111,7 @@ class GameManager:
                     self.startBossFight()
                     self.eventmanager.cleanup()
                 elif selected == "Save Game":
+                    print(self.Party_Load)
                     self.save_game()
                 newMenuOption = menu.NewGame
 
@@ -116,6 +122,7 @@ class GameManager:
                 newMenuOption = menu.Loading
                 #TODO:: make method to pull up menu to select game save
                 self.Loadsave()
+                print(self.Party_Load)
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls

@@ -45,6 +45,7 @@ class Warrior(Player):
     def activate_rage(self):
         """ Method for applying the effects of rage."""
         if not self.rage_active:
+            self.usingAbility = True
             self.rage_active = True
             self.num_ability_uses -= 1
             self.stats["MELEE"] *= 2
@@ -53,6 +54,7 @@ class Warrior(Player):
     def deactivate_rage(self):
         """ Method for turning off the effects of rage."""
         self.rage_active = False
+        self.usingAbility = False
         self.rage_timer = 0
         self.stats["MELEE"] = self.base_stats["MELEE"]
         if self.stats["CUR_HP"] > self.stats["MAX_HP"]:

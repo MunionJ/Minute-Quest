@@ -104,7 +104,7 @@ class LandingMenu(pygame.sprite.Sprite):
 
 if __name__ == "__main__":
     import os
-    from EventManager import *
+    from GameEngine.EventManager import EventManager
 
     running = True
     clock = pygame.time.Clock()

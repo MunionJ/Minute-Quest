@@ -27,7 +27,6 @@ class GameMenu(pygame.sprite.Sprite):
         self.headerRect.topleft = (self.margin, self.margin)
         self.buttonOptions = [
             "Enter Dungeon",
-            "Shop",
             "Fight The Boss",
             "Save Game",
             "Main Menu"

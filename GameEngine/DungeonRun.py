@@ -2,19 +2,20 @@ from Scene.Camera import *
 from GameEngine.GameHUD import *
 from Actors.Party import *
 from Actors.Enemies import *
+from ParticleEngine.Emitter import Emitter
 
 
 class DungeonRun:
 
-    def __init__(self, event_mgr, game_window, party=None):
+    def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
         self.manager = event_mgr
         self.running = False
         self.dungeon = Dungeon(4)
-        if party is None:
-            self.party_list = Party(self.dungeon.playerSpawn)
-        else:
-            self.party_list = party
+        self.party_list = Party(self.dungeon.playerSpawn)
+        if game_save_info != None:
+            self.party_list.loadPartyInfoFromSave(game_save_info)
+        party = self.party_list
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
@@ -48,6 +49,8 @@ class DungeonRun:
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
         self.projectiles = []
+        self.particleEmitter = Emitter()
+        self.manager.addGameObject(self.particleEmitter)
 
     def start_game(self):
         self.running = True
@@ -112,10 +115,17 @@ class DungeonRun:
                 #         self.running = False
 
                 if self.player.usingAbility:
+                    if self.particleEmitter.currentPosition == None:
+                        self.particleEmitter.setPosition(self.player)
+                    if not self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOnParticles()
                     if self.player.class_name == "WIZARD":
                         self.HUD.timer += dt
                     elif self.player.class_name == "PALADIN":
                         self.player.heal_party(self.party_list)
+                else:
+                    if self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOffParticles()
 
                 self.collisionHandling(dt)
                 self.addProjectiles()
@@ -138,11 +148,10 @@ class DungeonRun:
 
                 if self.HUD.getTime() <= 0:
                     self.gameOverCondition = "Times Up!"
-
+                self.particleEmitter.setPosition(self.player)
                 self.camera.setCameraPosition(self.player.rect.center)
-                pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
+                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles, self.particleEmitter)
                 self.fadeEffect()
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
@@ -357,4 +366,7 @@ class DungeonRun:
             overlay.fill((255, 255, 255))
             overlay.set_alpha(alphaLevel)
             self.window.blit(overlay, (0, 0))
+
+    def getPartyReference(self):
+        return self.party_list
 

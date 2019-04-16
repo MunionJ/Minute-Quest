@@ -6,6 +6,7 @@ from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
 from config import SCREEN_RES, PIXEL_DIFFERENCE
 import pygame
+from ParticleEngine.Emitter import Emitter
 
 
 class BossFight:
@@ -50,6 +51,8 @@ class BossFight:
         self.postTime = 3
         self.projectiles = []
         self.boss = self.enemiesByRoom[1][0]
+        self.particleEmitter = Emitter()
+        self.manager.addGameObject(self.particleEmitter)
 
     def start_game(self):
         self.running = True
@@ -109,10 +112,17 @@ class BossFight:
                                     room.unlockDoor()
 
                 if self.player.usingAbility:
+                    if self.particleEmitter.currentPosition == None:
+                        self.particleEmitter.setPosition(self.player)
+                    if not self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOnParticles()
                     if self.player.class_name == "WIZARD":
                         self.HUD.timer += dt
                     elif self.player.class_name == "PALADIN":
                         self.player.heal_party(self.party_list)
+                else:
+                    if self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOffParticles()
 
                 self.collisionHandling(dt)
                 self.addProjectiles()
@@ -137,10 +147,11 @@ class BossFight:
                 if self.HUD.getTime() <=0:
                     self.gameOverCondition = "Times Up!"
 
+                self.particleEmitter.setPosition(self.player)
                 self.camera.setCameraPosition(self.player.rect.center)
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
+                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles, self.particleEmitter)
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
 
