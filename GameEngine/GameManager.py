@@ -60,13 +60,13 @@ class GameManager:
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
-        self.Party_Load = self.game.getPartyReference()
+        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
-        self.game = BossFight(self.eventmanager, self.gameWindow)
+        self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
-        self.Party_Load = self.game.partyInfoToPickle()
+        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def save_game(self):
         if self.Party_Load != None:
@@ -76,7 +76,6 @@ class GameManager:
     def Loadsave(self):
         with open(self.f_name, 'rb') as input:
             self.Party_Load = pickle.load(input)
-            print(self.Party_Load)
 
     def determineState(self,currentMenu):
         if currentMenu == None:
@@ -111,7 +110,6 @@ class GameManager:
                     self.startBossFight()
                     self.eventmanager.cleanup()
                 elif selected == "Save Game":
-                    print(self.Party_Load)
                     self.save_game()
                 newMenuOption = menu.NewGame
 
@@ -122,7 +120,6 @@ class GameManager:
                 newMenuOption = menu.Loading
                 #TODO:: make method to pull up menu to select game save
                 self.Loadsave()
-                print(self.Party_Load)
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls

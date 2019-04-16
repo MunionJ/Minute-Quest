@@ -11,12 +11,14 @@ from ParticleEngine.Emitter import Emitter
 
 class BossFight:
 
-    def __init__(self, event_mgr, game_window):
+    def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
         self.manager = event_mgr
         self.running = False
         self.dungeon = BossRoom()
         self.party_list = Party(self.dungeon.playerSpawn)
+        if game_save_info != None:
+            self.party_list.loadPartyInfoFromSave(game_save_info)
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
@@ -349,3 +351,6 @@ class BossFight:
     def gameOver(self):
         "The Player's Experience gets reset"
         self.running = False
+
+    def getPartyReference(self):
+        return self.party_list
