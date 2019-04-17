@@ -64,7 +64,7 @@ class Objective:
             complete = True
         elif self.room_type == "PuzzleRooms":
             type = "Puzzle: "
-            if self.room_name == "map_puzzle_daniel.txt":
+            if self.room_name == "map_puzzle_daniel.txt":  #TODO: Reset list if wrong key pressed
                 keys = pygame.key.get_pressed()
                 mouseButtons = pygame.mouse.get_pressed()
                 if self.targetInputs[self.inputIndex] == (1,0,0):

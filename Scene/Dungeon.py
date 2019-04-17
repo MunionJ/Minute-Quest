@@ -38,6 +38,9 @@ class Dungeon:
                 elif len(tempChoices['PuzzleRooms']) > 0:
                     roomType = "PuzzleRooms"
 
+            if i == 0:
+                roomType = "EnemyRooms"
+
             tempChoices = self.removeEmptyChoices(tempChoices)
             roomName = random.choice(tempChoices[roomType])
             tempChoices[roomType].remove(roomName)
