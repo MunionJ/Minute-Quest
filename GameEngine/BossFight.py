@@ -5,7 +5,9 @@ from Actors.Party import Party
 from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
 from config import SCREEN_RES, PIXEL_DIFFERENCE
+from Scene.Loading import Loading
 import pygame
+import time
 from ParticleEngine.Emitter import Emitter
 
 
@@ -28,6 +30,7 @@ class BossFight:
         self.HUD = GameHUD(self.window)
         self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
+        self.loading = Loading()
         self.bg_color = pygame.color.THECOLORS["black"]
         self.prev_room = self.dungeon.rooms[0]
         for room in self.dungeon.rooms:
@@ -140,6 +143,7 @@ class BossFight:
 
                 #Win Condition
                 if not self.boss.alive:
+                    self.end_boss()
                     self.gameWin()
 
                 #Lose Conditions
@@ -156,6 +160,11 @@ class BossFight:
                 self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles, self.particleEmitter)
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
+
+    def end_boss(self):
+        """ Display boss defeated screen"""
+        self.loading.draw(self.window, "boss")
+        time.sleep(2)
 
     def let_player_pass(self,nextRoom):
         pass

@@ -1,8 +1,10 @@
 from Scene.Camera import *
+from Scene.Loading import Loading
 from GameEngine.GameHUD import *
 from Actors.Party import *
 from Actors.Enemies import *
 from ParticleEngine.Emitter import Emitter
+import time
 
 
 class DungeonRun:
@@ -13,6 +15,7 @@ class DungeonRun:
         self.running = False
         self.dungeon = Dungeon(4)
         self.party_list = Party(self.dungeon.playerSpawn)
+        self.loading = Loading()
         if game_save_info != None:
             self.party_list.loadPartyInfoFromSave(game_save_info)
         party = self.party_list
@@ -140,6 +143,7 @@ class DungeonRun:
                     self.manager.addGameObject(self.player)
 
                 if self.player.pos.x >= self.dungeon.dungeonExit.left:
+                    self.end_dungeon()
                     self.gameWin()
 
                 # Lose Conditions
@@ -155,6 +159,11 @@ class DungeonRun:
                 self.fadeEffect()
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
+
+    def end_dungeon(self):
+        """ Display end of dungeon screen"""
+        self.loading.draw(self.window, "dungeon")
+        time.sleep(2)
 
     def player_swap_cd(self, dt):
         """ 3 second cooldown on switching
