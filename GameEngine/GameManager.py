@@ -5,8 +5,8 @@ from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
-import pickle
 from Actors.Party import Party
+import pickle
 
 class GameManager:
 
@@ -53,25 +53,24 @@ class GameManager:
             if self.running:
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
-#                self.menuOptions[self.currentMenuState].play_sounds()
+                self.menuOptions[self.currentMenuState].play_sounds()
                 pygame.display.update()
 
     def RunDungeon(self):
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
-        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
-        self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
+        self.game = BossFight(self.eventmanager, self.gameWindow)
         self.game.start_game()
         self.game.launch_game()
-        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def save_game(self):
-        if self.Party_Load != None:
-            with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
-                pickle.dump(self.Party_Load, output, protocol=pickle.HIGHEST_PROTOCOL)
+        party = Party((0, 0))
+        new_party = bin(party)
+        with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
+            pickle.dump(new_party, output, pickle.HIGHEST_PROTOCOL)
 
     def Loadsave(self):
         with open(self.f_name, 'rb') as input:
