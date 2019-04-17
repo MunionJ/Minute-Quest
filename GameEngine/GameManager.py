@@ -7,8 +7,11 @@ from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
 from Actors.Party import Party
 import pickle
+from tkinter import filedialog
+from tkinter import *
 
-#stuff
+
+# stuff
 class GameManager:
 
     def __init__(self):
@@ -22,7 +25,7 @@ class GameManager:
         self.game = None
         self.clock = pygame.time.Clock()
         self.running = False
-        self.eventmanager = EventManager()   #Incorporate EventManager to handle player input
+        self.eventmanager = EventManager()  # Incorporate EventManager to handle player input
         self.currentMenuState = None
         pygame.display.set_caption(GAME_NAME)
         self.gameWindow = pygame.display.set_mode(SCREEN_RES)
@@ -30,7 +33,7 @@ class GameManager:
         self.Party_Load = None
         self.f_name = "pickle_data.p"
 
-    def LoadMenu(self,menuOption):
+    def LoadMenu(self, menuOption):
         currentMenu = self.menuOptions[self.currentMenuState] if self.currentMenuState != None else menu.Main
         newMenu = self.menuOptions[menuOption]
         if currentMenu in self.eventmanager.game_objects['game_menus']:
@@ -43,14 +46,14 @@ class GameManager:
         self.running = True
 
     def RunMenuLoop(self):
-        while(self.running):
-            #Check user input
+        while (self.running):
+            # Check user input
             self.running = self.eventmanager.process_menu_input()
 
-            #check user selection and determine state
+            # check user selection and determine state
             self.determineState(self.menuOptions[self.currentMenuState])
 
-            #Draw
+            # Draw
             if self.running:
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
@@ -68,16 +71,21 @@ class GameManager:
         self.game.launch_game()
 
     def save_game(self):
-        party = Party((0, 0))
-        new_party = bin(party)
-        with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
-            pickle.dump(new_party, output, pickle.HIGHEST_PROTOCOL)
+        if self.Party_Load is not None:
+            with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
+                pickle.dump(self.Party_Load, output, protcol=pickle.HIGHEST_PROTOCOL)
 
     def Loadsave(self):
+        root = Tk()
+        root.withdraw()
+        root.filename = filedialog.asksaveasfilename(initialdir="/",
+                                                     title="pickle_data.p",
+                                                     filetypes=(("jpeg files", "*.jpg"),
+                                                                ("all files", "*.*")))
         with open(self.f_name, 'rb') as input:
             self.Party_Load = pickle.load(input)
 
-    def determineState(self,currentMenu):
+    def determineState(self, currentMenu):
         if currentMenu == None:
             return
 
@@ -106,7 +114,7 @@ class GameManager:
                     self.RunDungeon()
                     self.eventmanager.cleanup()
                 elif selected == "Fight The Boss":
-                    #print("Game Manager, line 85: Selected Boss Fight");
+                    # print("Game Manager, line 85: Selected Boss Fight");
                     self.startBossFight()
                     self.eventmanager.cleanup()
                 elif selected == "Save Game":
@@ -118,7 +126,7 @@ class GameManager:
                 newMenuOption = menu.NewGame
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
-                #TODO:: make method to pull up menu to select game save
+                # TODO:: make method to pull up menu to select game save
                 self.Loadsave()
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
@@ -135,11 +143,9 @@ class GameManager:
 
         self.LoadMenu(newMenuOption)
 
+
 if __name__ == "__main__":
     gm = GameManager()
     print(gm.currentMenuState)
     gm.loadMenu(menu.Controls)
     print(gm.currentMenuState)
-
-
-
