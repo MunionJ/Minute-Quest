@@ -38,11 +38,13 @@ class Dungeon:
                 elif len(tempChoices['PuzzleRooms']) > 0:
                     roomType = "PuzzleRooms"
 
+            if i == 0:
+                roomType = "PlatformRooms"
+
             tempChoices = self.removeEmptyChoices(tempChoices)
             roomName = random.choice(tempChoices[roomType])
             tempChoices[roomType].remove(roomName)
             dungeonName = "./maps/{0}/{1}".format(roomType, roomName)
-            print(dungeonName)
             sprite_sheet = self.assignSpriteSheet(roomName)
             if sprite_sheet == None:
                 raise TypeError("Map Name Not Found in Config " + roomName)
@@ -54,7 +56,6 @@ class Dungeon:
         self.rooms.append(exit)
 
         self.playerSpawn = self.rooms[0].playerSpawn
-
         x_offset = self.rooms[0].totalMapWidth
 
         smallest_y = self.rooms[0].totalMapHeight
@@ -89,8 +90,10 @@ class Dungeon:
             y -= y_offset
             currentRoom.exitPoint.topleft = (x, y)
 
-            currentRoom.boundary.x += x_offset
-            currentRoom.boundary.y += y_offset
+            x,y = currentRoom.playerSpawn.topleft
+            x = rect1.right
+            y -= y_offset
+            currentRoom.playerSpawn.topleft = (x,y)
 
             x_offset += currentRoom.totalMapWidth
             smallest_y = min(currentRoom.bgImageRect.top,prevRoom.bgImageRect.top)
@@ -100,8 +103,6 @@ class Dungeon:
         self.totalDungeonHeight = largest_y - smallest_y
         self.smallest_y = smallest_y
 
-        self.boundary = pygame.Rect(0, smallest_y, self.totalDungeonWidth, self.totalDungeonHeight)
-        self.playerBounds = self.boundary
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
 
 
@@ -136,7 +137,6 @@ class Dungeon:
         """
         x_offset = cameraPos[0] % SCREEN_RES[0]
         y_offset = self.dungeonExit.bottom - cameraPos[1]
-        print(x_offset, y_offset)
 
         y = y_offset
         while y < SCREEN_RES[1]+cameraPos[1]:

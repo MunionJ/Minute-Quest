@@ -1,11 +1,12 @@
 # Names: Jon Munion, Daniel Kratzenberg
 # ETGG1802-01
 # Lab 2: File I/O
-
+from Scene.Door import Door
 from Scene.MapLoader import loadMap
 from config import *
-from Scene.Tile import *
+from Scene.Tile import Tile
 from Scene.Objective import Objective
+import pygame
 import random
 
 
@@ -31,7 +32,6 @@ class DungeonRoom:
         r, g, b, a = tuple(self.header_data['background_color']) if 'background_color' in self.header_data.keys() else (
             0, 0, 0, 255)
         self.bg_color = pygame.Color(r, g, b, a)
-        self.boundary = pygame.Rect(0, 0, self.totalMapWidth, self.totalMapHeight)
         tilewidth = self.header_data['tilewidth']
         tileheight = self.header_data['tileheight']
         gap_x = self.tile_sets_data[3]
@@ -42,11 +42,13 @@ class DungeonRoom:
         self.enemySpawnPoints = []
         self.possibleKeys = []
         self.selectedKey = []
+        self.Puzzlerects = []
         self.playerSpawn = None
         self.walls = pygame.sprite.Group()
         self.enemies = []
         self.objective = Objective(file_name)
         self.puzzle = False
+        self.exitDoor = None
 
         for i in range(len(self.layer_data)):
             layer = self.layer_data[i]
@@ -78,6 +80,12 @@ class DungeonRoom:
                                 pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                             )
                             self.walls.add(tile)
+                            if tile in PUZZLE_RECT1:
+                                self.Puzzlerects.append(tile)
+                            if tile in PUZZLE_RECT2:
+                                self.Puzzlerects.append(tile)
+                            if tile in PUZZLE_RECT3:
+                                self.Puzzlerects.append(tile)
                         elif i == 2:  # Spawner Layer
                             if tilecode in ENEMIES_SPAWNS:
                                 enemySpawnPoint = pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
@@ -98,11 +106,25 @@ class DungeonRoom:
                                     tileImage,
                                     pygame.Rect(x * tilewidth, y * tileheight, tilewidth, tileheight)
                                 )
-                                print(x, y)
                                 self.possibleKeys.append(tile)
 
         if len(self.possibleKeys) > 0:
             self.selectedKey.append(random.choice(self.possibleKeys))
+
+    def lockDoors(self, player):
+        if not self.objective.isComplete():
+            if player.rect.left > self.playerSpawn.right:
+                tilewidth = self.header_data['tilewidth']
+                tileheight = self.header_data['tileheight']
+                doorSurf = pygame.image.load("./images/Interactive Objects/simpledoor.png").convert_alpha()
+                doorSurf = pygame.transform.scale(doorSurf,(tilewidth,4*tileheight))
+                doorRect = doorSurf.get_rect()
+                doorRect.midbottom = self.playerSpawn.midbottom if self.file_name.startswith("./maps/boss") else self.exitPoint.midbottom
+                self.exitDoor = Door(doorSurf, doorRect)
+                self.walls.add(self.exitDoor)
+
+    def unlockDoor(self):
+        self.exitDoor = None
 
     def draw(self, screen, cameraPos):
         screen.blit(self.bgImage, (int(self.bgImageRect.x - cameraPos[0]), int(self.bgImageRect.y - cameraPos[1])))
@@ -111,10 +133,7 @@ class DungeonRoom:
             wall.draw(screen, cameraPos)
 
         for enemy in self.enemies:
-            screen.blit(
-                enemy.img,
-                (enemy.rect.x - cameraPos[0], enemy.rect.y - cameraPos[1])
-            )
+            enemy.draw(screen, cameraPos)
 
         for key in self.selectedKey:
             key.draw(screen, cameraPos)

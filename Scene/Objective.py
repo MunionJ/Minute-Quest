@@ -1,8 +1,8 @@
 import pygame
 import random
 
-#TODO::Needs Integrated into Dungeon Room
 
+#TODO::Needs Integrated into Dungeon Room
 
 class Objective:
 
@@ -41,7 +41,7 @@ class Objective:
             elif self.room_name == "project puzzle room.txt":
                 self.announcement = type + "Beat Original Puzzle"
         elif self.room_type == "boss rooms":
-            self.announcement = ""
+            self.announcement = "Defeat the Boss"
 
         #ignore Entrance and Exit rooms
 
@@ -51,10 +51,10 @@ class Objective:
     def getAnnouncement(self):
         return self.announcement
 
-    def evaluateObjective(self, player, playerBoundary=None, nextRoom=None, enemyList=None, selectedKey=None):
+    def evaluateObjective(self, player, enemyList, selectedKey, Puzzlerects):
         complete = False
         if self.completed:
-            return playerBoundary
+            return
         if self.room_type == "EnemyRooms":
             if(len(enemyList) == 0):
                 complete = True
@@ -76,7 +76,6 @@ class Objective:
                         self.playerInputs.append(self.targetInputs[self.inputIndex])
                         self.inputIndex += 1
 
-                print(self.playerInputs, self.targetInputs)
                 if len(self.targetInputs) == len(self.playerInputs):
                     complete = True
 
@@ -85,18 +84,15 @@ class Objective:
                     complete = True
 
             elif self.room_name == "project puzzle room.txt":
-                #add in puzzle logic
-                pass
+                if len(Puzzlerects) < 1:
+                    complete = True
         elif self.room_type == "boss rooms":
             if len(enemyList) == 0:
                 complete = True
         else:
             complete = True
 
+
         if complete and not self.completed:
             self.completed = True
-            return nextRoom.bgImageRect.union(playerBoundary)
-
-        elif not complete and not self.completed:
-            return playerBoundary
 

@@ -120,7 +120,8 @@ class EventManager:
 
                 for i in range(game_pad.get_numbuttons()):
                     if(game_pad.get_button(i)):
-                        print(str(i) + " Pressed")
+                        #print(str(i) + " Pressed")
+                        pass
                 # check status of buttons
                 if game_pad.get_button(0):
                     # fill out later

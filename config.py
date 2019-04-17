@@ -10,13 +10,14 @@ PUZZLE_RECT2 = [205, 206]
 PUZZLE_RECT3 = [149, 150]
 
 # Player Variables
-PLAYER_GRAV = 1.2
-PLAYER_ACC = 2
-MAX_X_ACC = 2
-MAX_Y_VEL = 20
-PLAYER_FRICTION = -0.24
-JUMP_VEC = 7.5
-INVULN_TIMER = 0.5
+PLAYER_GRAV = 35.0
+MAX_X_ACC = 55
+MAX_X_VEL = 425
+PLAYER_ACC = 1000
+MAX_Y_VEL = 1000
+PLAYER_FRICTION = -20
+JUMP_VEC = 325
+INVULN_TIMER = 0.75
 
 #Enemy Variables
 ENEMY_ACC = 1
@@ -62,7 +63,7 @@ ROOMS = {
     "PlatformRooms": [
         # "AB_plat_map1.txt", unwinnable
         "map_platformer_daniel.txt",
-        #"MinuteQuestRoom2.txt", #bugs game if second room
+        "MinuteQuestRoom2.txt",
         "MQ_test_map_platforming.txt",
         "project platform room.txt"
     ],

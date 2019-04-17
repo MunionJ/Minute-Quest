@@ -16,7 +16,7 @@ class Party:
 
         self.party_members = [Warrior(start_pos),   #Jon is working on this
                               Ranger(start_pos),    #??
-                              Wizard(start_pos),    #Mike is working on this
+                              Wizard(start_pos),    #Daniel is working on this
                               Paladin(start_pos)    #Alex is working on this
                               ]
         self.party_index = 0
@@ -100,3 +100,32 @@ class Party:
             self.avg_level += char.level
         self.avg_level /= len(self.party_members)
         self.avg_level = int(self.avg_level)
+
+    def partyInfoToPickle(self):
+        partyMemberInfo = []
+        for member in self.party_members:
+            info ={}
+            info['level'] = member.level
+            info['stats'] = member.stats
+            info['xp'] = member.cur_xp
+            partyMemberInfo.append(info)
+
+        retData = {
+            'partyMembers': partyMemberInfo,
+            'partyIndex': self.party_index,
+            'avg_level': self.avg_level,
+        }
+
+        return retData
+
+    def loadPartyInfoFromSave(self,data):
+        partyInfo = data['partyMembers']
+        for i in range(len(self.party_members)):
+            info = data['partyMembers'][i]
+            member = self.party_members[i]
+            member.level = info['level']
+            member.stats = info['stats']
+            member.cur_xp = info['xp']
+
+        self.party_index = data['partyIndex']
+        self.avg_level = data['avg_level']

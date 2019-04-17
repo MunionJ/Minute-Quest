@@ -6,16 +6,19 @@ from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
 from config import SCREEN_RES, PIXEL_DIFFERENCE
 import pygame
+from ParticleEngine.Emitter import Emitter
 
 
 class BossFight:
 
-    def __init__(self, event_mgr, game_window):
+    def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
         self.manager = event_mgr
         self.running = False
         self.dungeon = BossRoom()
         self.party_list = Party(self.dungeon.playerSpawn)
+        if game_save_info != None:
+            self.party_list.loadPartyInfoFromSave(game_save_info)
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
@@ -50,6 +53,8 @@ class BossFight:
         self.postTime = 3
         self.projectiles = []
         self.boss = self.enemiesByRoom[1][0]
+        self.particleEmitter = Emitter()
+        self.manager.addGameObject(self.particleEmitter)
 
     def start_game(self):
         self.running = True
@@ -84,23 +89,42 @@ class BossFight:
                 self.manager.addGameObject(self.player)
                 self.player.set_pos(cur_pos)
 
-                if self.player.rect.x > self.dungeon.rooms[1].bgImageRect.x:
-                    self.lock_player_in_room()
-
                 for room in self.dungeon.rooms:
                     if len(room.enemies) > 0:
                         if room.bgImageRect.colliderect(self.player.rect):
                             for enemy in room.enemies:
-                                distance = self.player.pos - enemy.pos
-                                if distance.length() < enemy.vision_range:
-                                    enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-                                #do i have line of sight
+                                if not enemy.alive:
+                                    if self.manager.hasReferenceToGameObject(enemy):
+                                        self.manager.removeGameObject(enemy)
+                                        room.enemies.remove(enemy)
+                                else:   #do i have line of sight
+                                    distance = self.player.pos - enemy.pos
+                                    if distance.length() < enemy.vision_range:
+                                        enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
+
+                            room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey, room.Puzzlerects)
+                            if not room.objective.isComplete():
+                                if room.exitDoor == None:
+                                    room.lockDoors(self.player)
+                            else:
+                                if self.manager.hasReferenceToGameObject(room.exitDoor):
+                                    self.manager.removeGameObject(room.exitDoor)
+                                if room.exitDoor != None:
+                                    room.walls.remove(room.exitDoor)
+                                    room.unlockDoor()
 
                 if self.player.usingAbility:
+                    if self.particleEmitter.currentPosition == None:
+                        self.particleEmitter.setPosition(self.player)
+                    if not self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOnParticles()
                     if self.player.class_name == "WIZARD":
                         self.HUD.timer += dt
                     elif self.player.class_name == "PALADIN":
                         self.player.heal_party(self.party_list)
+                else:
+                    if self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOffParticles()
 
                 self.collisionHandling(dt)
                 self.addProjectiles()
@@ -125,18 +149,13 @@ class BossFight:
                 if self.HUD.getTime() <=0:
                     self.gameOverCondition = "Times Up!"
 
+                self.particleEmitter.setPosition(self.player)
                 self.camera.setCameraPosition(self.player.rect.center)
                 pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
+                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles, self.particleEmitter)
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
-
-    def lock_player_in_room(self):
-        updated = self.player.rect.clamp(self.dungeon.rooms[1].bgImageRect)
-        self.player.rect = updated
-        self.player.pos.x, self.player.pos.y = self.player.rect.center
-
 
     def let_player_pass(self,nextRoom):
         pass
@@ -332,3 +351,6 @@ class BossFight:
     def gameOver(self):
         "The Player's Experience gets reset"
         self.running = False
+
+    def getPartyReference(self):
+        return self.party_list

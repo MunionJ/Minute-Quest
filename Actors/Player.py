@@ -64,11 +64,19 @@ class Player(Actor):
         # figure out an exact time later
         self.invuln_timer = 0
 
+        self.most_recent_dmg = 0
+        self.dmg_display_timer = 0
+        self.dmg_display_max_time = 0.8
+        self.dmg_display_y_offset = 0
+
         self.jumpFrameCount = 0
         self.jumpFrames = 2
         self.camera_offset = None
         self.weapon_cords = (0,0)
-        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also increases the degrees rotated.
+        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also
+                                   # increases the degrees rotated.
+
+        self.isCrowdControlled = False
 
     def basic_attack(self, mbuttons, keys, dt):
         """ Generic attack method. Will be
@@ -92,6 +100,7 @@ class Player(Actor):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
+        self.most_recent_dmg = enemy_object.stats["MELEE"]
         if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
             if self.stats["CUR_HP"] - enemy_object.stats["MELEE"] <= 0:
                 self.stats["CUR_HP"] = 0
@@ -102,14 +111,18 @@ class Player(Actor):
             self.invuln_timer = INVULN_TIMER
 
     def receive_knockback(self, enemy_object):
-        if enemy_object.facing_right is True:
-            x = random.randint(30, 50)
+        # TODO here
+        if self.cur_state != states.Jumping:
+            y = random.randint(-600, -500)
+
+            if enemy_object.facing_right is True:
+                x = random.randint(300, 450)
+            else:
+                x = random.randint(-450, -300)
+
         else:
-            x = random.randint(-50, -30)
-        if self.cur_state == states.Jumping:
             y = 0
-        else:
-            y = random.randint(-20, -15)
+
         self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):
@@ -117,6 +130,8 @@ class Player(Actor):
         mouseButtons, keys, dt, projectiles = args
 
         super().update(*args)
+
+        print(self.velocity)
 
         if self.jumpFrameCount > 0:
             self.jumpFrameCount -= 1
@@ -185,32 +200,33 @@ class Player(Actor):
             pass
         if keys[pygame.K_d]:
             if self.accel.x < MAX_X_ACC:
-                self.accel.x += PLAYER_ACC
+                self.accel.x = PLAYER_ACC
             movedHorizontal = True
         if keys[pygame.K_a]:
             if self.accel.x > -MAX_X_ACC:
-                self.accel.x -= PLAYER_ACC
+                self.accel.x = -PLAYER_ACC
             movedHorizontal = True
 
         if keys[pygame.K_F1]:
             self.debug = not self.debug
 
-        # if the entity is not currently moving, decrease their velocity until it reaches 0
+        self.apply_friction(keys, dt)
+
+    def apply_friction(self, keys, dt):
         if not keys[pygame.K_a]:
             if self.accel.x < 0:
                 self.accel.x = 0
             if self.velocity.x < 0:
-                self.velocity.x -= 2*PLAYER_FRICTION
+                self.velocity.x -= PLAYER_FRICTION
                 if self.velocity.x > 0:
                     self.velocity.x = 0
         if not keys[pygame.K_d]:
             if self.accel.x > 0:
                 self.accel.x = 0
             if self.velocity.x > 0:
-                self.velocity.x += 2*PLAYER_FRICTION
+                self.velocity.x += PLAYER_FRICTION
                 if self.velocity.x < 0:
                     self.velocity.x = 0
-
 
     def jump(self):
         """ Generic jump method. Can be
@@ -258,7 +274,6 @@ class Player(Actor):
             player level."""
         self.level += 1
 
-
     def healPlayer(self, health):
         if self.stats["CUR_HP"] + health >= self.stats["MAX_HP"]:
             self.stats["CUR_HP"] = self.stats["MAX_HP"]
@@ -302,3 +317,19 @@ class Player(Actor):
                         #                   self.cur_weapon.rect.h
                         #                   ),
                         #                  2)
+        if self.most_recent_dmg > 0:
+            if self.dmg_display_timer < self.dmg_display_max_time:
+                dt = 0.016
+                self.dmg_display_timer += dt
+                font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 32)
+                surf = font.render(str(self.most_recent_dmg),
+                                   False,
+                                   pygame.color.THECOLORS['white']
+                                   )
+                window.blit(surf,
+                            (int(self.rect.x - cameraPos[0] + 10), int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
+                self.dmg_display_y_offset += 2
+            else:
+                self.most_recent_dmg = 0
+                self.dmg_display_timer = 0
+                self.dmg_display_y_offset = 0

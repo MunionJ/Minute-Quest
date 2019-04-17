@@ -2,7 +2,9 @@ from Actors.Actor import *
 import time
 import math
 import random
+
 vec = pygame.math.Vector2
+
 
 class Enemy(Actor):
     """Basic enemy class that creates the properties/methods shared across all enemies."""
@@ -39,8 +41,8 @@ class Enemy(Actor):
         self.facing_right = True
         self.jumpFrameCount = 0
         self.jumpFrames = 2
-        self.move_time = time.time() + 2 #temporary variable for moving enemies
-        self.change_move = True  #temporary variable for moving enemies
+        self.move_time = time.time() + 2  # temporary variable for moving enemies
+        self.change_move = True  # temporary variable for moving enemies
         self.rect = self.img.get_rect()
         self.rect.midbottom = spawn_point
         self.pos.x, self.pos.y = self.rect.center
@@ -57,9 +59,13 @@ class Enemy(Actor):
         self.sees_player = False
         self.shouldJump = False
         self.vision_range = 250
+        self.most_recent_dmg = 0
+        self.dmg_display_timer = 0
+        self.dmg_display_max_time = 0.8
+        self.dmg_display_y_offset = 0
         self.now = pygame.time.get_ticks()
 
-    def move(self, keys, dt): #TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
+    def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
         if self.sees_player:
             if self.shouldJump:
@@ -67,9 +73,9 @@ class Enemy(Actor):
                 self.shouldJump = False
 
             if self.facing_right:
-                self.accel.x += ENEMY_ACC*dt
+                self.accel.x += ENEMY_ACC * dt
             else:
-                self.accel.x -= ENEMY_ACC*dt
+                self.accel.x -= ENEMY_ACC * dt
 
             if self.accel.length() > MAX_ACC:
                 self.accel.scale_to_length(MAX_ACC)
@@ -81,9 +87,9 @@ class Enemy(Actor):
 
 
         else:
-            #self.facing_right = True
-            self.accel = vec(0,0)
-            self.velocity = vec(0,self.velocity.y)
+            # self.facing_right = True
+            self.accel = vec(0, 0)
+            self.velocity = vec(0, self.velocity.y)
 
     def jump(self):
         """ Generic jump method. Can be
@@ -94,15 +100,15 @@ class Enemy(Actor):
         if not self.facing_right:
             self.image = pygame.transform.flip(self.frames['rjump'], True, False)
         if self.onSurface:
-            self.velocity += 1.5*self.jump_vector
+            self.velocity += 1.5 * self.jump_vector
             self.jumpFrameCount = self.jumpFrames
 
     def determineState(self):
         if self.velocity.x < 0:
-           self.facing_right = False
+            self.facing_right = False
 
         if self.velocity.x > 0:
-           self.facing_right = True
+            self.facing_right = True
 
         if self.velocity.y > 0:
             self.changeState(states.Falling)
@@ -136,7 +142,6 @@ class Enemy(Actor):
             self.frames["right"] = self.rframes[self.anim]
             self.t_anim = time.time() + 0.25
 
-
         if self.cur_state == states.Standing and self.facing_right:
             self.img = self.rframes[0]
         if self.cur_state == states.Standing and not self.facing_right:
@@ -146,7 +151,7 @@ class Enemy(Actor):
         if self.cur_state == states.Running and not self.facing_right:
             self.img = pygame.transform.flip(self.rframes[self.anim], True, False)
 
-        self.move(keys,dt)
+        self.move(keys, dt)
 
         self.invuln_timer -= dt
 
@@ -156,94 +161,23 @@ class Enemy(Actor):
         self.alive = False
 
     def line_of_sight(self, window, cameraPos, player, wallTiles):
-        #for tile in wallTiles:
-
-            # self.line = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
-            #                                     (int(player.rect.x - cameraPos[0]), int(player.rect.y - cameraPos[1])))
-        #     enex = int(self.rect.x - cameraPos[0])
-        #     eney = int(self.rect.y - cameraPos[1])
-        #     playx = int(player.rect.x - cameraPos[0])
-        #     playy = int(player.rect.y - cameraPos[1])
-        #     if ((enex-playx)**2) + ((eney-playy)**2) >= 150**2:
-        #         vision_collision = False
-        #         break
-        #     if (enex - playx) == 0:
-        #         vision_collision = False
-        #         break
-        #     lineSlope = (eney - playy)/(enex - playx)
-        #     yintercept = eney+lineSlope*enex
-        #
-        #     v1 = tile.rect.topleft
-        #     v2 = tile.rect.topright
-        #     v3 = tile.rect.bottomleft
-        #     v4 = tile.rect.bottomright
-        #     # pygame.display.flip()
-        #
-        #     if (v1[0]*lineSlope+yintercept) - v1[1] > 0 and v2[0]*lineSlope+yintercept - v2[1] > 0 and v3[0]*lineSlope+yintercept - v3[1] > 0 and v4[0]*lineSlope+yintercept - v4[1] > 0 or v1[0] * lineSlope + yintercept  - v1[1] < 0 and v2[0] * lineSlope + yintercept - v2[1] < 0 and v3[0] * lineSlope + yintercept - v3[1] < 0 and v4[0] * lineSlope + yintercept  - v4[1] < 0:
-        #         vision_collision = True
-        #         if int((player.rect.x - cameraPos[0])) > (int(self.rect.x - cameraPos[0])):
-        #             self.facing_right = True
-        #         if int((player.rect.x - cameraPos[0])) < (int(self.rect.x - cameraPos[0])):
-        #             self.facing_right = False
-        #     else:
-        #         vision_collision = False
-        #         break
-        # self.sees_player = vision_collision
-
-        # v1 = tile.rect.topleft
-        # v2 = tile.rect.topright
-        # v3 = tile.rect.bottomleft
-        # v4 = tile.rect.bottomright
-
-        # TODO Figure a way to draw without this flip, this flip stacks with the flip in the main loop causing a
-        # double flip, this is the source of the lag
-        # pygame.display.flip()
-        #  startx, starty = self.rect.center
-        #
-        #  line1 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
-        #                                      (int(v1[0] - cameraPos[0]), int(v1[1] - cameraPos[1])))
-        #  line2 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
-        #                                      (int(v2[0] - cameraPos[0]), int(v2[1] - cameraPos[1])))
-        #  line3 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
-        #                                      (int(v3[0] - cameraPos[0]), int(v3[1] - cameraPos[1])))
-        #  line4 = pygame.draw.line(window, (255, 255, 0), (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])),
-        #                                      (int(v4[0] - cameraPos[0]), int(v4[1] - cameraPos[1])))
-
-        #     if (v1[0] * lineSlope + yintercept) - v1[1] > 0 and v2[0] * lineSlope + yintercept - v2[1] > 0 and v3[
-        #         0] * lineSlope + yintercept - v3[1] > 0 and v4[0] * lineSlope + yintercept - v4[1] > 0 or v1[
-        #         0] * lineSlope + yintercept - v1[1] < 0 and v2[0] * lineSlope + yintercept - v2[1] < 0 and v3[
-        #         0] * lineSlope + yintercept - v3[1] < 0 and v4[0] * lineSlope + yintercept - v4[1] < 0:
-        #         vision_collision = True
-        #         player.is_seen = True
-        #         if int((player.rect.x - cameraPos[0])) > (int(self.rect.x - cameraPos[0])):
-        #             self.facing_right = True
-        #         if int((player.rect.x - cameraPos[0])) < (int(self.rect.x - cameraPos[0])):
-        #             self.facing_right = False
-        #     else:
-        #         vision_collision = False
-        #         player.is_seen = False
-        #         break
-        #
-        # self.sees_player = vision_collision
-
-
         startX, startY = self.rect.midtop
         endX, endY = player.rect.center
-        distCheck = vec(endX - startX,endY - startY)
+        distCheck = vec(endX - startX, endY - startY)
         if distCheck.length() > self.vision_range:
             self.sees_player = False
             return
 
         dx = endX - startX
         dy = endY - startY
-        heading = math.atan2(dy,dx)
-        heading %= 2*math.pi
-        point = pygame.Rect(startX,startY,1,1)
-        #print("In Enemies: ",math.degrees(heading),math.cos(heading),math.sin(heading))
-        start = vec(self.rect.midtop[0],self.rect.midtop[1])
+        heading = math.atan2(dy, dx)
+        heading %= 2 * math.pi
+        point = pygame.Rect(startX, startY, 1, 1)
+        # print("In Enemies: ",math.degrees(heading),math.cos(heading),math.sin(heading))
+        start = vec(self.rect.midtop[0], self.rect.midtop[1])
         tile = wallTiles.sprites()[0]
-        halfdist = tile.rect.w>>2
-        dir = vec(halfdist*math.cos(heading),halfdist*math.sin(heading))
+        halfdist = tile.rect.w >> 2
+        dir = vec(halfdist * math.cos(heading), halfdist * math.sin(heading))
         detecting = True
         count = 0
         while count < self.vision_range:
@@ -265,9 +199,9 @@ class Enemy(Actor):
                 break;
             count += 1
 
-            pygame.draw.rect(window,pygame.color.THECOLORS['gold'],                   #DEBUG
-                 (int(point.x - cameraPos[0]),int(point.y - cameraPos[1]),1,1)
-                         )
+            pygame.draw.rect(window, pygame.color.THECOLORS['gold'],  # DEBUG
+                             (int(point.x - cameraPos[0]), int(point.y - cameraPos[1]), 1, 1)
+                             )
         pygame.display.update()
 
         if self.sees_player:
@@ -283,12 +217,14 @@ class Enemy(Actor):
 
     def take_damage(self, player):
         """Method that make the enemy take damage from an attack"""
+        damage = player.deal_dmg()
         if self.stats["CUR_HP"] > 0 and  self.invuln_timer <= 0:
-            if self.stats["CUR_HP"] - player.deal_dmg() <= 0:
+            if self.stats["CUR_HP"] - damage <= 0:
                 self.stats["CUR_HP"] = 0
                 self.set_dead()
             else:
-                self.stats["CUR_HP"] -= player.deal_dmg()
+                self.stats["CUR_HP"] -= damage
+                self.most_recent_dmg = damage
             self.invuln_timer = INVULN_TIMER
 
     def attack(self):
@@ -297,4 +233,21 @@ class Enemy(Actor):
 
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
-        window.blit(self.img, (int(self.rect.x - cameraPos[0]),int(self.rect.y - cameraPos[1])))
+        window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+        window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+        if self.most_recent_dmg > 0:
+            if self.dmg_display_timer < self.dmg_display_max_time:
+                dt = 0.016
+                self.dmg_display_timer += dt
+                font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 32)
+                surf = font.render(str(self.most_recent_dmg),
+                                   False,
+                                   pygame.color.THECOLORS['white']
+                                   )
+                window.blit(surf,
+                            (int(self.rect.x - cameraPos[0] + 10), int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
+                self.dmg_display_y_offset += 2
+            else:
+                self.most_recent_dmg = 0
+                self.dmg_display_timer = 0
+                self.dmg_display_y_offset = 0

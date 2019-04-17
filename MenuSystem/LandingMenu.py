@@ -61,6 +61,15 @@ class LandingMenu(pygame.sprite.Sprite):
             button.updateLocation(x,y)
             current_y += gap_y + button.rect.h
 
+    def play_music(self):
+        pass
+
+    def play_sounds(self):
+        pass
+
+    def stop_sounds(self):
+        pass
+
     def update(self,key):
         if key == pygame.K_w or key == pygame.K_a:
             if self.current_index > 0:
@@ -79,6 +88,7 @@ class LandingMenu(pygame.sprite.Sprite):
             self.setMenuSelection(self.buttonOptions[self.current_index])
 
     def getMenuSelection(self):
+        self.stop_sounds()
         return self.selectedOption
 
     def setMenuSelection(self, selected=None):
@@ -94,7 +104,7 @@ class LandingMenu(pygame.sprite.Sprite):
 
 if __name__ == "__main__":
     import os
-    from EventManager import *
+    from GameEngine.EventManager import EventManager
 
     running = True
     clock = pygame.time.Clock()

@@ -22,12 +22,11 @@ class GameMenu(pygame.sprite.Sprite):
         self.margin = 10
 
         self.screen.fill(self.bg_color)
-        self.header = self.headerFont.render("Minute Quest",False,self.headertextColor)
+        self.header = self.headerFont.render("Minute Quest", False, self.headertextColor)
         self.headerRect = self.header.get_rect()
         self.headerRect.topleft = (self.margin, self.margin)
         self.buttonOptions = [
             "Enter Dungeon",
-            "Shop",
             "Fight The Boss",
             "Save Game",
             "Main Menu"
@@ -35,7 +34,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.buttons = []
         for option in self.buttonOptions:
             text = self.font.render(option,False,self.buttonTextColor)
-            self.buttons.append( Button(text, 0, 0, 300, 50, self.buttonColor,self.buttonSelectColor) )
+            self.buttons.append(Button(text, 0, 0, 300, 50, self.buttonColor,self.buttonSelectColor) )
 
         self.placeButtons()
         self.current_index = 0
@@ -44,6 +43,8 @@ class GameMenu(pygame.sprite.Sprite):
         self.selectedOption = None
         self.keyboardControls = pygame.Surface(SCREEN_RES)
         self.gamepadControls = pygame.Surface(SCREEN_RES)
+        self.bg_image = pygame.image.load('images/DungeonBg.png')
+        self.ambient_sound = pygame.mixer.Sound('Sounds/water_ambience.wav')
 
     def Reset(self):
         self.current_index = 0
@@ -63,8 +64,25 @@ class GameMenu(pygame.sprite.Sprite):
         for button in self.buttons:
             x = self.margin + button.rect.w//2
             y = current_y
-            button.updateLocation(x,y)
+            button.updateLocation(x, y)
             current_y += button.rect.h + 5
+
+    def play_music(self):
+        # pygame.mixer.music.load('Sounds/Music/Loop_NatureGoddess_00.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_01.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_02.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_03.ogg')
+        # pygame.mixer.music.queue('Sounds/Music/Loop_NatureGoddess_04.ogg')
+        # pygame.mixer.music.set_volume(0.1)
+        # pygame.mixer.music.play()
+        pass
+
+    def play_sounds(self):
+        self.ambient_sound.set_volume(.1)
+        self.ambient_sound.play()
+
+    def stop_sounds(self):
+        self.ambient_sound.stop()
 
     def update(self,key):
         """Evaluate action based on user keypress"""
@@ -79,7 +97,6 @@ class GameMenu(pygame.sprite.Sprite):
                 self.buttons[self.current_index].deselect()
                 self.current_index += 1
                 self.buttons[self.current_index].select()
-
 
         if self.buttonOptions[self.current_index] == "Enter the Dungeon":
             pass
@@ -97,20 +114,21 @@ class GameMenu(pygame.sprite.Sprite):
                     self.buttonOptions[self.current_index] == "Save Game":
                 self.setMenuSelection()
 
-
     def getMenuSelection(self):
+        self.stop_sounds()
         return self.selectedOption
 
     def setMenuSelection(self):
         self.selectedOption = self.buttonOptions[self.current_index]
 
     def draw(self, window):
-        self.screen.fill(self.bg_color)
-        self.screen.blit(self.header,self.headerRect)
+        self.screen.blit(self.bg_image, (0, 0))
+        self.screen.blit(self.header, self.headerRect)
         for button in self.buttons:
             button.draw(self.screen)
 
-        window.blit(self.screen,self.rect)
+        window.blit(self.screen, self.rect)
+
 
 if __name__ == "__main__":
     import os

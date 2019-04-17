@@ -34,7 +34,7 @@ class Ranger(Player):
                 mosPos = pygame.mouse.get_pos()
                 tX = mosPos[0] + self.camera_offset[0]
                 tY = mosPos[1] + self.camera_offset[1]
-                p = Arrow('images/Weapons/arrow.png', 32, 32, self.rect.center, (tX, tY), self.stats["RANGE"])
+                p = Arrow('images/Weapons/arrow.png', 32, 32, self.rect.center, (tX, tY), self.stats["RANGE"], 250)
                 projectiles.append(p)
                 self.last_base_attack = self.base_attack_cooldown
         self.last_base_attack -= dt

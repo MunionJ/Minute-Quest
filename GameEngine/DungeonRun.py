@@ -2,19 +2,20 @@ from Scene.Camera import *
 from GameEngine.GameHUD import *
 from Actors.Party import *
 from Actors.Enemies import *
+from ParticleEngine.Emitter import Emitter
 
 
 class DungeonRun:
 
-    def __init__(self, event_mgr, game_window, party=None):
+    def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
         self.manager = event_mgr
         self.running = False
         self.dungeon = Dungeon(4)
-        if party is None:
-            self.party_list = Party(self.dungeon.playerSpawn)
-        else:
-            self.party_list = party
+        self.party_list = Party(self.dungeon.playerSpawn)
+        if game_save_info != None:
+            self.party_list.loadPartyInfoFromSave(game_save_info)
+        party = self.party_list
         self.player = self.party_list.active_member
         self.player.rect.bottom = self.dungeon.playerSpawn.bottom
         self.camera = Camera(self.dungeon)
@@ -48,7 +49,8 @@ class DungeonRun:
         self.font_color = pygame.color.THECOLORS['red']
         self.postTime = 3
         self.projectiles = []
-        self.playerBoundary = self.dungeon.rooms[0].bgImageRect
+        self.particleEmitter = Emitter()
+        self.manager.addGameObject(self.particleEmitter)
 
     def start_game(self):
         self.running = True
@@ -86,26 +88,44 @@ class DungeonRun:
                     room = self.dungeon.rooms[i]
                     if room.bgImageRect.colliderect(self.player.rect):
                         if len(room.enemies) > 0:
-                            for enemy in room.enemies:
-                                distance = self.player.pos - enemy.pos
-                                if distance.length() < ENEMY_VISION_RANGE:
-                                    enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
-                        if i + 1 < len(self.dungeon.rooms):
-                            self.playerBoundary = room.objective.evaluateObjective(self.player, self.playerBoundary,
-                                                                                   self.dungeon.rooms[i + 1],
-                                                                                   room.enemies)
-                            rect = self.player.rect.clamp(self.playerBoundary)
-                            self.player.set_pos(rect)
+                                for enemy in room.enemies:
+                                    if not enemy.alive:
+                                        if self.manager.hasReferenceToGameObject(enemy):
+                                            self.manager.removeGameObject(enemy)
+                                            room.enemies.remove(enemy)
+                                    else:
+                                        distance = self.player.pos - enemy.pos
+                                        if distance.length() < ENEMY_VISION_RANGE:
+                                            enemy.line_of_sight(self.window, self.camera.pos, self.player, room.walls)
+                        room.objective.evaluateObjective(self.player, room.enemies, room.selectedKey, room.Puzzlerects)
+                        if not room.objective.isComplete():
+                            if self.player.rect.left > room.playerSpawn.right:
+                                if room.exitDoor == None:
+                                    room.lockDoors(self.player)
+                        else:
+                            if self.manager.hasReferenceToGameObject(room.exitDoor):
+                                self.manager.removeGameObject(room.exitDoor)
+                            if room.exitDoor != None:
+                                room.walls.remove(room.exitDoor)
+                                room.unlockDoor()
+
                 # events = pygame.event.get()
                 # for event in events:
                 #     if event.type == pygame.QUIT:
                 #         self.running = False
 
                 if self.player.usingAbility:
+                    if self.particleEmitter.currentPosition == None:
+                        self.particleEmitter.setPosition(self.player)
+                    if not self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOnParticles()
                     if self.player.class_name == "WIZARD":
                         self.HUD.timer += dt
                     elif self.player.class_name == "PALADIN":
                         self.player.heal_party(self.party_list)
+                else:
+                    if self.particleEmitter.shouldEmit:
+                        self.particleEmitter.turnOffParticles()
 
                 self.collisionHandling(dt)
                 self.addProjectiles()
@@ -128,11 +148,10 @@ class DungeonRun:
 
                 if self.HUD.getTime() <= 0:
                     self.gameOverCondition = "Times Up!"
-
+                self.particleEmitter.setPosition(self.player)
                 self.camera.setCameraPosition(self.player.rect.center)
-                pygame.draw.rect(self.window, (255, 255, 255), self.player.rect, 2)
                 self.window.fill(self.bg_color)
-                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles)
+                self.camera.draw(self.window, self.player, self.enemiesByRoom, self.projectiles, self.particleEmitter)
                 self.fadeEffect()
                 self.HUD.draw(self.window, self.party_list, dt)
             pygame.display.flip()
@@ -239,6 +258,18 @@ class DungeonRun:
                     self.prev_room = room
                     self.HUD.reset_objective_timer()
 
+                for key in room.selectedKey:
+                    if self.player.rect.colliderect(key.rect):
+                        room.selectedKey.remove(key)
+
+                for rect in room.Puzzlerects:
+                    if self.player.rect.colliderect(PUZZLE_RECT1.rect):
+                        room.Puzzlerects.remove(PUZZLE_RECT1)
+                    elif self.player.rect.colliderect(PUZZLE_RECT2.rect):
+                        room.Puzzlerects.remove(PUZZLE_RECT2)
+                    elif self.player.rect.colliderect(PUZZLE_RECT3.rect):
+                        room.Puzzlerects.remove(PUZZLE_RECT2)
+
                 for enemy in room.enemies:
                     for p in self.projectiles:
                         if p.hitbox.colliderect(enemy.rect):
@@ -335,3 +366,7 @@ class DungeonRun:
             overlay.fill((255, 255, 255))
             overlay.set_alpha(alphaLevel)
             self.window.blit(overlay, (0, 0))
+
+    def getPartyReference(self):
+        return self.party_list
+

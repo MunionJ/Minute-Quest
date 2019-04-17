@@ -50,26 +50,32 @@ class GameManager:
 
             #Draw
             if self.running:
-
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
+                if self.currentMenuState != menu.Controls:
+                    self.menuOptions[self.currentMenuState].play_sounds()
                 pygame.display.update()
 
     def RunDungeon(self):
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
-        self.game = BossFight(self.eventmanager, self.gameWindow)
+        self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def save_game(self):
-        pickle.dump(self.Party_Load, open(self.f_name, "wb"))
+        if self.Party_Load != None:
+            with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
+                pickle.dump(self.Party_Load, output, protocol=pickle.HIGHEST_PROTOCOL)
 
     def Loadsave(self):
-        pickle.load(open(self.f_name, "rb"))
+        with open(self.f_name, 'rb') as input:
+            self.Party_Load = pickle.load(input)
 
     def determineState(self,currentMenu):
         if currentMenu == None:
@@ -98,9 +104,11 @@ class GameManager:
             else:
                 if selected == "Enter Dungeon":
                     self.RunDungeon()
+                    self.eventmanager.cleanup()
                 elif selected == "Fight The Boss":
-                    print("Game Manager, line 85: Selected Boss Fight");
+                    #print("Game Manager, line 85: Selected Boss Fight");
                     self.startBossFight()
+                    self.eventmanager.cleanup()
                 elif selected == "Save Game":
                     self.save_game()
                 newMenuOption = menu.NewGame

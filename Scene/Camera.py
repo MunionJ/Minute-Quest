@@ -12,7 +12,6 @@ class Camera():
         self.dungeon = dungeon
         self.pos = (0,0)
         self.prevPos = (0,0)
-        self.boundary = dungeon.boundary
         self.view = pygame.Surface(SCREEN_RES)
         self.rect = self.view.get_rect()
         self.debug = False
@@ -82,7 +81,7 @@ class Camera():
             the game screen."""
         self.debug = not self.debug
 
-    def draw(self, screen, player, enemy_list, projectiles):
+    def draw(self, screen, player, enemy_list, projectiles, particleEmitter):
         """
             Draws game Scene by passing camera offset
             :param screen: screen to draw to
@@ -91,7 +90,8 @@ class Camera():
             :return: void
         """
         #screen.blit(self.dungeon.dirtBacground,(0,self.dungeon.dungeonExit.y-self.pos[1]))
-        self.dungeon.draw(screen,self.pos)
+        self.dungeon.draw(screen, self.pos)
+        particleEmitter.draw(screen, self.pos)
         player.draw(screen,self.pos)
         for p in projectiles:
             p.draw(screen, self.pos)
