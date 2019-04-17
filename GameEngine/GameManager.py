@@ -5,9 +5,11 @@ from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
+from Scene.Loading import Loading
 import pickle
 from Actors.Party import Party
 
+#stuff
 class GameManager:
 
     def __init__(self):
@@ -18,6 +20,7 @@ class GameManager:
         self.menuOptions[menu.Controls] = ControlsMenu()
         self.menuOptions[menu.PartySelection] = LandingMenu()
 
+        self.loading = Loading()    # Loading object
         self.game = None
         self.clock = pygame.time.Clock()
         self.running = False
@@ -58,12 +61,14 @@ class GameManager:
                 pygame.display.update()
 
     def RunDungeon(self):
+        self.loading.draw(self.gameWindow)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
         self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
+        self.loading.draw(self.gameWindow)
         self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
