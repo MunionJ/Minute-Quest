@@ -301,9 +301,7 @@ class Enemy(Actor):
         """Method allows the enemy attack the player when in close enough range"""
         pass
 
-    def draw(self, window, cameraPos):
-        super().draw(window, cameraPos)
-        window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+    def display_damage(self, window, cameraPos):
         if self.most_recent_dmg > 0:
             if self.dmg_display_timer < self.dmg_display_max_time:
                 dt = 0.016
@@ -320,3 +318,8 @@ class Enemy(Actor):
                 self.most_recent_dmg = 0
                 self.dmg_display_timer = 0
                 self.dmg_display_y_offset = 0
+
+    def draw(self, window, cameraPos):
+        super().draw(window, cameraPos)
+        window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+        self.display_damage(window, cameraPos)
