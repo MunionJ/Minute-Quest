@@ -304,15 +304,20 @@ class Boss(Actor):
             """Method allows the enemy attack the player when in close enough range"""
             pass
 
-        def draw(self, window, cameraPos):
-            super().draw(window, cameraPos)
-            window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+        def display_info(self, window):
+            """ Method for displaying info about the Boss
+                (HP bar, Level, etc.)
+            """
             if self.alive:
                 font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 30)
-                surf = font.render(str(self.stats["CUR_HP"]) + " / " + str(self.stats["MAX_HP"]),
-                                   False,
-                                   pygame.color.THECOLORS['white']
-                                   )
+                hp_surf = font.render(str(self.stats["CUR_HP"]) + " / " + str(self.stats["MAX_HP"]),
+                                      False,
+                                      pygame.color.THECOLORS['white']
+                                      )
+                level_surf = font.render("LEVEL: " + str(self.level),
+                                         False,
+                                         pygame.color.THECOLORS['white']
+                                         )
                 bar_width = 400
                 bar_height = 30
                 bar_x = 200
@@ -327,7 +332,13 @@ class Boss(Actor):
                                      bar_height)
                 pygame.draw.rect(window, pygame.color.THECOLORS['red'], hp_bar)
                 pygame.draw.rect(window, pygame.color.THECOLORS['white'], hp_bar_outline, 2)
-                window.blit(surf, (bar_x + (bar_width / 2.5), bar_y + (bar_height / 5)))
+                window.blit(hp_surf, (bar_x + (bar_width / 2.5), bar_y + (bar_height / 5)))
+                window.blit(level_surf, ((bar_x * 2.5), bar_y - 20))
+
+        def draw(self, window, cameraPos):
+            super().draw(window, cameraPos)
+            window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
+            self.display_info(window)
 
         def stage_one_tactics(self, dt, projectiles):
             if self.target_vector != None:
