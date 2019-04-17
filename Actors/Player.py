@@ -73,7 +73,10 @@ class Player(Actor):
         self.jumpFrames = 2
         self.camera_offset = None
         self.weapon_cords = (0,0)
-        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also increases the degrees rotated.
+        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also
+                                   # increases the degrees rotated.
+
+        self.isCrowdControlled = False
 
     def basic_attack(self, mbuttons, keys, dt):
         """ Generic attack method. Will be
@@ -108,14 +111,18 @@ class Player(Actor):
             self.invuln_timer = INVULN_TIMER
 
     def receive_knockback(self, enemy_object):
-        if enemy_object.facing_right is True:
-            x = random.randint(30, 50)
+        # TODO here
+        if self.cur_state != states.Jumping:
+            y = random.randint(-600, -500)
+
+            if enemy_object.facing_right is True:
+                x = random.randint(300, 450)
+            else:
+                x = random.randint(-450, -300)
+
         else:
-            x = random.randint(-50, -30)
-        if self.cur_state == states.Jumping:
             y = 0
-        else:
-            y = random.randint(-20, -15)
+
         self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):
@@ -123,6 +130,8 @@ class Player(Actor):
         mouseButtons, keys, dt, projectiles = args
 
         super().update(*args)
+
+        print(self.velocity)
 
         if self.jumpFrameCount > 0:
             self.jumpFrameCount -= 1
@@ -191,32 +200,33 @@ class Player(Actor):
             pass
         if keys[pygame.K_d]:
             if self.accel.x < MAX_X_ACC:
-                self.accel.x += PLAYER_ACC
+                self.accel.x = PLAYER_ACC
             movedHorizontal = True
         if keys[pygame.K_a]:
             if self.accel.x > -MAX_X_ACC:
-                self.accel.x -= PLAYER_ACC
+                self.accel.x = -PLAYER_ACC
             movedHorizontal = True
 
         if keys[pygame.K_F1]:
             self.debug = not self.debug
 
-        # if the entity is not currently moving, decrease their velocity until it reaches 0
+        self.apply_friction(keys, dt)
+
+    def apply_friction(self, keys, dt):
         if not keys[pygame.K_a]:
             if self.accel.x < 0:
                 self.accel.x = 0
             if self.velocity.x < 0:
-                self.velocity.x -= 2*PLAYER_FRICTION
+                self.velocity.x -= PLAYER_FRICTION
                 if self.velocity.x > 0:
                     self.velocity.x = 0
         if not keys[pygame.K_d]:
             if self.accel.x > 0:
                 self.accel.x = 0
             if self.velocity.x > 0:
-                self.velocity.x += 2*PLAYER_FRICTION
+                self.velocity.x += PLAYER_FRICTION
                 if self.velocity.x < 0:
                     self.velocity.x = 0
-
 
     def jump(self):
         """ Generic jump method. Can be
@@ -263,7 +273,6 @@ class Player(Actor):
         """ Generic method for increasing
             player level."""
         self.level += 1
-
 
     def healPlayer(self, health):
         if self.stats["CUR_HP"] + health >= self.stats["MAX_HP"]:

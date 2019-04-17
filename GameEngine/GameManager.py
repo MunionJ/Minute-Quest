@@ -5,13 +5,11 @@ from MenuSystem.GameMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
-from Actors.Party import Party
+from Scene.Loading import Loading
 import pickle
-from tkinter import filedialog
-from tkinter import *
+from Actors.Party import Party
 
-
-# stuff
+#stuff
 class GameManager:
 
     def __init__(self):
@@ -22,10 +20,11 @@ class GameManager:
         self.menuOptions[menu.Controls] = ControlsMenu()
         self.menuOptions[menu.PartySelection] = LandingMenu()
 
+        self.loading = Loading()    # Loading object
         self.game = None
         self.clock = pygame.time.Clock()
         self.running = False
-        self.eventmanager = EventManager()  # Incorporate EventManager to handle player input
+        self.eventmanager = EventManager()   #Incorporate EventManager to handle player input
         self.currentMenuState = None
         pygame.display.set_caption(GAME_NAME)
         self.gameWindow = pygame.display.set_mode(SCREEN_RES)
@@ -33,7 +32,7 @@ class GameManager:
         self.Party_Load = None
         self.f_name = "pickle_data.p"
 
-    def LoadMenu(self, menuOption):
+    def LoadMenu(self,menuOption):
         currentMenu = self.menuOptions[self.currentMenuState] if self.currentMenuState != None else menu.Main
         newMenu = self.menuOptions[menuOption]
         if currentMenu in self.eventmanager.game_objects['game_menus']:
@@ -46,46 +45,45 @@ class GameManager:
         self.running = True
 
     def RunMenuLoop(self):
-        while (self.running):
-            # Check user input
+        while(self.running):
+            #Check user input
             self.running = self.eventmanager.process_menu_input()
 
-            # check user selection and determine state
+            #check user selection and determine state
             self.determineState(self.menuOptions[self.currentMenuState])
 
-            # Draw
+            #Draw
             if self.running:
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
-                self.menuOptions[self.currentMenuState].play_sounds()
+                if self.currentMenuState != menu.Controls:
+                    self.menuOptions[self.currentMenuState].play_sounds()
                 pygame.display.update()
 
     def RunDungeon(self):
+        self.loading.draw(self.gameWindow)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
-        self.game = BossFight(self.eventmanager, self.gameWindow)
+        self.loading.draw(self.gameWindow)
+        self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def save_game(self):
-        if self.Party_Load is not None:
+        if self.Party_Load != None:
             with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
-                pickle.dump(self.Party_Load, output, protcol=pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.Party_Load, output, protocol=pickle.HIGHEST_PROTOCOL)
 
     def Loadsave(self):
-        root = Tk()
-        root.withdraw()
-        root.filename = filedialog.asksaveasfilename(initialdir="/",
-                                                     title="pickle_data.p",
-                                                     filetypes=(("jpeg files", "*.jpg"),
-                                                                ("all files", "*.*")))
         with open(self.f_name, 'rb') as input:
             self.Party_Load = pickle.load(input)
 
-    def determineState(self, currentMenu):
+    def determineState(self,currentMenu):
         if currentMenu == None:
             return
 
@@ -114,7 +112,7 @@ class GameManager:
                     self.RunDungeon()
                     self.eventmanager.cleanup()
                 elif selected == "Fight The Boss":
-                    # print("Game Manager, line 85: Selected Boss Fight");
+                    #print("Game Manager, line 85: Selected Boss Fight");
                     self.startBossFight()
                     self.eventmanager.cleanup()
                 elif selected == "Save Game":
@@ -126,7 +124,7 @@ class GameManager:
                 newMenuOption = menu.NewGame
             elif selected == "Load Game":
                 newMenuOption = menu.Loading
-                # TODO:: make method to pull up menu to select game save
+                #TODO:: make method to pull up menu to select game save
                 self.Loadsave()
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
@@ -143,9 +141,11 @@ class GameManager:
 
         self.LoadMenu(newMenuOption)
 
-
 if __name__ == "__main__":
     gm = GameManager()
     print(gm.currentMenuState)
     gm.loadMenu(menu.Controls)
     print(gm.currentMenuState)
+
+
+
