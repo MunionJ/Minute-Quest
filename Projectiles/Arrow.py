@@ -26,5 +26,5 @@ class Arrow(Projectile):
 
     def draw(self, screen, cameraPos):
         super().draw(screen, cameraPos)
-        pygame.draw.rect(screen, pygame.color.THECOLORS['red1'], (self.hitbox.x - cameraPos[0], self.hitbox.y - cameraPos[1]
-                                                                  , self.hitbox.w, self.hitbox.h), 1)
+        # pygame.draw.rect(screen, pygame.color.THECOLORS['red1'], (self.hitbox.x - cameraPos[0], self.hitbox.y - cameraPos[1]
+        #                                                           , self.hitbox.w, self.hitbox.h), 1)
