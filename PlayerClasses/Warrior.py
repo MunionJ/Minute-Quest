@@ -21,7 +21,6 @@ class Warrior(Player):
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
-        self.base_stats = copy.deepcopy(self.stats)
 
         self.weapons["axe"] = Weapon("images/Weapons/battlehammer.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
@@ -40,6 +39,8 @@ class Warrior(Player):
 
     def deal_dmg(self):
         """ Method for dealing damage to an enemy."""
+        if self.rage_active:
+            return (self.stats["MELEE"] * 2) + self.cur_weapon.atk_pwr
         return self.stats["MELEE"] + self.cur_weapon.atk_pwr
 
     def activate_rage(self):
@@ -48,7 +49,6 @@ class Warrior(Player):
             self.usingAbility = True
             self.rage_active = True
             self.num_ability_uses -= 1
-            self.stats["MELEE"] *= 2
             self.stats["CUR_HP"] += self.stats["MAX_HP"] // 4
 
     def deactivate_rage(self):
@@ -56,7 +56,6 @@ class Warrior(Player):
         self.rage_active = False
         self.usingAbility = False
         self.rage_timer = 0
-        self.stats["MELEE"] = self.base_stats["MELEE"]
         if self.stats["CUR_HP"] > self.stats["MAX_HP"]:
             self.stats["CUR_HP"] = self.stats["MAX_HP"]
 
@@ -77,14 +76,14 @@ class Warrior(Player):
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(0, 1)
             self.max_rage_time += (1 / self.max_level) * 5
-            if self.level == 10 or self.level == 20:
-                with open("stat_dump.txt", 'a') as file:
-                    file.write(self.class_name + '\n')
-                    file.write("\tLEVEL:" + str(self.level) + '\n')
-                    for key in self.stats.keys():
-                        if key != "CUR_HP":
-                            file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
-                    file.write('\t' + "MAX RAGE TIME: " + str(round(self.max_rage_time, 2)) + " SECONDS\n")
+            #if self.level == 10 or self.level == 20:
+            with open("stat_dump.txt", 'a') as file:
+                file.write(self.class_name + '\n')
+                file.write("\tLEVEL:" + str(self.level) + '\n')
+                for key in self.stats.keys():
+                    if key != "CUR_HP":
+                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
+                file.write('\t' + "MAX RAGE TIME: " + str(round(self.max_rage_time, 2)) + " SECONDS\n")
 
     def update(self, *args):
         """ Override for base class update method.

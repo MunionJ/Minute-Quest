@@ -280,6 +280,27 @@ class Player(Actor):
         else:
             self.stats["CUR_HP"] += health
 
+    def display_damage(self, window, cameraPos):
+        """ Method for displaying damage numbers when
+            a Player takes damage.
+        """
+        if self.most_recent_dmg > 0:
+            if self.dmg_display_timer < self.dmg_display_max_time:
+                dt = 0.016
+                self.dmg_display_timer += dt
+                font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 32)
+                surf = font.render(str(self.most_recent_dmg),
+                                   False,
+                                   pygame.color.THECOLORS['white']
+                                   )
+                window.blit(surf,
+                            (int(self.rect.x - cameraPos[0] + 10), int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
+                self.dmg_display_y_offset += 2
+            else:
+                self.most_recent_dmg = 0
+                self.dmg_display_timer = 0
+                self.dmg_display_y_offset = 0
+
     def draw(self, window, cameraPos):
         super().draw(window, cameraPos)
         self.camera_offset = cameraPos
@@ -317,19 +338,4 @@ class Player(Actor):
                         #                   self.cur_weapon.rect.h
                         #                   ),
                         #                  2)
-        if self.most_recent_dmg > 0:
-            if self.dmg_display_timer < self.dmg_display_max_time:
-                dt = 0.016
-                self.dmg_display_timer += dt
-                font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 32)
-                surf = font.render(str(self.most_recent_dmg),
-                                   False,
-                                   pygame.color.THECOLORS['white']
-                                   )
-                window.blit(surf,
-                            (int(self.rect.x - cameraPos[0] + 10), int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
-                self.dmg_display_y_offset += 2
-            else:
-                self.most_recent_dmg = 0
-                self.dmg_display_timer = 0
-                self.dmg_display_y_offset = 0
+        self.display_damage(window, cameraPos)

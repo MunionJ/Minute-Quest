@@ -6,6 +6,7 @@ from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
 import pickle
+from Actors.Party import Party
 
 class GameManager:
 
