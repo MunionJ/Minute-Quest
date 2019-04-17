@@ -8,6 +8,7 @@ from GameEngine.BossFight import BossFight
 import pickle
 from Actors.Party import Party
 
+#stuff
 class GameManager:
 
     def __init__(self):
