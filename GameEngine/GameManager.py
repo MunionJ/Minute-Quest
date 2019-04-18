@@ -6,6 +6,7 @@ from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
 from Scene.Loading import Loading
+from GameEngine.Audio import Audio
 import pickle
 from Actors.Party import Party
 
@@ -19,6 +20,8 @@ class GameManager:
         self.menuOptions[menu.NewGame] = GameMenu()
         self.menuOptions[menu.Controls] = ControlsMenu()
         self.menuOptions[menu.PartySelection] = LandingMenu()
+
+        self.musicManager = Audio()  # handles music playback
 
         self.loading = Loading()    # Loading object
         self.game = None
@@ -61,16 +64,21 @@ class GameManager:
 
     def RunDungeon(self):
         self.loading.draw(self.gameWindow)
+        #self.musicManager.play_music(0)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.musicManager.stop_music()
         self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
         self.loading.draw(self.gameWindow)
+        #self.load_music("PATH TO SONG FOR BOSS")
+        #self.musicManager.play_music(0)
         self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.musicManager.stop_music()
         self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def save_game(self):
