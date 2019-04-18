@@ -320,7 +320,7 @@ class Boss(Actor):
                                          )
                 bar_width = 400
                 bar_height = 30
-                bar_x = 200
+                bar_x = window.get_width() // 3
                 bar_y = window.get_height() - 80
                 hp_bar_outline = pygame.Rect(bar_x,
                                              bar_y,
@@ -333,7 +333,7 @@ class Boss(Actor):
                 pygame.draw.rect(window, pygame.color.THECOLORS['red'], hp_bar)
                 pygame.draw.rect(window, pygame.color.THECOLORS['white'], hp_bar_outline, 2)
                 window.blit(hp_surf, (bar_x + (bar_width / 2.5), bar_y + (bar_height / 5)))
-                window.blit(level_surf, ((bar_x * 2.5), bar_y - 20))
+                window.blit(level_surf, ((bar_x + (bar_width - 100)), bar_y - 20))
 
         def draw(self, window, cameraPos):
             super().draw(window, cameraPos)
