@@ -14,7 +14,6 @@ from Actors.Party import Party
 class GameManager:
 
     def __init__(self):
-        pygame.display.set_caption(GAME_NAME)
         self.gameWindow = pygame.display.set_mode()
         x,y,w,h = self.gameWindow.get_rect()
         self.SCREEN_RES = (w,h)

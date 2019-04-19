@@ -63,7 +63,7 @@ class Boss(Actor):
             self.type = "ENEMY"
             self.sees_player = False
             self.shouldJump = False
-            self.vision_range = 400
+            self.vision_range = 5000
             self.now = pygame.time.get_ticks()
             self.target_vector = None
             self.hitWall = False

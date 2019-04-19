@@ -226,17 +226,21 @@ class BossFight:
         roomWidth = self.dungeon.rooms[0].bgImageRect.w
         tiles = pygame.sprite.Group()
 
-        cur_index = 0
+        roomIndices = []
         for i in range(len(self.dungeon.rooms)):
             if self.player.rect.colliderect(self.dungeon.rooms[i].bgImageRect):
-                cur_index = i
-                break
-        tiles.add(self.dungeon.rooms[cur_index].walls.sprites())
+                tiles.add(self.dungeon.rooms[i].walls.sprites())
+                roomIndices.append(i)
 
         self.collisionCheck(tiles,dt)
 
         for p in self.projectiles:
-            if not p.hitbox.colliderect(self.dungeon.rooms[cur_index].bgImageRect):
+            inRoom = False
+            for i in roomIndices:
+                if p.hitbox.colliderect(self.dungeon.rooms[i].bgImageRect):
+                    inRoom = True
+                    break
+            if not inRoom:
                 if self.manager.hasReferenceToGameObject(p):
                     self.manager.removeGameObject(p)
                     self.projectiles.remove(p)
@@ -340,9 +344,9 @@ class BossFight:
 
                     enemy.determineState()
 
-                    for enemy in room.enemies:
+                    for enemy in room.enemies:          #DEBUG
                         if self.player.rect.colliderect(enemy.rect):
-                            self.player.receive_dmg(enemy)
+                            self.player.receive_dmg(enemy.stats["MELEE"],enemy.facing_right)
 
                 if self.player.cur_weapon is not None:
                     #print("DungeonRun.py: Line 244: ", self.player.cur_weapon.active)

@@ -213,19 +213,23 @@ class DungeonRun:
         if not hasCollided:
             self.gameOver()
 
-        currentRoomIndex = None
-        roomWidth = self.dungeon.rooms[0].bgImageRect.w
         tiles = pygame.sprite.Group()
 
+        roomIndices = []
         for i in range(len(self.dungeon.rooms)):
             if self.player.rect.colliderect(self.dungeon.rooms[i].bgImageRect):
                 tiles.add(self.dungeon.rooms[i].walls.sprites())
-
+                roomIndices.append(i)
 
         self.collisionCheck(tiles, dt)
 
         for p in self.projectiles:
-            if not p.hitbox.colliderect(self.dungeon.rooms[cur_index].bgImageRect):
+            inRoom = False
+            for i in roomIndices:
+                if p.hitbox.colliderect(self.dungeon.rooms[i].bgImageRect):
+                    inRoom = True
+                    break
+            if not inRoom:
                 if self.manager.hasReferenceToGameObject(p):
                     self.manager.removeGameObject(p)
                     self.projectiles.remove(p)
@@ -275,9 +279,6 @@ class DungeonRun:
 
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
-                for wall in room.walls:
-                    if not self.manager.hasReferenceToGameObject(wall):
-                        self.manager.addGameObject(wall)
                 # handle objective display
                 if self.prev_room != room:
                     self.prev_room = room
