@@ -62,8 +62,6 @@ class BossRoom:
         self.smallest_y = smallest_y
 
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
-        for room in self.rooms:
-            print("Start: {0} Exit: {1}",room.playerSpawn, room.exitPoint)
 
 
     def draw(self,screen, cameraPos):

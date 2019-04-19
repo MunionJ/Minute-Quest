@@ -97,7 +97,6 @@ class Player(Actor):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
-        print(damage)
         self.most_recent_dmg = damage
         if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
             if self.stats["CUR_HP"] - damage <= 0:
