@@ -45,7 +45,6 @@ class DungeonRun:
                 enemy_list.append(enemy)
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
-            self.enemiesByRoom.append(enemy_list)
         self.gameOverScreen = pygame.Surface(self.SCREEN_RES)
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 100)
         self.gameOverCondition = None
@@ -120,10 +119,11 @@ class DungeonRun:
                         for j in range(len(self.dungeon.rooms)):
                             if j == i:
                                 continue
-                            for enemy in self.dungeon.rooms[j].enemies:
+                            room = self.dungeon.rooms[j]
+                            for enemy in room.enemies:
                                 if self.manager.hasReferenceToGameObject(enemy):
                                     self.manager.removeGameObject(enemy)
-                            room = self.dungeon.rooms[j]
+
                             for wall in room.walls.sprites():
                                 if self.manager.hasReferenceToGameObject(wall):
                                     self.manager.removeGameObject(wall)
@@ -217,12 +217,10 @@ class DungeonRun:
         roomWidth = self.dungeon.rooms[0].bgImageRect.w
         tiles = pygame.sprite.Group()
 
-        cur_index = 0
         for i in range(len(self.dungeon.rooms)):
             if self.player.rect.colliderect(self.dungeon.rooms[i].bgImageRect):
-                cur_index = i
-                break
-        tiles.add(self.dungeon.rooms[cur_index].walls.sprites())
+                tiles.add(self.dungeon.rooms[i].walls.sprites())
+
 
         self.collisionCheck(tiles, dt)
 
@@ -277,6 +275,9 @@ class DungeonRun:
 
         for room in self.dungeon.rooms:
             if self.player.rect.colliderect(room.bgImageRect):
+                for wall in room.walls:
+                    if not self.manager.hasReferenceToGameObject(wall):
+                        self.manager.addGameObject(wall)
                 # handle objective display
                 if self.prev_room != room:
                     self.prev_room = room
@@ -297,14 +298,17 @@ class DungeonRun:
                 for enemy in room.enemies:
                     for p in self.projectiles:
                         if p.hitbox.colliderect(enemy.rect):
-                            enemy.take_damage(p)
-                            if self.manager.hasReferenceToGameObject(p):
-                                self.manager.removeGameObject(p)
-                                self.projectiles.remove(p)
-                                if not enemy.alive:
-                                    flagged_enemies.append(enemy)
-                                    room.enemies.remove(enemy)
-
+                            if p.owner != enemy.type:
+                                enemy.take_damage(p.deal_dmg())
+                                if self.manager.hasReferenceToGameObject(p):
+                                    self.manager.removeGameObject(p)
+                                    self.projectiles.remove(p)
+                                    if not enemy.alive:
+                                        flagged_enemies.append(enemy)
+                                        room.enemies.remove(enemy)
+                        if p.hitbox.colliderect(self.player.rect):
+                            if p.owner != self.player.type:
+                                self.player.receive_dmg(p.deal_dmg())
                 for enemy in room.enemies:
                     if (not self.manager.hasReferenceToGameObject(enemy)):
                         self.manager.addGameObject(enemy)
@@ -345,7 +349,7 @@ class DungeonRun:
 
                     for enemy in room.enemies:
                         if self.player.rect.colliderect(enemy.rect):
-                            self.player.receive_dmg(enemy)
+                            self.player.receive_dmg(enemy.stats["MELEE"],enemy.facing_right)
 
                 if self.player.cur_weapon is not None:
                     # print("DungeonRun.py: Line 244: ", self.player.cur_weapon.active)
@@ -353,7 +357,7 @@ class DungeonRun:
                         for enemy in room.enemies:
                             if self.player.cur_weapon.rect.colliderect(enemy.rect):
                                 # print("DungeonRun.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
-                                enemy.take_damage(self.player)
+                                enemy.take_damage(self.player.deal_dmg())
                                 if not enemy.alive:
                                     flagged_enemies.append(enemy)
                                     room.enemies.remove(enemy)

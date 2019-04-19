@@ -93,22 +93,24 @@ class Player(Actor):
                 self.cur_weapon.active = True
                 self.swing_time = pygame.time.get_ticks()
 
-    def receive_dmg(self, enemy_object):
+    def receive_dmg(self, damage, facingRight=None):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
-        self.most_recent_dmg = enemy_object.stats["MELEE"]
+        print(damage)
+        self.most_recent_dmg = damage
         if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
-            if self.stats["CUR_HP"] - enemy_object.stats["MELEE"] <= 0:
+            if self.stats["CUR_HP"] - damage <= 0:
                 self.stats["CUR_HP"] = 0
                 self.alive = False
             else:
-                self.stats["CUR_HP"] -= enemy_object.stats["MELEE"]
-                self.receive_knockback(enemy_object)
+                self.stats["CUR_HP"] -= damage
+                if facingRight != None:
+                    self.receive_knockback(facingRight)
             self.invuln_timer = INVULN_TIMER
 
-    def receive_knockback(self, enemy_object):
-        if enemy_object.facing_right is True:
+    def receive_knockback(self, facingRight):
+        if facingRight:
             x = random.randint(30, 50)
         else:
             x = random.randint(-50, -30)

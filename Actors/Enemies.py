@@ -215,9 +215,8 @@ class Enemy(Actor):
             else:
                 self.shouldJump = False
 
-    def take_damage(self, player):
+    def take_damage(self, damage):
         """Method that make the enemy take damage from an attack"""
-        damage = player.deal_dmg()
         if self.stats["CUR_HP"] > 0 and  self.invuln_timer <= 0:
             if self.stats["CUR_HP"] - damage <= 0:
                 self.stats["CUR_HP"] = 0
