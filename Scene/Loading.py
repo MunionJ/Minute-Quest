@@ -1,16 +1,16 @@
 import pygame
 import time
-from config import SCREEN_RES
 
 
 class Loading:
     """ Class for drawing loading/transition screens
         after ending a dungeon run or boss fight.
     """
-    def __init__(self):
+    def __init__(self, SCREEN_RES):
         self.font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 50)
         self.transition_timer = 0
         self.max_transition_time = 3
+        self.SCREEN_RES = SCREEN_RES
 
     def draw(self, window, draw_str="LOAD"):
         """ Method for drawing loading/transition screen
@@ -40,8 +40,8 @@ class Loading:
         else:
             pass
         rect = surf.get_rect()
-        x = SCREEN_RES[0] // 2
-        y = SCREEN_RES[1] // 2
+        x = self.SCREEN_RES[0] // 2
+        y = self.SCREEN_RES[1] // 2
         rect.center = (x, y)
         window.blit(surf, rect)
         pygame.display.flip()

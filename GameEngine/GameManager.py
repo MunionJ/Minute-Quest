@@ -14,23 +14,26 @@ from Actors.Party import Party
 class GameManager:
 
     def __init__(self):
-        self.menuOptions = {}
-        self.menuOptions[menu.Main] = LandingMenu()
-        self.menuOptions[menu.Loading] = LandingMenu()
-        self.menuOptions[menu.NewGame] = GameMenu()
-        self.menuOptions[menu.Controls] = ControlsMenu()
-        self.menuOptions[menu.PartySelection] = LandingMenu()
+        pygame.display.set_caption(GAME_NAME)
+        self.gameWindow = pygame.display.set_mode()
+        x,y,w,h = self.gameWindow.get_rect()
+        self.SCREEN_RES = (w,h)
 
         self.musicManager = Audio()  # handles music playback
 
-        self.loading = Loading()    # Loading object
+        self.loading = Loading(self.SCREEN_RES)    # Loading object
         self.game = None
         self.clock = pygame.time.Clock()
         self.running = False
         self.eventmanager = EventManager()   #Incorporate EventManager to handle player input
         self.currentMenuState = None
-        pygame.display.set_caption(GAME_NAME)
-        self.gameWindow = pygame.display.set_mode(SCREEN_RES)
+
+        self.menuOptions = {}
+        self.menuOptions[menu.Main] = LandingMenu(self.SCREEN_RES)
+        self.menuOptions[menu.Loading] = self.menuOptions[menu.Main]
+        self.menuOptions[menu.NewGame] = GameMenu(self.SCREEN_RES)
+        self.menuOptions[menu.Controls] = ControlsMenu(self.SCREEN_RES)
+        self.menuOptions[menu.PartySelection] = self.menuOptions[menu.Main]
         self.bg_color = pygame.color.THECOLORS['black']
         self.Party_Load = None
         self.f_name = "pickle_data.p"

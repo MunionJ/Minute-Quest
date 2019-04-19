@@ -11,11 +11,13 @@ class DungeonRun:
 
     def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
+        x,y,w,h = self.window.get_rect()
+        self.SCREEN_RES = (w,h)
         self.manager = event_mgr
         self.running = False
-        self.dungeon = Dungeon(4)
+        self.dungeon = Dungeon(4, self.SCREEN_RES)
         self.party_list = Party(self.dungeon.playerSpawn)
-        self.loading = Loading()
+        self.loading = Loading(self.SCREEN_RES)
         if game_save_info != None:
             self.party_list.loadPartyInfoFromSave(game_save_info)
         party = self.party_list
@@ -30,9 +32,8 @@ class DungeonRun:
         self.clock = pygame.time.Clock()
         self.bg_color = pygame.color.THECOLORS["black"]
         self.prev_room = self.dungeon.rooms[0]
-        for room in self.dungeon.rooms:
-            for wall in room.walls.sprites():
-                self.manager.addGameObject(wall)
+        for wall in self.dungeon.rooms[0].walls.sprites():
+            self.manager.addGameObject(wall)
         self.enemiesByRoom = []
         for room in self.dungeon.rooms:
             enemy_list = []
@@ -45,7 +46,7 @@ class DungeonRun:
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
             self.enemiesByRoom.append(enemy_list)
-        self.gameOverScreen = pygame.Surface(SCREEN_RES)
+        self.gameOverScreen = pygame.Surface(self.SCREEN_RES)
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 100)
         self.gameOverCondition = None
         self.fontSurface = None
@@ -65,7 +66,7 @@ class DungeonRun:
                 self.postTime -= dt
                 fontSurface = self.font.render(self.gameOverCondition, False, self.font_color)
                 fontrect = fontSurface.get_rect()
-                fontrect.center = (SCREEN_RES[0] >> 1, SCREEN_RES[1] >> 1)
+                fontrect.center = (self.SCREEN_RES[0] >> 1, self.SCREEN_RES[1] >> 1)
                 self.window.fill(pygame.color.THECOLORS['black'])
                 self.window.blit(fontSurface, fontrect)
                 self.manager.poll_input(dt)
@@ -90,6 +91,10 @@ class DungeonRun:
                 for i in range(len(self.dungeon.rooms)):
                     room = self.dungeon.rooms[i]
                     if room.bgImageRect.colliderect(self.player.rect):
+                        for wall in room.walls:
+                            if not self.manager.hasReferenceToGameObject(wall):
+                                self.manager.addGameObject(wall)
+
                         if len(room.enemies) > 0:
                                 for enemy in room.enemies:
                                     if not enemy.alive:
@@ -111,7 +116,17 @@ class DungeonRun:
                             if room.exitDoor != None:
                                 room.walls.remove(room.exitDoor)
                                 room.unlockDoor()
-
+                    else:
+                        for j in range(len(self.dungeon.rooms)):
+                            if j == i:
+                                continue
+                            for enemy in self.dungeon.rooms[j].enemies:
+                                if self.manager.hasReferenceToGameObject(enemy):
+                                    self.manager.removeGameObject(enemy)
+                            room = self.dungeon.rooms[j]
+                            for wall in room.walls.sprites():
+                                if self.manager.hasReferenceToGameObject(wall):
+                                    self.manager.removeGameObject(wall)
                 # events = pygame.event.get()
                 # for event in events:
                 #     if event.type == pygame.QUIT:
@@ -371,7 +386,7 @@ class DungeonRun:
             fullP = self.dungeon.dungeonExit.x - finalRoomX
             curP = self.player.rect.x - finalRoomX
             alphaLevel = int(255 * (curP / fullP))
-            overlay = pygame.Surface(SCREEN_RES)
+            overlay = pygame.Surface(self.SCREEN_RES)
             overlay.fill((255, 255, 255))
             overlay.set_alpha(alphaLevel)
             self.window.blit(overlay, (0, 0))

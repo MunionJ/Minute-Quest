@@ -4,7 +4,7 @@ from GameEngine.GameHUD import GameHUD
 from Actors.Party import Party
 from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
-from config import SCREEN_RES, PIXEL_DIFFERENCE
+from config import  PIXEL_DIFFERENCE
 from Scene.Loading import Loading
 import pygame
 import time
@@ -15,9 +15,11 @@ class BossFight:
 
     def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
+        x,y,w,h = self.window.get_rect()
+        self.SCREEN_RES = (w,h)
         self.manager = event_mgr
         self.running = False
-        self.dungeon = BossRoom()
+        self.dungeon = BossRoom(self.SCREEN_RES)
         self.party_list = Party(self.dungeon.playerSpawn)
         if game_save_info != None:
             self.party_list.loadPartyInfoFromSave(game_save_info)
@@ -30,7 +32,7 @@ class BossFight:
         self.HUD = GameHUD(self.window)
         self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
-        self.loading = Loading()
+        self.loading = Loading(self.SCREEN_RES)
         self.bg_color = pygame.color.THECOLORS["black"]
         self.prev_room = self.dungeon.rooms[0]
         for room in self.dungeon.rooms:
@@ -48,7 +50,7 @@ class BossFight:
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
             self.enemiesByRoom.append(enemy_list)
-        self.gameOverScreen = pygame.Surface(SCREEN_RES)
+        self.gameOverScreen = pygame.Surface(self.SCREEN_RES)
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 100)
         self.gameOverCondition = None
         self.fontSurface = None
@@ -69,7 +71,7 @@ class BossFight:
                 self.postTime -= dt
                 fontSurface = self.font.render(self.gameOverCondition,False,self.font_color)
                 fontrect = fontSurface.get_rect()
-                fontrect.center = (SCREEN_RES[0]>>1,SCREEN_RES[1]>>1)
+                fontrect.center = (self.SCREEN_RES[0]>>1,self.SCREEN_RES[1]>>1)
                 self.window.fill(pygame.color.THECOLORS['black'])
                 self.window.blit(fontSurface,fontrect)
                 self.manager.poll_input(dt)
@@ -92,9 +94,14 @@ class BossFight:
                 self.manager.addGameObject(self.player)
                 self.player.set_pos(cur_pos)
 
-                for room in self.dungeon.rooms:
+                for i in range(len(self.dungeon.rooms)):
+                    room = self.dungeon.rooms[i]
                     if len(room.enemies) > 0:
                         if room.bgImageRect.colliderect(self.player.rect):
+                            for wall in room.walls:
+                                if not self.manager.hasReferenceToGameObject(wall):
+                                    self.manager.addGameObject(wall)
+
                             for enemy in room.enemies:
                                 if not enemy.alive:
                                     if self.manager.hasReferenceToGameObject(enemy):
@@ -115,7 +122,17 @@ class BossFight:
                                 if room.exitDoor != None:
                                     room.walls.remove(room.exitDoor)
                                     room.unlockDoor()
-
+                        else:
+                            for j in range(len(self.dungeon.rooms)):
+                                if j == i:
+                                    continue
+                                for enemy in self.dungeon.rooms[j].enemies:
+                                    if self.manager.hasReferenceToGameObject(enemy):
+                                        self.manager.removeGameObject(enemy)
+                                room = self.dungeon.rooms[j]
+                                for wall in room.walls.sprites():
+                                    if self.manager.hasReferenceToGameObject(wall):
+                                        self.manager.removeGameObject(wall)
                 if self.player.usingAbility:
                     if self.particleEmitter.currentPosition == None:
                         self.particleEmitter.setPosition(self.player)

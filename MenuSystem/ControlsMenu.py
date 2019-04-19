@@ -5,10 +5,11 @@ from MenuSystem.Button import Button
 
 class ControlsMenu(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, SCREEN_RES):
         """Initialize Control Menu"""
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
+        self.SCREEN_RES = SCREEN_RES
         self.controller = pygame.image.load("images/controller.png")
         self.controller = pygame.transform.scale(self.controller,
                                                  (int(self.controller.get_width() // 1.3),
@@ -45,8 +46,8 @@ class ControlsMenu(pygame.sprite.Sprite):
         default = self.buttons[self.current_index]
         default.select()
         self.selectedOption = None
-        self.keyboardControls = pygame.Surface(SCREEN_RES)
-        self.gamepadControls = pygame.Surface(SCREEN_RES)
+        self.keyboardControls = pygame.Surface(self.SCREEN_RES)
+        self.gamepadControls = pygame.Surface(self.SCREEN_RES)
         self.createGamePadDisplay()
         self.createKeyBoardDisplay()
         self.currntbackground = self.keyboardControls
@@ -225,7 +226,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         for button in self.buttons:
             totalHeightButton += gap_y + button.rect.h
 
-        current_y = SCREEN_RES[1] - totalHeightButton
+        current_y = self.SCREEN_RES[1] - totalHeightButton
         for button in self.buttons:
             x = self.margin + button.rect.w // 2
             y = current_y

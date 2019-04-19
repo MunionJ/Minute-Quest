@@ -1,4 +1,3 @@
-SCREEN_RES = (800, 600)
 GAME_NAME = "Minute Quest"
 
 PLAYER_SPAWNS = [79, 13, 356, 212, 216, 181]

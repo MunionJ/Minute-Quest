@@ -3,11 +3,12 @@ from config import *
 from MenuSystem.Button import Button
 class LandingMenu(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self,SCREEN_RES):
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
 
         self.rect = self.screen.get_rect()
+        self.SCREEN_RES = SCREEN_RES
         self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',20)
         self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',100)
         self.headertextColor = pygame.color.THECOLORS['white']
@@ -56,7 +57,7 @@ class LandingMenu(pygame.sprite.Sprite):
 
         current_y = self.headerRect.bottom + 100
         for button in self.buttons:
-            x = (SCREEN_RES[0]//2)
+            x = (self.SCREEN_RES[0]//2)
             y = current_y
             button.updateLocation(x,y)
             current_y += gap_y + button.rect.h

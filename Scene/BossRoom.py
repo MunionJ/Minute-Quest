@@ -2,13 +2,13 @@ from Scene.DungeonRoom import *
 from config import *
 
 class BossRoom:
-    def __init__(self):
+    def __init__(self, SCREEN_RES):
         """
             Creates dungeon rooms by aligning entrance and exit points
             :param num_rooms: number of rooms with objectives that should be created
         """
         self.rooms = []
-
+        self.SCREEN_RES = SCREEN_RES
         entrance = DungeonRoom("./maps/entrance.txt","./images/ProjectUtumno_full.png")
         self.rooms.append(entrance)
 
