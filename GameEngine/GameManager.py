@@ -6,28 +6,32 @@ from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
 from Scene.Loading import Loading
+from GameEngine.Audio import Audio
+from GameEngine.Credits import Credits
 import pickle
-from Actors.Party import Party
 
-#stuff
 class GameManager:
 
     def __init__(self):
-        self.menuOptions = {}
-        self.menuOptions[menu.Main] = LandingMenu()
-        self.menuOptions[menu.Loading] = LandingMenu()
-        self.menuOptions[menu.NewGame] = GameMenu()
-        self.menuOptions[menu.Controls] = ControlsMenu()
-        self.menuOptions[menu.PartySelection] = LandingMenu()
+        self.gameWindow = pygame.display.set_mode()
+        x,y,w,h = self.gameWindow.get_rect()
+        self.SCREEN_RES = (w,h)
 
-        self.loading = Loading()    # Loading object
+        self.musicManager = Audio()  # handles music playback
+
+        self.loading = Loading(self.SCREEN_RES)    # Loading object
         self.game = None
         self.clock = pygame.time.Clock()
         self.running = False
         self.eventmanager = EventManager()   #Incorporate EventManager to handle player input
         self.currentMenuState = None
-        pygame.display.set_caption(GAME_NAME)
-        self.gameWindow = pygame.display.set_mode(SCREEN_RES)
+
+        self.menuOptions = {}
+        self.menuOptions[menu.Main] = LandingMenu(self.SCREEN_RES)
+        self.menuOptions[menu.Loading] = self.menuOptions[menu.Main]
+        self.menuOptions[menu.NewGame] = GameMenu(self.SCREEN_RES)
+        self.menuOptions[menu.Controls] = ControlsMenu(self.SCREEN_RES)
+        self.menuOptions[menu.PartySelection] = self.menuOptions[menu.Main]
         self.bg_color = pygame.color.THECOLORS['black']
         self.Party_Load = None
         self.f_name = "pickle_data.p"
@@ -62,17 +66,27 @@ class GameManager:
 
     def RunDungeon(self):
         self.loading.draw(self.gameWindow)
+        #self.musicManager.play_music(0)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.musicManager.stop_music()
         self.Party_Load = self.game.party_list.partyInfoToPickle()
 
     def startBossFight(self):
         self.loading.draw(self.gameWindow)
+        #self.load_music("PATH TO SONG FOR BOSS")
+        #self.musicManager.play_music(0)
         self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
         self.game.launch_game()
+        self.musicManager.stop_music()
         self.Party_Load = self.game.party_list.partyInfoToPickle()
+
+    def rollCredits(self):
+        credits = Credits(self.eventmanager, self.gameWindow)
+        credits.start_credits()
+        credits.begin_sequence()
 
     def save_game(self):
         if self.Party_Load != None:
@@ -102,6 +116,8 @@ class GameManager:
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
+            elif selected == "Credits":
+                self.rollCredits()
             elif selected == "Exit":
                 self.running = False
         elif self.currentMenuState == menu.NewGame:

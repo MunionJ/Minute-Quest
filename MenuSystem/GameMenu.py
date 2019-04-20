@@ -6,11 +6,11 @@ import pickle
 
 class GameMenu(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, SCREEN_RES):
         """Initialize Control Menu"""
         super().__init__()
         self.screen = pygame.Surface(SCREEN_RES)
-
+        self.SCREEN_RES = SCREEN_RES
         self.rect = self.screen.get_rect()
         self.font = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',20)
         self.headerFont = pygame.font.Font('./fonts/AmaticSC-Regular.ttf',75)
@@ -19,7 +19,8 @@ class GameMenu(pygame.sprite.Sprite):
         self.buttonColor = pygame.color.THECOLORS['blue']
         self.buttonTextColor = pygame.color.THECOLORS['white']
         self.buttonSelectColor = pygame.color.THECOLORS['yellow']
-        self.margin = 10
+        self.margin = 20
+        self.buttonMargin = 10
 
         self.screen.fill(self.bg_color)
         self.header = self.headerFont.render("Minute Quest", False, self.headertextColor)
@@ -44,6 +45,7 @@ class GameMenu(pygame.sprite.Sprite):
         self.keyboardControls = pygame.Surface(SCREEN_RES)
         self.gamepadControls = pygame.Surface(SCREEN_RES)
         self.bg_image = pygame.image.load('images/DungeonBg.png')
+        self.bg_image = pygame.transform.scale(self.bg_image, self.SCREEN_RES)
         self.ambient_sound = pygame.mixer.Sound('Sounds/water_ambience.wav')
 
     def Reset(self):
@@ -60,12 +62,12 @@ class GameMenu(pygame.sprite.Sprite):
         for button in self.buttons:
             totalHeightButton += gap_y + button.rect.h
 
-        current_y = SCREEN_RES[1] - totalHeightButton - self.margin
+        current_y = self.SCREEN_RES[1] - totalHeightButton - self.margin
         for button in self.buttons:
             x = self.margin + button.rect.w//2
             y = current_y
             button.updateLocation(x, y)
-            current_y += button.rect.h + 5
+            current_y += button.rect.h + self.buttonMargin
 
     def play_music(self):
         # pygame.mixer.music.load('Sounds/Music/Loop_NatureGoddess_00.ogg')

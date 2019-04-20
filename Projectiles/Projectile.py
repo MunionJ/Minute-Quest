@@ -5,7 +5,7 @@ vec = pygame.math.Vector2
 
 class Projectile(pygame.sprite.Sprite):
 
-    def __init__(self, fileName, width, height, pos, targetPos, damage=1, speed=150, targetGameObject=None):
+    def __init__(self, fileName, width, height, pos, targetPos, owner, damage=1, speed=150, targetGameObject=None):
         """
         :param width: width of projectile
         :param height: height of projectile
@@ -24,6 +24,7 @@ class Projectile(pygame.sprite.Sprite):
             self.image = pygame.Surface((width,height))
             self.image.set_colorkey(pygame.color.THECOLORS['black'])
             pygame.draw.rect(self.image, pygame.color.THECOLORS['red'], (0, 0, width, height))
+        self.owner = owner
         self.image = pygame.transform.scale(self.image, (width,height))
         self.blit_image = self.image.copy()
         self.rect = self.image.get_rect()

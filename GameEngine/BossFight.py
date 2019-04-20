@@ -1,10 +1,11 @@
 from Scene.Camera import Camera
 from Scene.Objective import *
 from GameEngine.GameHUD import GameHUD
+from GameEngine.Credits import Credits
 from Actors.Party import Party
 from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
-from config import SCREEN_RES, PIXEL_DIFFERENCE
+from config import  PIXEL_DIFFERENCE
 from Scene.Loading import Loading
 import pygame
 import time
@@ -15,9 +16,11 @@ class BossFight:
 
     def __init__(self, event_mgr, game_window, game_save_info):
         self.window = game_window
+        x,y,w,h = self.window.get_rect()
+        self.SCREEN_RES = (w,h)
         self.manager = event_mgr
         self.running = False
-        self.dungeon = BossRoom()
+        self.dungeon = BossRoom(self.SCREEN_RES)
         self.party_list = Party(self.dungeon.playerSpawn)
         if game_save_info != None:
             self.party_list.loadPartyInfoFromSave(game_save_info)
@@ -30,7 +33,7 @@ class BossFight:
         self.HUD = GameHUD(self.window)
         self.manager.addGameObject(self.HUD)
         self.clock = pygame.time.Clock()
-        self.loading = Loading()
+        self.loading = Loading(self.SCREEN_RES)
         self.bg_color = pygame.color.THECOLORS["black"]
         self.prev_room = self.dungeon.rooms[0]
         for room in self.dungeon.rooms:
@@ -48,7 +51,7 @@ class BossFight:
                 self.manager.addGameObject(enemy)
             room.enemies = enemy_list
             self.enemiesByRoom.append(enemy_list)
-        self.gameOverScreen = pygame.Surface(SCREEN_RES)
+        self.gameOverScreen = pygame.Surface(self.SCREEN_RES)
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 100)
         self.gameOverCondition = None
         self.fontSurface = None
@@ -69,7 +72,7 @@ class BossFight:
                 self.postTime -= dt
                 fontSurface = self.font.render(self.gameOverCondition,False,self.font_color)
                 fontrect = fontSurface.get_rect()
-                fontrect.center = (SCREEN_RES[0]>>1,SCREEN_RES[1]>>1)
+                fontrect.center = (self.SCREEN_RES[0]>>1,self.SCREEN_RES[1]>>1)
                 self.window.fill(pygame.color.THECOLORS['black'])
                 self.window.blit(fontSurface,fontrect)
                 self.manager.poll_input(dt)
@@ -92,9 +95,14 @@ class BossFight:
                 self.manager.addGameObject(self.player)
                 self.player.set_pos(cur_pos)
 
-                for room in self.dungeon.rooms:
+                for i in range(len(self.dungeon.rooms)):
+                    room = self.dungeon.rooms[i]
                     if len(room.enemies) > 0:
                         if room.bgImageRect.colliderect(self.player.rect):
+                            for wall in room.walls:
+                                if not self.manager.hasReferenceToGameObject(wall):
+                                    self.manager.addGameObject(wall)
+
                             for enemy in room.enemies:
                                 if not enemy.alive:
                                     if self.manager.hasReferenceToGameObject(enemy):
@@ -115,7 +123,17 @@ class BossFight:
                                 if room.exitDoor != None:
                                     room.walls.remove(room.exitDoor)
                                     room.unlockDoor()
-
+                        else:
+                            for j in range(len(self.dungeon.rooms)):
+                                if j == i:
+                                    continue
+                                for enemy in self.dungeon.rooms[j].enemies:
+                                    if self.manager.hasReferenceToGameObject(enemy):
+                                        self.manager.removeGameObject(enemy)
+                                room = self.dungeon.rooms[j]
+                                for wall in room.walls.sprites():
+                                    if self.manager.hasReferenceToGameObject(wall):
+                                        self.manager.removeGameObject(wall)
                 if self.player.usingAbility:
                     if self.particleEmitter.currentPosition == None:
                         self.particleEmitter.setPosition(self.player)
@@ -209,17 +227,21 @@ class BossFight:
         roomWidth = self.dungeon.rooms[0].bgImageRect.w
         tiles = pygame.sprite.Group()
 
-        cur_index = 0
+        roomIndices = []
         for i in range(len(self.dungeon.rooms)):
             if self.player.rect.colliderect(self.dungeon.rooms[i].bgImageRect):
-                cur_index = i
-                break
-        tiles.add(self.dungeon.rooms[cur_index].walls.sprites())
+                tiles.add(self.dungeon.rooms[i].walls.sprites())
+                roomIndices.append(i)
 
         self.collisionCheck(tiles,dt)
 
         for p in self.projectiles:
-            if not p.hitbox.colliderect(self.dungeon.rooms[cur_index].bgImageRect):
+            inRoom = False
+            for i in roomIndices:
+                if p.hitbox.colliderect(self.dungeon.rooms[i].bgImageRect):
+                    inRoom = True
+                    break
+            if not inRoom:
                 if self.manager.hasReferenceToGameObject(p):
                     self.manager.removeGameObject(p)
                     self.projectiles.remove(p)
@@ -323,9 +345,9 @@ class BossFight:
 
                     enemy.determineState()
 
-                    for enemy in room.enemies:
+                    for enemy in room.enemies:          #DEBUG
                         if self.player.rect.colliderect(enemy.rect):
-                            self.player.receive_dmg(enemy)
+                            self.player.receive_dmg(enemy.stats["MELEE"],enemy.facing_right)
 
                 if self.player.cur_weapon is not None:
                     #print("DungeonRun.py: Line 244: ", self.player.cur_weapon.active)
@@ -356,10 +378,16 @@ class BossFight:
         self.party_list.calc_avg_level()
         self.manager.cleanup()
         self.running = False
+        credits = Credits(self.manager,self.window)
+        credits.start_credits()
+        credits.begin_sequence()
 
     def gameOver(self):
         "The Player's Experience gets reset"
         self.running = False
+        credits = Credits(self.manager,self.window)
+        credits.start_credits()
+        credits.begin_sequence()
 
     def getPartyReference(self):
         return self.party_list

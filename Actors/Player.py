@@ -73,10 +73,7 @@ class Player(Actor):
         self.jumpFrames = 2
         self.camera_offset = None
         self.weapon_cords = (0,0)
-        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also
-                                   # increases the degrees rotated.
-
-        self.isCrowdControlled = False
+        self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also increases the degrees rotated.
 
     def basic_attack(self, mbuttons, keys, dt):
         """ Generic attack method. Will be
@@ -96,33 +93,30 @@ class Player(Actor):
                 self.cur_weapon.active = True
                 self.swing_time = pygame.time.get_ticks()
 
-    def receive_dmg(self, enemy_object):
+    def receive_dmg(self, damage, facingRight=None):
         """ Generic method for when a
             player takes damage. Can be
             overridden if need be."""
-        self.most_recent_dmg = enemy_object.stats["MELEE"]
+        self.most_recent_dmg = damage
         if self.stats["CUR_HP"] > 0 >= self.invuln_timer:    # testing with this for now - Jon
-            if self.stats["CUR_HP"] - enemy_object.stats["MELEE"] <= 0:
+            if self.stats["CUR_HP"] - damage <= 0:
                 self.stats["CUR_HP"] = 0
                 self.alive = False
             else:
-                self.stats["CUR_HP"] -= enemy_object.stats["MELEE"]
-                self.receive_knockback(enemy_object)
+                self.stats["CUR_HP"] -= damage
+                if facingRight != None:
+                    self.receive_knockback(facingRight)
             self.invuln_timer = INVULN_TIMER
 
-    def receive_knockback(self, enemy_object):
-        # TODO here
-        if self.cur_state != states.Jumping:
-            y = random.randint(-600, -500)
-
-            if enemy_object.facing_right is True:
-                x = random.randint(300, 450)
-            else:
-                x = random.randint(-450, -300)
-
+    def receive_knockback(self, facingRight):
+        if facingRight:
+            x = random.randint(30, 50)
         else:
+            x = random.randint(-50, -30)
+        if self.cur_state == states.Jumping:
             y = 0
-
+        else:
+            y = random.randint(-20, -15)
         self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):
@@ -130,8 +124,6 @@ class Player(Actor):
         mouseButtons, keys, dt, projectiles = args
 
         super().update(*args)
-
-        print(self.velocity)
 
         if self.jumpFrameCount > 0:
             self.jumpFrameCount -= 1
@@ -200,33 +192,32 @@ class Player(Actor):
             pass
         if keys[pygame.K_d]:
             if self.accel.x < MAX_X_ACC:
-                self.accel.x = PLAYER_ACC
+                self.accel.x += PLAYER_ACC
             movedHorizontal = True
         if keys[pygame.K_a]:
             if self.accel.x > -MAX_X_ACC:
-                self.accel.x = -PLAYER_ACC
+                self.accel.x -= PLAYER_ACC
             movedHorizontal = True
 
         if keys[pygame.K_F1]:
             self.debug = not self.debug
 
-        self.apply_friction(keys, dt)
-
-    def apply_friction(self, keys, dt):
+        # if the entity is not currently moving, decrease their velocity until it reaches 0
         if not keys[pygame.K_a]:
             if self.accel.x < 0:
                 self.accel.x = 0
             if self.velocity.x < 0:
-                self.velocity.x -= PLAYER_FRICTION
+                self.velocity.x -= 2*PLAYER_FRICTION
                 if self.velocity.x > 0:
                     self.velocity.x = 0
         if not keys[pygame.K_d]:
             if self.accel.x > 0:
                 self.accel.x = 0
             if self.velocity.x > 0:
-                self.velocity.x += PLAYER_FRICTION
+                self.velocity.x += 2*PLAYER_FRICTION
                 if self.velocity.x < 0:
                     self.velocity.x = 0
+
 
     def jump(self):
         """ Generic jump method. Can be
@@ -273,6 +264,7 @@ class Player(Actor):
         """ Generic method for increasing
             player level."""
         self.level += 1
+
 
     def healPlayer(self, health):
         if self.stats["CUR_HP"] + health >= self.stats["MAX_HP"]:

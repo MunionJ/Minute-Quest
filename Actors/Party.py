@@ -4,7 +4,6 @@ from PlayerClasses.Wizard import *
 from PlayerClasses.Paladin import *
 import pygame
 
-
 class Party:
     """ The Party class will contain a list
         of party members, and handle which party member

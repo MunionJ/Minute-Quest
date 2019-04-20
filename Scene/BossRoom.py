@@ -2,13 +2,13 @@ from Scene.DungeonRoom import *
 from config import *
 
 class BossRoom:
-    def __init__(self):
+    def __init__(self, SCREEN_RES):
         """
             Creates dungeon rooms by aligning entrance and exit points
             :param num_rooms: number of rooms with objectives that should be created
         """
         self.rooms = []
-
+        self.SCREEN_RES = SCREEN_RES
         entrance = DungeonRoom("./maps/entrance.txt","./images/ProjectUtumno_full.png")
         self.rooms.append(entrance)
 
@@ -62,8 +62,6 @@ class BossRoom:
         self.smallest_y = smallest_y
 
         self.dungeonExit = self.rooms[len(self.rooms)-1].exitPoint
-        for room in self.rooms:
-            print("Start: {0} Exit: {1}",room.playerSpawn, room.exitPoint)
 
 
     def draw(self,screen, cameraPos):

@@ -4,8 +4,8 @@ import pygame
 
 class Arrow(Projectile):
 
-    def __init__(self, fileName, width, height, pos, targetPos, damage=1, speed=150, targetGameObject=None):
-        super().__init__(fileName, width, height, pos, targetPos, damage, speed, targetGameObject)
+    def __init__(self, fileName, width, height, pos, targetPos, owner, damage=1, speed=150, targetGameObject=None):
+        super().__init__(fileName, width, height, pos, targetPos, owner, damage,  speed, targetGameObject)
         self.hitbox = None
         self.determine_hitbox()
         self.dif_x_pos = self.hitbox.center[0] - self.rect.center[0]
@@ -22,7 +22,6 @@ class Arrow(Projectile):
     def update(self, *args):
         super().update(*args)
         self.hitbox.center = (self.dif_x_pos + self.rect.center[0], self.dif_y_pos+self.rect.center[1])
-
 
     def draw(self, screen, cameraPos):
         super().draw(screen, cameraPos)

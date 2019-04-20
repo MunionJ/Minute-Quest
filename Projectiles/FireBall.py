@@ -4,9 +4,8 @@ import pygame
 
 class FireBall(Projectile):
 
-    def __init__(self, fileName, width, height, pos, targetPos, damage=5, speed=150, targetGameObject=None):
-        super().__init__(fileName, width, height, pos, targetPos, damage, speed, targetGameObject)
-        self.hitbox = None
+    def __init__(self, fileName, width, height, pos, targetPos, owner, damage=5, speed=150, targetGameObject=None):
+        super().__init__(fileName, width, height, pos, targetPos, owner, damage, speed, targetGameObject)
         self.determine_hitbox()
         self.dif_x_pos = self.hitbox.center[0] - self.rect.center[0]
         self.dif_y_pos = self.hitbox.center[1] - self.rect.center[1]

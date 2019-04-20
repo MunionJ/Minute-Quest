@@ -12,7 +12,7 @@ class Camera():
         self.dungeon = dungeon
         self.pos = (0,0)
         self.prevPos = (0,0)
-        self.view = pygame.Surface(SCREEN_RES)
+        self.view = pygame.Surface(self.dungeon.SCREEN_RES)
         self.rect = self.view.get_rect()
         self.debug = False
         self.reticle = Reticle()
@@ -20,8 +20,8 @@ class Camera():
 
     def setCameraPosition(self,playerPos):
         """Updates camera position based on location of player"""
-        topLeftX = playerPos[0] - (SCREEN_RES[0] / 2)
-        topLeftY = playerPos[1] - (SCREEN_RES[1] / 2)
+        topLeftX = playerPos[0] - (self.dungeon.SCREEN_RES[0] / 2)
+        topLeftY = playerPos[1] - (self.dungeon.SCREEN_RES[1] / 2)
 
         roomIndex = self.getRoomIndex(playerPos)
         #currentRoom = self.dungeon.rooms[roomIndex].bgImageRect

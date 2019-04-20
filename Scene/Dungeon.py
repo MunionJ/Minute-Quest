@@ -5,15 +5,16 @@ from config import *
 
 
 class Dungeon:
-    def __init__(self, num_rooms):
+    def __init__(self, num_rooms, SCREEN_RES):
         """
             Creates dungeon rooms by aligning entrance and exit points
             :param num_rooms: number of rooms with objectives that should be created
         """
         self.rooms = []
         tempChoices = copy.deepcopy(ROOMS)
+        self.SCREEN_RES = SCREEN_RES
         self.dirt = pygame.image.load("./images/map_dirt_background.png")
-        self.dirt = pygame.transform.scale(self.dirt, SCREEN_RES)
+        self.dirt = pygame.transform.scale(self.dirt, self.SCREEN_RES)
 
         entrance = DungeonRoom("./maps/entrance.txt","./images/ProjectUtumno_full.png")
         self.rooms.append(entrance)
