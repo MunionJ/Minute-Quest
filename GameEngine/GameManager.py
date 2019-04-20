@@ -7,10 +7,9 @@ from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
 from Scene.Loading import Loading
 from GameEngine.Audio import Audio
+from GameEngine.Credits import Credits
 import pickle
-from Actors.Party import Party
 
-#stuff
 class GameManager:
 
     def __init__(self):
@@ -83,6 +82,11 @@ class GameManager:
         self.musicManager.stop_music()
         self.Party_Load = self.game.party_list.partyInfoToPickle()
 
+    def rollCredits(self):
+        credits = Credits(self.eventmanager, self.gameWindow)
+        credits.start_credits()
+        credits.begin_sequence()
+
     def save_game(self):
         if self.Party_Load != None:
             with open(self.f_name, 'wb') as output:  # Overwrites any existing file.
@@ -111,6 +115,8 @@ class GameManager:
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
+            elif selected == "Credits":
+                self.rollCredits()
             elif selected == "Exit":
                 self.running = False
         elif self.currentMenuState == menu.NewGame:
