@@ -76,26 +76,30 @@ class Credits:
             startY = 0
             xIndex = startX
 
-            width = self.SCREEN_RES[0] - r.w - 4*self.margin
+            width = self.SCREEN_RES[0] - r.w - 3*self.margin
             height = self.SCREEN_RES[1] - infoRect.h + 10*self.margin
 
             aboutSurf = pygame.Surface((width,height))
             aboutSurf.fill(self.bg_color)
             aboutRect = aboutSurf.get_rect()
+            dash = self.medFont.render("-",False,self.font_color)
             for word in about.split(" "):
-                for c in word:
+                for i in range(len(word)):
+                    c = word[i]
                     surf = self.medFont.render(c,False,self.font_color)
                     subR = surf.get_rect()
                     subR.x = xIndex
                     subR.y = startY
                     if subR.right > aboutRect.w:
+                        if i != 0 and i != len(word):
+                            aboutSurf.blit(dash,subR)
                         xIndex = startX
                         startY += subR.h + 7
                     subR.x = xIndex
                     subR.y = startY
-                    xIndex += subR.w
+                    xIndex += subR.w + 1
                     aboutSurf.blit(surf,subR)
-                xIndex += subR.w + 7
+                xIndex += subR.w + 10
 
             aboutRect.x = infoRect.x
             aboutRect.y = infoRect.bottom + 5*self.margin
