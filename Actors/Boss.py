@@ -162,7 +162,7 @@ class Boss(Actor):
                 self.frames["right"] = self.rframes[self.anim]
                 self.t_anim = time.time() + 0.25
 
-            self.projectile_Cooldown -= dt
+            self.last_summon -= dt
             self.direction_timer -= dt
             if self.hitWall:
                 self.direction_timer = 0
@@ -376,6 +376,9 @@ class Boss(Actor):
                     self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
                     self.rframes[i] = self.rframes[i].convert_alpha()
                 self.do_once = False
+                tX = self.rect.x - 120
+                tY = self.rect.y - 120
+                self.projectile_Cooldown = 3
             if self.target_vector != None:
                 if self.target_vector.x < 0:
                     self.accel.x -= ENEMY_ACC * dt
@@ -386,6 +389,16 @@ class Boss(Actor):
                     self.accel.y -= ENEMY_ACC * dt
                 else:
                     self.accel.y += ENEMY_ACC * dt
+
+            if self.last_summon <= 0:
+                self.last_summon = self.projectile_Cooldown
+                tX = self.rect.x
+                tY = self.rect.y
+                for i in range(7):
+                    tY += 30
+                    p = Arrow('images/Weapons/arrow.png', 32, 32, (tX, tY), (self.target_vector), 0)
+                    projectiles.append(p)
+                self.hitWall = False
 
 
 
