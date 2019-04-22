@@ -37,7 +37,7 @@ class Wizard(Player):
                 mosPos = pygame.mouse.get_pos()
                 tX = mosPos[0] + self.camera_offset[0]
                 tY = mosPos[1] + self.camera_offset[1]
-                p = FireBall('images/Weapons/fireball.png', 40, 20, self.rect.center, (tX, tY), self.stats["MAGIC"], self.type)
+                p = FireBall('images/Weapons/fireball.png', 40, 20, self.rect.center, (tX, tY), self.type, self.stats["MAGIC"],)
                 projectiles.append(p)
                 self.last_base_attack = self.base_attack_cooldown
         self.last_base_attack -= dt
