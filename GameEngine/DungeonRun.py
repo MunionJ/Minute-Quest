@@ -91,9 +91,6 @@ class DungeonRun:
                 for i in range(len(self.dungeon.rooms)):
                     room = self.dungeon.rooms[i]
                     if room.bgImageRect.colliderect(self.player.rect):
-                        for wall in room.walls:
-                            if not self.manager.hasReferenceToGameObject(wall):
-                                self.manager.addGameObject(wall)
 
                         if len(room.enemies) > 0:
                                 for enemy in room.enemies:
@@ -125,9 +122,6 @@ class DungeonRun:
                                 if self.manager.hasReferenceToGameObject(enemy):
                                     self.manager.removeGameObject(enemy)
 
-                            for wall in room.walls.sprites():
-                                if self.manager.hasReferenceToGameObject(wall):
-                                    self.manager.removeGameObject(wall)
                 # events = pygame.event.get()
                 # for event in events:
                 #     if event.type == pygame.QUIT:
