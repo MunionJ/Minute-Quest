@@ -245,6 +245,8 @@ class Boss(Actor):
 
             startX, startY = self.rect.midtop
             endX, endY = player.rect.center
+            self.eX = endX
+            self.eY = endY
             distCheck = vec(endX - startX, endY - startY)
             if distCheck.length() > self.vision_range:
                 self.sees_player = False
@@ -396,7 +398,7 @@ class Boss(Actor):
                 tY = self.rect.y
                 for i in range(7):
                     tY += 30
-                    p = Arrow('images/Weapons/arrow.png', 32, 32, (tX, tY), (self.target_vector), 0)
+                    p = Arrow('images/Weapons/arrow.png', 32, 32, (tX, tY), (self.eX,self.eY), 0)
                     projectiles.append(p)
                 self.hitWall = False
 
