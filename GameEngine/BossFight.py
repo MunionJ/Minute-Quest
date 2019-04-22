@@ -378,9 +378,6 @@ class BossFight:
         self.party_list.calc_avg_level()
         self.manager.cleanup()
         self.running = False
-        credits = Credits(self.manager,self.window)
-        credits.start_credits()
-        credits.begin_sequence()
 
     def gameOver(self):
         "The Player's Experience gets reset"
