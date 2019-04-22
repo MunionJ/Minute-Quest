@@ -5,8 +5,6 @@ from Actors.Party import *
 from Actors.Enemies import *
 from ParticleEngine.Emitter import Emitter
 import time
-from GameEngine.Credits import Credits
-
 
 class DungeonRun:
 

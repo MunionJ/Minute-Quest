@@ -1,7 +1,6 @@
 from Scene.Camera import Camera
 from Scene.Objective import *
 from GameEngine.GameHUD import GameHUD
-from GameEngine.Credits import Credits
 from Actors.Party import Party
 from Actors.Boss import Boss
 from Scene.BossRoom import BossRoom
