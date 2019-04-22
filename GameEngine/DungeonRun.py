@@ -238,7 +238,6 @@ class DungeonRun:
 
     def collisionCheck(self, tiles, dt):
 
-
         # keep track of killed enemies to award xp
         flagged_enemies = []
         self.player.moveX(dt)
