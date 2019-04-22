@@ -192,30 +192,35 @@ class EventManager:
         return True
 
     def process_menu_input(self):
-        e = pygame.event.poll()
+        for e in pygame.event.get():
 
-        if e.type == pygame.QUIT:
-            return False
-        elif e.type == pygame.KEYDOWN:
-            if e.key == pygame.K_ESCAPE:
+            if e.type == pygame.QUIT:
                 return False
-            elif e.key == pygame.K_F1:
-                self.turnOnDebugMode()
-            elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
-                for menu in self.game_objects['game_menus']:
-                    menu.update(e.key)
-        elif e.type == pygame.JOYHATMOTION:
-            if e.value[1] > 0:
-                self.updateMenus(pygame.K_w)
-            elif e.value[1] < 0:
-                self.updateMenus(pygame.K_s)
-        elif e.type == pygame.JOYBUTTONDOWN:
-            if e.button == 2:
-                self.updateMenus(pygame.K_RETURN)
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_ESCAPE:
+                    return False
+                elif e.key == pygame.K_F1:
+                    self.turnOnDebugMode()
+                elif e.key == pygame.K_w or e.key == pygame.K_a or e.key == pygame.K_s or e.key == pygame.K_d or pygame.K_RETURN:
+                    for menu in self.game_objects['game_menus']:
+                        menu.update(e.key)
+            elif e.type == pygame.JOYHATMOTION:
+                if e.value[1] > 0:
+                    self.updateMenus(pygame.K_w)
+                elif e.value[1] < 0:
+                    self.updateMenus(pygame.K_s)
+            elif e.type == pygame.JOYBUTTONDOWN:
+                if e.button == 2:
+                    self.updateMenus(pygame.K_RETURN)
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    print("In EventManager line 217:: CLICK")
+                    self.updateMenus(e.pos)
 
         return True
 
     def updateMenus(self,key):
+        print("In EventManager Line 223:: num_menues = {0}".format(len(self.game_objects['game_menus'])))
         for menu in self.game_objects['game_menus']:
             menu.update(key)
 
