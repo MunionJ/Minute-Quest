@@ -380,16 +380,11 @@ class DungeonRun:
     def gameWin(self):
         "Award Experience and level up"
         self.running = False
-        credits = Credits(self.manager,self.window)         #TODO: Remove after presentation
-        credits.start_credits()
-        credits.begin_sequence()
 
     def gameOver(self):
         "The Player's Experience gets reset"
         self.running = False
-        credits = Credits(self.manager,self.window)         #TODO: Remove after presentation
-        credits.start_credits()
-        credits.begin_sequence()
+
 
     def fadeEffect(self):
         finalRoomX = self.dungeon.rooms[len(self.dungeon.rooms) - 1].bgImageRect.x
