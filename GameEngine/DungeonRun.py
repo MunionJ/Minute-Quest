@@ -5,8 +5,6 @@ from Actors.Party import *
 from Actors.Enemies import *
 from ParticleEngine.Emitter import Emitter
 import time
-from GameEngine.Credits import Credits
-
 
 class DungeonRun:
 
@@ -237,7 +235,6 @@ class DungeonRun:
                         self.projectiles.remove(p)
 
     def collisionCheck(self, tiles, dt):
-
 
         # keep track of killed enemies to award xp
         flagged_enemies = []
