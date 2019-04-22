@@ -29,6 +29,7 @@ class Wizard(Player):
         self.weapon_rotated = self.cur_weapon.image
         self.base_attack_cooldown = 0.5
         self.last_base_attack = 0
+        self.weapon_rotated = self.cur_weapon.image
 
     def basic_attack(self, mbuttons, keys, dt, projectiles):
         if mbuttons[0]:

@@ -73,6 +73,7 @@ class Boss(Actor):
             self.last_summon = 0
             self.direction_timer = 0
             self.direction_cooldown = 4
+            self.do_once = True
 
         def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
@@ -145,11 +146,13 @@ class Boss(Actor):
 
         def update(self, *args):
             mouseButtons, keys, dt, projectiles = args
-            self.apply_physics(dt)
 
             self.move(keys, dt)
             if self.stats["CUR_HP"] >= 0.5*self.stats["MAX_HP"]:
-                self.stage_one_tactics(dt,projectiles)
+                self.stage_one_tactics(dt, projectiles)
+                self.apply_physics(dt)
+            if self.stats["CUR_HP"] < 0.5*self.stats["MAX_HP"]:
+                self.stage_two_tactics(dt, projectiles)
             self.invuln_timer -= dt
 
             while time.time() > self.t_anim:
@@ -359,9 +362,30 @@ class Boss(Actor):
                         projectiles.append(p)
                     self.hitWall = False
 
-
-
-
+        def stage_two_tactics(self,dt,projectiles):
+            if self.do_once:
+                img = "./images/Characters/boss1"
+                self.rframes = [pygame.image.load(img + "/right1.png"),
+                                pygame.image.load(img + "/right2.png"),
+                                pygame.image.load(img + "/right3.png"),
+                                pygame.image.load(img + "/right4.png")]
+                for i in range(len(self.rframes)):
+                    rect = self.rframes[i].get_rect()
+                    width = int(rect.w * (self.enemyHeight / rect.h))
+                    height = self.enemyHeight
+                    self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
+                    self.rframes[i] = self.rframes[i].convert_alpha()
+                self.do_once = False
+            if self.target_vector != None:
+                if self.target_vector.x < 0:
+                    self.accel.x -= ENEMY_ACC * dt
+                else:
+                    self.accel.x += ENEMY_ACC * dt
+            if self.target_vector != None:
+                if self.target_vector.y < 0:
+                    self.accel.y -= ENEMY_ACC * dt
+                else:
+                    self.accel.y += ENEMY_ACC * dt
 
 
 
