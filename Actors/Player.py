@@ -79,7 +79,7 @@ class Player(Actor):
         """ Generic attack method. Will be
             overridden by more specialized
             classes later (maybe)."""
-        if self.class_name != "RANGER":
+        if self.class_name != "RANGER" and self.class_name != "WIZARD":
             self.weapon_rotated = pygame.transform.rotate(self.cur_weapon.image,
                                                       45 - ((pygame.time.get_ticks() - self.swing_time) / self.attack_duration) * 160)
         if pygame.time.get_ticks() - self.attack_duration > self.swing_time:
@@ -300,7 +300,7 @@ class Player(Actor):
         if self.debug:
             debug = pygame.Rect(int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]), self.rect.w, self.rect.h)
             pygame.draw.rect(window, pygame.color.THECOLORS['red'], debug, 1)
-        if self.cur_weapon is not None:
+        if self.cur_weapon is not None and self.class_name != "RANGER" and self.class_name != "WIZARD":
             if self.facing_right:
                 if self.cur_weapon.active:
                         window.blit(self.weapon_rotated,
@@ -320,6 +320,18 @@ class Player(Actor):
                 if self.cur_weapon.active:
                         window.blit((pygame.transform.flip(self.weapon_rotated, True, False)),
                                     (self.rect.x - cameraPos[0]-20, self.rect.y - cameraPos[1] - 10 + ((pygame.time.get_ticks() - self.swing_time) / self.attack_duration) * 23))
+        else:
+            if self.facing_right:
+                if self.cur_weapon.active:
+                        window.blit(self.weapon_rotated,
+                                    (self.rect.x - cameraPos[0] + 10, self.rect.y - cameraPos[1] - 10)
+                                    # this moves the y cord of the weapon as it rotates. hacky way to match rotation. doesnt really work.
+                                    )
+            if not self.facing_right:
+                if self.cur_weapon.active:
+                        window.blit((pygame.transform.flip(self.weapon_rotated, True, False)),
+                                    (self.rect.x - cameraPos[0]-20, self.rect.y - cameraPos[1] - 10)
+                                    )
 
 
                         # pygame.draw.rect(window,
