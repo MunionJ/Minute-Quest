@@ -70,7 +70,7 @@ class Player(Actor):
         self.dmg_display_y_offset = 0
 
         self.jumpFrameCount = 0
-        self.jumpFrames = 2
+        self.jumpFrames = 1
         self.camera_offset = None
         self.weapon_cords = (0,0)
         self.attack_duration = 500 #this should make the attack animation happen faster at lower numbers but it also increases the degrees rotated.
@@ -109,14 +109,11 @@ class Player(Actor):
             self.invuln_timer = INVULN_TIMER
 
     def receive_knockback(self, facingRight):
-        if facingRight:
-            x = random.randint(30, 50)
-        else:
-            x = random.randint(-50, -30)
-        if self.cur_state == states.Jumping:
-            y = 0
-        else:
-            y = random.randint(-20, -15)
+
+        x = random.randint(300,450) if facingRight else random.randint(-450, -300)
+
+        y = random.randint(-600, -500) if self.onSurface else self.velocity.y
+
         self.velocity += pygame.math.Vector2(x, y)
 
     def update(self, *args):
@@ -191,12 +188,16 @@ class Player(Actor):
             # Implement ability to crouch?
             pass
         if keys[pygame.K_d]:
-            if self.accel.x < MAX_X_ACC:
-                self.accel.x += PLAYER_ACC
+            # if self.onSurface:
+            self.accel.x += PLAYER_ACC
+            # else:                               #scale jump vector in air
+            #     self.velocity.x = MAX_X_VEL
             movedHorizontal = True
         if keys[pygame.K_a]:
-            if self.accel.x > -MAX_X_ACC:
-                self.accel.x -= PLAYER_ACC
+            # if self.onSurface:
+            self.accel.x += -PLAYER_ACC
+            # else:
+            #     self.velocity.x = -MAX_X_VEL
             movedHorizontal = True
 
         if keys[pygame.K_F1]:

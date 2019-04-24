@@ -9,24 +9,24 @@ PUZZLE_RECT2 = [205, 206]
 PUZZLE_RECT3 = [149, 150]
 
 # Player Variables
-PLAYER_GRAV = 35.0
-MAX_X_ACC = 55
-MAX_X_VEL = 425
+PLAYER_GRAV = 75.0
+MAX_X_ACC = 75
+MAX_X_VEL = 650
 PLAYER_ACC = 1000
 MAX_Y_VEL = 1000
-PLAYER_FRICTION = -20
-JUMP_VEC = 325
+PLAYER_FRICTION = -35
+JUMP_VEC = 700
 INVULN_TIMER = 0.75
 
 #Enemy Variables
-ENEMY_ACC = 1
-ENEMY_MAX_ACC = 2
-ENEMY_MAX_VEL = 30
+ENEMY_ACC = 1000
+ENEMY_MAX_ACC = 75
+ENEMY_MAX_VEL = 650
 ENEMY_VISION_RANGE = 200
 
 #Projectile Variables
-MAX_ACC = 3
-MAX_VELOCITY = 400
+MAX_ACC = 10
+MAX_VELOCITY = 800
 
 #Maximum offset of pixels between an actor on a surface to determine if a player is on a surface
 PIXEL_DIFFERENCE = 2
