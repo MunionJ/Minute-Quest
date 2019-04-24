@@ -214,13 +214,11 @@ class EventManager:
                     self.updateMenus(pygame.K_RETURN)
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if e.button == 1:
-                    print("In EventManager line 217:: CLICK")
                     self.updateMenus(e.pos)
 
         return True
 
     def updateMenus(self,key):
-        print("In EventManager Line 223:: num_menues = {0}".format(len(self.game_objects['game_menus'])))
         for menu in self.game_objects['game_menus']:
             menu.update(key)
 

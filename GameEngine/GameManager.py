@@ -65,7 +65,6 @@ class GameManager:
                 pygame.display.update()
 
     def RunDungeon(self):
-        print("In GameManger line 67:: Starting dungeon")
         self.loading.draw(self.gameWindow)
         #self.musicManager.play_music(0)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)

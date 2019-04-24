@@ -117,9 +117,10 @@ class Player(Actor):
 
         x = random.randint(300,450) if facingRight else random.randint(-450, -300)
 
-        y = random.randint(-600, -500) if self.onSurface else self.velocity.y
+        y = random.randint(-600, -500) if self.onSurface else 0
 
-        self.velocity += pygame.math.Vector2(x, y)
+        self.accel += pygame.math.Vector2(x, y)
+        self.velocity += 3*self.accel
 
     def update(self, *args):
         """ Testing Player jumping."""
@@ -213,14 +214,14 @@ class Player(Actor):
             if self.accel.x < 0:
                 self.accel.x = 0
             if self.velocity.x < 0:
-                self.velocity.x -= 2*PLAYER_FRICTION
+                self.velocity.x -= 2*PLAYER_FRICTION if self.onSurface else PLAYER_FRICTION
                 if self.velocity.x > 0:
                     self.velocity.x = 0
         if not keys[pygame.K_d]:
             if self.accel.x > 0:
                 self.accel.x = 0
             if self.velocity.x > 0:
-                self.velocity.x += 2*PLAYER_FRICTION
+                self.velocity.x += 2*PLAYER_FRICTION if self.onSurface else PLAYER_FRICTION
                 if self.velocity.x < 0:
                     self.velocity.x = 0
 

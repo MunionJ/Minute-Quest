@@ -84,6 +84,7 @@ class Actor(pygame.sprite.Sprite):
 
     def apply_physics(self, dt):
         """ Apply physics based on Actor's current state."""
+
         if self.cur_state == states.Standing:   # If current state is standing or running, do not apply gravity
             if self.accel.y != 0:
                 self.accel = vec(0, 0)

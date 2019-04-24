@@ -298,13 +298,21 @@ class BossFight:
                 for enemy in room.enemies:
                     for p in self.projectiles:
                         if p.hitbox.colliderect(enemy.rect):
-                            enemy.take_damage(p)
-                            if self.manager.hasReferenceToGameObject(p):
-                                self.manager.removeGameObject(p)
-                                self.projectiles.remove(p)
-                                if not enemy.alive:
-                                    flagged_enemies.append(enemy)
-                                    room.enemies.remove(enemy)
+                            if p.owner != enemy.type:
+                                enemy.take_damage(p)
+                                if self.manager.hasReferenceToGameObject(p):
+                                    self.manager.removeGameObject(p)
+                                    self.projectiles.remove(p)
+                                    if not enemy.alive:
+                                        flagged_enemies.append(enemy)
+                                        room.enemies.remove(enemy)
+                        elif p.hitbox.colliderect(self.player.rect):
+                                if p.owner != self.player.type:
+                                    self.player.receive_dmg(p.damage)
+                                    if self.manager.hasReferenceToGameObject(p):
+                                        self.manager.removeGameObject(p)
+                                        self.projectiles.remove(p)
+
 
                 for enemy in room.enemies:
                     if(not self.manager.hasReferenceToGameObject(enemy)):
@@ -353,7 +361,6 @@ class BossFight:
                     if self.player.cur_weapon.active:
                         for enemy in room.enemies:
                             if self.player.cur_weapon.rect.colliderect(enemy.rect):
-                                #print("DungeonRun.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
                                 enemy.take_damage(self.player)
                                 if not enemy.alive:
                                     flagged_enemies.append(enemy)

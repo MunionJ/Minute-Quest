@@ -362,7 +362,8 @@ class Boss(Actor):
                     for i in range(30):
                         tX = random.randint(32, 3200)
                         tY = -50
-                        p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), self.type)
+                        #   Arrow('images/Weapons/arrow.png', 32, 32, self.rect.center, (tX, tY), self.type, self.stats["RANGE"])
+                        p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), self.type, self.stats["RANGE"])
                         projectiles.append(p)
                     self.hitWall = False
 

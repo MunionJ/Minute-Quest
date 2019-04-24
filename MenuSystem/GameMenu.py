@@ -89,7 +89,6 @@ class GameMenu(pygame.sprite.Sprite):
     def update(self,key):
         """Evaluate action based on user keypress"""
         if isinstance(key,tuple):
-            print("In GameMenu Line 92:: num_buttons: {0}".format(len(self.buttons)))
             for i in range(len(self.buttons)):
                 button = self.buttons[i]
                 if button.rect.collidepoint(key):
