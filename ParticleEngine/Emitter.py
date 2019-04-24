@@ -72,6 +72,9 @@ class Emitter():
             for particle in self.flameParticles.sprites():
                 particle.changeSize(self.size)
 
+    def toggleDebug(self):
+        pass
+
     def draw(self,screen, cameraPos):
         """Draws particles on surface"""
         self.bgSurf.fill(self.alpha)

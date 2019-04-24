@@ -82,6 +82,11 @@ class Player(Actor):
         if self.class_name != "RANGER" and self.class_name != "WIZARD":
             self.weapon_rotated = pygame.transform.rotate(self.cur_weapon.image,
                                                       45 - ((pygame.time.get_ticks() - self.swing_time) / self.attack_duration) * 160)
+            if self.velocity.x > 0:
+                self.cur_weapon.rect.x = self.rect.x + 35
+            elif self.velocity.x < 0:
+                self.cur_weapon.rect.x = self.rect.x - 35
+            self.cur_weapon.rect.y = self.rect.y
         if pygame.time.get_ticks() - self.attack_duration > self.swing_time:
             self.cur_weapon.active = False
         if mbuttons[0]:
@@ -301,6 +306,13 @@ class Player(Actor):
         if self.debug:
             debug = pygame.Rect(int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1]), self.rect.w, self.rect.h)
             pygame.draw.rect(window, pygame.color.THECOLORS['red'], debug, 1)
+            pygame.draw.rect(window,
+                             pygame.color.THECOLORS['red'],
+                             (self.cur_weapon.rect.x - cameraPos[0],
+                              self.cur_weapon.rect.y - cameraPos[1],
+                              self.cur_weapon.rect.w,
+                              self.cur_weapon.rect.h),
+                             1)
         if self.cur_weapon is not None and self.class_name != "RANGER" and self.class_name != "WIZARD":
             if self.facing_right:
                 if self.cur_weapon.active:
