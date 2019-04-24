@@ -178,7 +178,7 @@ class GameHUD:
             announcement = self.announce_font.render(self.room_objective, False, pygame.color.THECOLORS['white'])
             text_offset = announcement.get_width() // 2
             window.blit(announcement,
-                        ((window.get_width() // 2) - text_offset, 525)
+                        ((window.get_width() // 2) - text_offset, window.get_height() - 100)
                         )
 
     def update(self, *args):

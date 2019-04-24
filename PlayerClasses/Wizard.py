@@ -61,6 +61,7 @@ class Wizard(Player):
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(2, 3)
             self.stats["ABILITY"] += (1 / self.max_level) * 5
+            self.TimeStop_timer += (1 / self.max_level) * 5
             if self.level == 10 or self.level == 20:
                 with open("stat_dump.txt", 'a') as file:
                     file.write(self.class_name + '\n')
@@ -69,20 +70,13 @@ class Wizard(Player):
                         if key != "CUR_HP":
                             file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
-    def ability_timer(self, dt):
-        """Does the timer for both the ability itself and the cool down timer for using it again"""
-        if self.TimeStop:
-            while self.TimeStop_timer >= 0:
-                self.timer_update(dt)
-        else:
-            pass
-
     def timer_update(self, dt):
         """Updates all of the timers"""
         if self.usingAbility:
-            self.TimeStop_timer -= dt
-            if self.TimeStop_timer <= 0:
+            self.stats["ABILITY"] -= dt
+            if self.stats["ABILITY"] <= 0:
                 self.DelayTimer -= dt
+                self.stats["ABILITY"] = self.TimeStop_timer
                 super().end_ability()
 
     def update(self, *args):

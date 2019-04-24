@@ -401,7 +401,7 @@ class Boss(Actor):
                 tY = self.rect.y
                 for i in range(7):
                     tY += 30
-                    p = FireBall('images/Weapons/fireball.png', 32, 32, (tX, tY), (self.eX,self.eY), self.type)
+                    p = FireBall('images/Weapons/fireball.png', 32, 32, (tX, tY), (self.eX,self.eY), self.type, self.stats["MAGIC"])
                     projectiles.append(p)
                 self.hitWall = False
 

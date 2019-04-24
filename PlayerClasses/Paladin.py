@@ -43,7 +43,7 @@ class Paladin(Player):
             hp_gain = random.randint(6, 18)
             self.stats["MAX_HP"] += hp_gain
             self.stats["CUR_HP"] += hp_gain
-            self.stats["MELEE"] += random.randint(1, 2)
+            self.stats["MELEE"] += random.randint(1, 3)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(1, 2)
             self.stats["ABILITY"] += (1 / self.max_level ** 1.333)
@@ -61,7 +61,7 @@ class Paladin(Player):
     def heal_party(self,party):
         for member in party.party_members:
             if member.alive and member.stats['CUR_HP'] < member.stats['MAX_HP']:
-                member.healPlayer(int(member.stats["MAX_HP"]*self.healPercentage))
+                member.healPlayer(int(member.stats["MAX_HP"]*self.stats["ABILITY"]))
 
         super().end_ability()
 

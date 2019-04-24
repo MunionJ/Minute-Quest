@@ -64,7 +64,7 @@ class Warrior(Player):
         """ Update the status of the Warrior rage
             ability."""
         self.rage_timer += dt
-        if self.rage_timer >= self.max_rage_time:
+        if self.rage_timer >= self.stats["ABILITY"]:
             self.deactivate_rage()
 
     def gain_level(self):

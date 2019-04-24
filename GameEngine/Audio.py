@@ -27,3 +27,11 @@ class Audio:
             pygame.mixer.init(self.sample_rate)
         self.music.load(song)
         self.music.set_volume(self.volume)
+
+    def set_volume(self, vol):
+        if vol > 1:
+            self.volume = 1
+        elif vol < 0:
+            self.volume = 0.1
+        else:
+            self.volume = vol
