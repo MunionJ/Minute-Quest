@@ -19,6 +19,7 @@ class Credits:
             "daniel_kratzenberg",
             "jon_munion",
             "Alexander_Brown",
+            "Mike_Dibble",
         ]
         self.toDisplay = []
         self.margin = 20
