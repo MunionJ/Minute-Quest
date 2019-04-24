@@ -8,7 +8,7 @@ class GameHUD:
 
     def __init__(self, window):
         self.timer = 60     # seconds
-        self.hud_surf = pygame.Surface((100, window.get_height()))
+        self.hud_surf = pygame.Surface((180, window.get_height()))
         self.font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf',60)
         self.small_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 15)
         self.announce_font = pygame.font.Font('./fonts/LuckiestGuy-Regular.ttf', 30)
@@ -26,7 +26,10 @@ class GameHUD:
         y = 30
         bar_width = 75
         bar_height = 15
+        active_bar_width = 2 * bar_width
+        active_bar_height = 2 * bar_height
         xp_bar_height = 10
+        active_xp_bar_height = 1.5 * xp_bar_height
         self.hud_surf.fill((0, 0, 0))
         for char in party_list.party_members:
             if char == party_list.active_member:
@@ -46,17 +49,48 @@ class GameHUD:
                                  color,
                                  (x,
                                   y,
-                                  (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * bar_width,
-                                  bar_height)
+                                  (char.stats["CUR_HP"] / char.stats["MAX_HP"]) * active_bar_width,
+                                  active_bar_height)
                                  )
                 # draw xp bar
                 pygame.draw.rect(self.hud_surf,
                                  pygame.color.THECOLORS['green3'],
                                  (x,
-                                  y + 70,
-                                  (char.cur_xp / char.xp_to_level) * bar_width,
-                                  xp_bar_height)
+                                  y + 150,
+                                  (char.cur_xp / char.xp_to_level) * active_bar_width,
+                                  active_xp_bar_height)
                                  )
+                # draw player sprite
+                scaled_sprite = pygame.transform.scale(char.rframes[1],
+                                                       (char.rframes[1].get_width() * 2, char.rframes[1].get_height() * 2)
+                                                       )
+                self.hud_surf.blit(scaled_sprite,
+                                   (x, y + 35)
+                                   )
+                # draw outline of hp bar
+                pygame.draw.rect(self.hud_surf,
+                                 pygame.color.THECOLORS["white"],
+                                 (x, y, active_bar_width, active_bar_height),
+                                 2)
+                # display number of ability uses remaining
+                self.hud_surf.blit(self.small_font.render("Ability: " + str(char.num_ability_uses),
+                                                          False,
+                                                          (pygame.color.THECOLORS['white'])
+                                                          ),
+                                   (x, y + 170)
+                                   )
+                # display character level
+                self.hud_surf.blit(self.small_font.render("LV: " + str(char.level),
+                                                          False,
+                                                          (pygame.color.THECOLORS['white'])
+                                                          ),
+                                   (x + 30, y + 140)
+                                   )
+                # draw outline of xp bar
+                pygame.draw.rect(self.hud_surf,
+                                 pygame.color.THECOLORS['white'],
+                                 (x, y + 150, active_bar_width, active_xp_bar_height),
+                                 2)
             else:
                 # gray out hp bar for inactive members
                 pygame.draw.rect(self.hud_surf,
@@ -74,6 +108,34 @@ class GameHUD:
                                   (char.cur_xp / char.xp_to_level) * bar_width,
                                   xp_bar_height)
                                  )
+                # draw player sprite
+                self.hud_surf.blit(char.rframes[1],
+                                   (x, y + 20)
+                                   )
+                # draw outline of hp bar
+                pygame.draw.rect(self.hud_surf,
+                                 pygame.color.THECOLORS["white"],
+                                 (x, y, bar_width, bar_height),
+                                 2)
+                # display number of ability uses remaining
+                self.hud_surf.blit(self.small_font.render("Ability: " + str(char.num_ability_uses),
+                                                          False,
+                                                          (pygame.color.THECOLORS['white'])
+                                                          ),
+                                   (x, y + 100)
+                                   )
+                # display character level
+                self.hud_surf.blit(self.small_font.render("LV: " + str(char.level),
+                                                          False,
+                                                          (pygame.color.THECOLORS['white'])
+                                                          ),
+                                   (x + 30, y + 60)
+                                   )
+                # draw outline of xp bar
+                pygame.draw.rect(self.hud_surf,
+                                 pygame.color.THECOLORS['white'],
+                                 (x, y + 70, bar_width, xp_bar_height),
+                                 2)
             # draw numerical values for each party member's HP
             self.hud_surf.blit(self.small_font.render(str(char.stats["CUR_HP"]) + ' / ' + str(char.stats["MAX_HP"]),
                                                       False,
@@ -87,34 +149,6 @@ class GameHUD:
                                                       (pygame.color.THECOLORS['white'])
                                                       ),
                                (x, y - 30)
-                               )
-            # display number of ability uses remaining
-            self.hud_surf.blit(self.small_font.render("Ability: " + str(char.num_ability_uses),
-                                                      False,
-                                                      (pygame.color.THECOLORS['white'])
-                                                      ),
-                               (x, y + 100)
-                               )
-            # display character level
-            self.hud_surf.blit(self.small_font.render("LV: " + str(char.level),
-                                                      False,
-                                                      (pygame.color.THECOLORS['white'])
-                                                      ),
-                               (x + 30, y + 60)
-                               )
-            # draw outline of hp bar
-            pygame.draw.rect(self.hud_surf,
-                             pygame.color.THECOLORS["white"],
-                             (x, y, bar_width, bar_height),
-                             2)
-            # draw outline of xp bar
-            pygame.draw.rect(self.hud_surf,
-                             pygame.color.THECOLORS['white'],
-                             (x, y + 70, bar_width, xp_bar_height),
-                             2)
-            # draw player sprite
-            self.hud_surf.blit(char.rframes[1],
-                               (x, y + 20)
                                )
             y += window.get_height() // 4
         # blit hud surface onto main game window
