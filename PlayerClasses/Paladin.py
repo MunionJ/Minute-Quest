@@ -13,16 +13,17 @@ class Paladin(Player):
         super().__init__(start_pos, img)
 
         self.class_name = "PALADIN"
+        self.healPercentage = (.1 + (1 / self.max_level) * self.level)
         self.stats["MELEE"] = stats[0]
         self.stats["RANGE"] = stats[1]
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+        self.stats["ABILITY"] = self.healPercentage
         self.weapons["axe"] = Weapon("images/Weapons/waraxe.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
         self.cur_weapon.rect = self.rect.copy()
         self.cur_weapon.rect.x = self.cur_weapon.rect.x + 15
-        self.healPercentage = (.1 + (1/self.max_level)*self.level)
         self.num_ability_uses = 1
         self.weapon_rotated = self.cur_weapon.image
 
@@ -45,15 +46,17 @@ class Paladin(Player):
             self.stats["MELEE"] += random.randint(1, 2)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(1, 2)
-            self.healPercentage += (1 / self.max_level ** 1.333)
+            self.stats["ABILITY"] += (1 / self.max_level ** 1.333)
             if self.level == 10 or self.level == 20:
                 with open("stat_dump.txt", 'a') as file:
                     file.write(self.class_name + '\n')
                     file.write("\tLEVEL:" + str(self.level) + '\n')
                     for key in self.stats.keys():
                         if key != "CUR_HP":
-                            file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
-                    file.write('\t' + "HEAL: " + str(round(self.healPercentage * 100, 2)) + "%\n")
+                            if key == "ABILITY":
+                                file.write('\t' + key + ":" + str(round(self.stats[key], 2) * 100) + '%' + '\n')
+                            else:
+                                file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def heal_party(self,party):
         for member in party.party_members:

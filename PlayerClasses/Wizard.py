@@ -14,17 +14,18 @@ class Wizard(Player):
         super().__init__(start_pos, img)
 
         self.class_name = "WIZARD"
+        self.TimeStop_timer = 5.25
         self.stats["MELEE"] = stats[0]
         self.stats["RANGE"] = stats[1]
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+        self.stats["ABILITY"] = self.TimeStop_timer
         self.weapons["staff"] = Weapon("images/Weapons/earthstaff.png", (40, 40))
         self.cur_weapon = self.weapons["staff"]
         self.cur_weapon.rect = self.rect.copy()
         self.num_ability_uses = 1
         self.DelayTimer = 60
-        self.TimeStop_timer = 5.25
         self.useAbility = False
         self.weapon_rotated = self.cur_weapon.image
         self.base_attack_cooldown = 0.5
@@ -59,7 +60,7 @@ class Wizard(Player):
             self.stats["MELEE"] += random.randint(0, 1)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(2, 3)
-            self.TimeStop_timer += (1 / self.max_level) * 5
+            self.stats["ABILITY"] += (1 / self.max_level) * 5
             if self.level == 10 or self.level == 20:
                 with open("stat_dump.txt", 'a') as file:
                     file.write(self.class_name + '\n')

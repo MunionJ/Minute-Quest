@@ -16,18 +16,19 @@ class Warrior(Player):
         # stats: a list of initial stats in the order [MELEE, RANGE, MAGIC, MAX_HP]
 
         self.class_name = "WARRIOR"
+        self.rage_timer = 0  # counts upward to self.max_rage_timer
+        self.max_rage_time = 5.25
         self.stats["MELEE"] = stats[0]
         self.stats["RANGE"] = stats[1]
         self.stats["MAGIC"] = stats[2]
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
+        self.stats["ABILITY"] = self.max_rage_time
 
         self.weapons["axe"] = Weapon("images/Weapons/battlehammer.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
         self.cur_weapon.rect = self.rect.copy()
         self.num_ability_uses = 3
-        self.rage_timer = 0     # counts upward to self.max_rage_timer
-        self.max_rage_time = 5.25
         self.rage_active = False
         self.weapon_rotated = self.cur_weapon.image
 
@@ -75,15 +76,14 @@ class Warrior(Player):
             self.stats["MELEE"] += random.randint(1, 3)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(0, 1)
-            self.max_rage_time += (1 / self.max_level) * 5
-            #if self.level == 10 or self.level == 20:
-            with open("stat_dump.txt", 'a') as file:
-                file.write(self.class_name + '\n')
-                file.write("\tLEVEL:" + str(self.level) + '\n')
-                for key in self.stats.keys():
-                    if key != "CUR_HP":
-                        file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
-                file.write('\t' + "MAX RAGE TIME: " + str(round(self.max_rage_time, 2)) + " SECONDS\n")
+            self.stats["ABILITY"] += (1 / self.max_level) * 5
+            if self.level == 10 or self.level == 20:
+                with open("stat_dump.txt", 'a') as file:
+                    file.write(self.class_name + '\n')
+                    file.write("\tLEVEL:" + str(self.level) + '\n')
+                    for key in self.stats.keys():
+                        if key != "CUR_HP":
+                            file.write('\t' + key + ":" + str(self.stats[key]) + '\n')
 
     def update(self, *args):
         """ Override for base class update method.
