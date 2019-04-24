@@ -6,6 +6,7 @@ import random
 from Actors.PlayerStates import PlayerStates as states
 from config import *
 from Projectiles.Arrow import Arrow
+from Projectiles.FireBall import FireBall
 
 vec = pygame.math.Vector2
 class Boss(Actor):
@@ -73,7 +74,7 @@ class Boss(Actor):
             self.last_summon = 0
             self.direction_timer = 0
             self.direction_cooldown = 4
-            self.do_once = True
+            self.stage_two = False
 
         def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
@@ -87,6 +88,7 @@ class Boss(Actor):
                 #else:
                 #    self.accel.x -= ENEMY_ACC * dt
 
+
                 if self.accel.length() > MAX_ACC:
                     self.accel.scale_to_length(MAX_ACC)
 
@@ -99,7 +101,7 @@ class Boss(Actor):
             else:
                 # self.facing_right = True
                 self.accel = vec(0, 0)
-                self.velocity = vec(0, self.velocity.y)
+                #self.velocity = vec(0, self.velocity.y)
 
         def jump(self):
             """ Generic jump method. Can be
@@ -359,13 +361,13 @@ class Boss(Actor):
                     self.last_summon = self.projectile_Cooldown
                     for i in range(30):
                         tX = random.randint(32, 3200)
-                        tY = 0
-                        p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), 0)
+                        tY = -50
+                        p = Arrow('images/Weapons/arrow.png', 32, 32, (tX,tY), (tX, 800), self.type)
                         projectiles.append(p)
                     self.hitWall = False
 
         def stage_two_tactics(self,dt,projectiles):
-            if self.do_once:
+            if not self.stage_two:
                 img = "./images/Characters/boss1"
                 self.rframes = [pygame.image.load(img + "/right1.png"),
                                 pygame.image.load(img + "/right2.png"),
@@ -377,7 +379,7 @@ class Boss(Actor):
                     height = self.enemyHeight
                     self.rframes[i] = pygame.transform.scale(self.rframes[i], (width, height))
                     self.rframes[i] = self.rframes[i].convert_alpha()
-                self.do_once = False
+                self.stage_two = True
                 tX = self.rect.x - 120
                 tY = self.rect.y - 120
                 self.projectile_Cooldown = 3
@@ -398,7 +400,7 @@ class Boss(Actor):
                 tY = self.rect.y
                 for i in range(7):
                     tY += 30
-                    p = Arrow('images/Weapons/arrow.png', 32, 32, (tX, tY), (self.eX,self.eY), 0)
+                    p = FireBall('images/Weapons/fireball.png', 32, 32, (tX, tY), (self.eX,self.eY), self.type)
                     projectiles.append(p)
                 self.hitWall = False
 
