@@ -88,33 +88,49 @@ class GameMenu(pygame.sprite.Sprite):
 
     def update(self,key):
         """Evaluate action based on user keypress"""
-        if key == pygame.K_w or key == pygame.K_a:
-            if self.current_index > 0:
-                self.buttons[self.current_index].deselect()
-                self.current_index -= 1
-                self.buttons[self.current_index].select()
+        if isinstance(key,tuple):
+            print("In GameMenu Line 92:: num_buttons: {0}".format(len(self.buttons)))
+            for i in range(len(self.buttons)):
+                button = self.buttons[i]
+                if button.rect.collidepoint(key):
+                    self.buttons[self.current_index].deselect()
+                    self.current_index = i
+                    self.buttons[i].select()
 
-        if key == pygame.K_s or key == pygame.K_d:
-            if self.current_index < len(self.buttons)-1:
-                self.buttons[self.current_index].deselect()
-                self.current_index += 1
-                self.buttons[self.current_index].select()
+                    if self.buttonOptions[self.current_index] == "Main Menu" or \
+                            self.buttonOptions[self.current_index] == "Enter Dungeon" or \
+                                self.buttonOptions[self.current_index] == "Fight The Boss" or \
+                            self.buttonOptions[self.current_index] == "Save Game":
+                        self.setMenuSelection()
+                    break
+        else:
+            if key == pygame.K_w:
+                if self.current_index > 0:
+                    self.buttons[self.current_index].deselect()
+                    self.current_index -= 1
+                    self.buttons[self.current_index].select()
 
-        if self.buttonOptions[self.current_index] == "Enter the Dungeon":
-            pass
-        elif self.buttonOptions[self.current_index] == "Shop":
-            pass
-        elif self.buttonOptions[self.current_index] == "Fight The Boss":
-            pass
-        elif self.buttonOptions[self.current_index] == "Save Game":
-            pass
+            if key == pygame.K_s:
+                if self.current_index < len(self.buttons)-1:
+                    self.buttons[self.current_index].deselect()
+                    self.current_index += 1
+                    self.buttons[self.current_index].select()
 
-        if key == pygame.K_RETURN:
-            if self.buttonOptions[self.current_index] == "Main Menu" or \
-                    self.buttonOptions[self.current_index] == "Enter Dungeon" or \
-                        self.buttonOptions[self.current_index] == "Fight The Boss" or \
-                    self.buttonOptions[self.current_index] == "Save Game":
-                self.setMenuSelection()
+            # if self.buttonOptions[self.current_index] == "Enter the Dungeon":
+            #     pass
+            # elif self.buttonOptions[self.current_index] == "Shop":
+            #     pass
+            # elif self.buttonOptions[self.current_index] == "Fight The Boss":
+            #     pass
+            # elif self.buttonOptions[self.current_index] == "Save Game":
+            #     pass
+
+            if key == pygame.K_RETURN:
+                if self.buttonOptions[self.current_index] == "Main Menu" or \
+                        self.buttonOptions[self.current_index] == "Enter Dungeon" or \
+                            self.buttonOptions[self.current_index] == "Fight The Boss" or \
+                        self.buttonOptions[self.current_index] == "Save Game":
+                    self.setMenuSelection()
 
     def getMenuSelection(self):
         self.stop_sounds()

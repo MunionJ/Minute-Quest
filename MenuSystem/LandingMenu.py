@@ -73,21 +73,32 @@ class LandingMenu(pygame.sprite.Sprite):
         pass
 
     def update(self,key):
-        if key == pygame.K_w or key == pygame.K_a:
-            if self.current_index > 0:
-                self.buttons[self.current_index].deselect()
-                self.current_index -= 1
-                self.buttons[self.current_index].select()
+
+        if isinstance(key,tuple):
+            for i in range(len(self.buttons)):
+                button = self.buttons[i]
+                if button.rect.collidepoint(key):
+                    self.buttons[self.current_index].deselect()
+                    self.current_index = i
+                    self.buttons[i].select()
+                    self.setMenuSelection(self.buttonOptions[i])
+                    break
+        else:
+            if key == pygame.K_w or key == pygame.K_a:
+                if self.current_index > 0:
+                    self.buttons[self.current_index].deselect()
+                    self.current_index -= 1
+                    self.buttons[self.current_index].select()
 
 
-        if key == pygame.K_s or key == pygame.K_d:
-            if self.current_index < len(self.buttons)-1:
-                self.buttons[self.current_index].deselect()
-                self.current_index += 1
-                self.buttons[self.current_index].select()
+            if key == pygame.K_s or key == pygame.K_d:
+                if self.current_index < len(self.buttons)-1:
+                    self.buttons[self.current_index].deselect()
+                    self.current_index += 1
+                    self.buttons[self.current_index].select()
 
-        if key == pygame.K_RETURN:
-            self.setMenuSelection(self.buttonOptions[self.current_index])
+            if key == pygame.K_RETURN:
+                self.setMenuSelection(self.buttonOptions[self.current_index])
 
     def getMenuSelection(self):
         self.stop_sounds()
