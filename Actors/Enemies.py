@@ -61,7 +61,7 @@ class Enemy(Actor):
         self.vision_range = 250
         self.most_recent_dmg = 0
         self.dmg_display_timer = 0
-        self.dmg_display_max_time = 0.8
+        self.dmg_display_max_time = 0.6
         self.dmg_display_y_offset = 0
         self.now = pygame.time.get_ticks()
 

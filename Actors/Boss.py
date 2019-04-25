@@ -76,6 +76,11 @@ class Boss(Actor):
             self.direction_cooldown = 4
             self.stage_two = False
 
+            self.most_recent_dmg = 0
+            self.dmg_display_timer = 0
+            self.dmg_display_max_time = 0.6
+            self.dmg_display_y_offset = 0
+
         def move(self, keys, dt):  # TODO: ADJUST THIS TO WORK IN AN EXPECTED MANNER
 
             if self.sees_player:
@@ -304,7 +309,9 @@ class Boss(Actor):
                     self.stats["CUR_HP"] = 0
                     self.set_dead()
                 else:
-                    self.stats["CUR_HP"] -= player.deal_dmg()
+                    damage = player.deal_dmg()
+                    self.stats["CUR_HP"] -= damage
+                    self.most_recent_dmg = damage
                 self.invuln_timer = INVULN_TIMER
 
         def attack(self):
@@ -342,10 +349,30 @@ class Boss(Actor):
                 window.blit(hp_surf, (bar_x + (bar_width / 2.5), bar_y + (bar_height / 5)))
                 window.blit(level_surf, ((bar_x + (bar_width - 100)), bar_y - 20))
 
+        def display_damage(self, window, cameraPos):
+            if self.most_recent_dmg > 0:
+                if self.dmg_display_timer < self.dmg_display_max_time:
+                    dt = 0.016
+                    self.dmg_display_timer += dt
+                    font = pygame.font.Font("./fonts/LuckiestGuy-Regular.ttf", 32)
+                    surf = font.render(str(self.most_recent_dmg),
+                                       False,
+                                       pygame.color.THECOLORS['white']
+                                       )
+                    window.blit(surf,
+                                (int(self.rect.x - cameraPos[0] + 10),
+                                 int(self.rect.y - cameraPos[1] - self.dmg_display_y_offset)))
+                    self.dmg_display_y_offset += 2
+                else:
+                    self.most_recent_dmg = 0
+                    self.dmg_display_timer = 0
+                    self.dmg_display_y_offset = 0
+
         def draw(self, window, cameraPos):
             super().draw(window, cameraPos)
             window.blit(self.img, (int(self.rect.x - cameraPos[0]), int(self.rect.y - cameraPos[1])))
             self.display_info(window)
+            self.display_damage(window, cameraPos)
 
         def stage_one_tactics(self, dt, projectiles):
             if self.target_vector != None:
