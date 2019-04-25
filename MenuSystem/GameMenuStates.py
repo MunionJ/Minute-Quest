@@ -7,3 +7,4 @@ class GameMenus(Enum):
     Controls = 4
     PartySelection = 5
     Game = 6
+    ClassInfo = 7

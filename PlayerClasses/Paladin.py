@@ -9,7 +9,7 @@ class Paladin(Player):
     Paladin class: specializes in tanking and healing
     """
 
-    def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 32]):
+    def __init__(self, start_pos, img="images/Characters/paladin", stats=[2, 1, 2, 42]):
         super().__init__(start_pos, img)
 
         self.class_name = "PALADIN"
@@ -35,7 +35,7 @@ class Paladin(Player):
             self.num_ability_uses -= 1
 
     def deal_dmg(self):
-        return self.stats["MELEE"] + self.cur_weapon.atk_pwr
+        return self.stats["MELEE"] + (self.stats["MAGIC"] // 2) + self.cur_weapon.atk_pwr
 
     def gain_level(self):
         if self.level < self.max_level:
@@ -43,7 +43,7 @@ class Paladin(Player):
             hp_gain = random.randint(6, 18)
             self.stats["MAX_HP"] += hp_gain
             self.stats["CUR_HP"] += hp_gain
-            self.stats["MELEE"] += random.randint(1, 3)
+            self.stats["MELEE"] += random.randint(1, 2)
             self.stats["RANGE"] += random.randint(0, 1)
             self.stats["MAGIC"] += random.randint(1, 2)
             self.stats["ABILITY"] += (1 / self.max_level ** 1.333)

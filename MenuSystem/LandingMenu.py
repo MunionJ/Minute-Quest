@@ -27,6 +27,7 @@ class LandingMenu(pygame.sprite.Sprite):
         self.buttonOptions = [
             "New Game",
             "Load Game",
+            "Class Info",
             "Credits",
             "Game Controls",
             "Exit"

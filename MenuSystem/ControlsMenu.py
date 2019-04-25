@@ -50,7 +50,7 @@ class ControlsMenu(pygame.sprite.Sprite):
         self.gamepadControls = pygame.Surface(self.SCREEN_RES)
         self.createGamePadDisplay()
         self.createKeyBoardDisplay()
-        self.currntbackground = self.keyboardControls
+        self.currentbackground = self.keyboardControls
 
     def Reset(self):
         self.current_index = 0
@@ -259,12 +259,13 @@ class ControlsMenu(pygame.sprite.Sprite):
                     self.buttons[self.current_index].select()
 
         if self.buttonOptions[self.current_index] == "KeyBoard Controls":
-            self.currntbackground = self.keyboardControls
+            self.currentbackground = self.keyboardControls
         elif self.buttonOptions[self.current_index] == "Gamepad Controls":
-            self.currntbackground = self.gamepadControls
+            self.currentbackground = self.gamepadControls
 
         if key == pygame.K_RETURN:
             if self.buttonOptions[self.current_index] == "Back":
+                self.currentbackground = self.keyboardControls
                 self.setMenuSelection()
 
     def getMenuSelection(self):
@@ -275,7 +276,7 @@ class ControlsMenu(pygame.sprite.Sprite):
 
     def draw(self, window):
         self.screen.fill(self.bg_color)
-        self.screen.blit(self.currntbackground, (0, 0))
+        self.screen.blit(self.currentbackground, (0, 0))
         self.screen.blit(self.header, self.headerRect)
         for button in self.buttons:
             button.draw(self.screen)

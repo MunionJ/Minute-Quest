@@ -2,6 +2,7 @@ from MenuSystem.GameMenuStates import GameMenus as menu
 from MenuSystem.LandingMenu import *
 from MenuSystem.ControlsMenu import *
 from MenuSystem.GameMenu import *
+from MenuSystem.ClassMenu import *
 from GameEngine.EventManager import *
 from GameEngine.DungeonRun import *
 from GameEngine.BossFight import BossFight
@@ -31,6 +32,7 @@ class GameManager:
         self.menuOptions[menu.Loading] = self.menuOptions[menu.Main]
         self.menuOptions[menu.NewGame] = GameMenu(self.SCREEN_RES)
         self.menuOptions[menu.Controls] = ControlsMenu(self.SCREEN_RES)
+        self.menuOptions[menu.ClassInfo] = ClassMenu(self.SCREEN_RES)
         self.menuOptions[menu.PartySelection] = self.menuOptions[menu.Main]
         self.bg_color = pygame.color.THECOLORS['black']
         self.Party_Load = None
@@ -60,14 +62,14 @@ class GameManager:
             if self.running:
                 self.gameWindow.fill(self.bg_color)
                 self.menuOptions[self.currentMenuState].draw(self.gameWindow)
-                if self.currentMenuState != menu.Controls:
+                if self.currentMenuState != menu.Controls and self.currentMenuState != menu.ClassInfo:
                     self.menuOptions[self.currentMenuState].play_sounds()
                 pygame.display.update()
 
     def RunDungeon(self):
         self.loading.draw(self.gameWindow)
+        self.musicManager.set_volume(0.5)
         self.musicManager.load_music("Sounds/Music/Final Fantasy Mystic Quest - Lava Dome.mp3")
-        self.musicManager.set_volume(0.6)
         self.musicManager.play_music(0)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
@@ -77,8 +79,8 @@ class GameManager:
 
     def startBossFight(self):
         self.loading.draw(self.gameWindow)
+        self.musicManager.set_volume(0.5)
         self.musicManager.load_music("Sounds/Music/Final Fantasy Mystic Quest OST - Battle 2.mp3")
-        self.musicManager.set_volume(0.6)
         self.musicManager.play_music(0)
         self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
         self.game.start_game()
@@ -100,7 +102,7 @@ class GameManager:
         with open(self.f_name, 'rb') as input:
             self.Party_Load = pickle.load(input)
 
-    def determineState(self,currentMenu):
+    def determineState(self, currentMenu):
         if currentMenu == None:
             return
 
@@ -119,6 +121,8 @@ class GameManager:
                 newMenuOption = menu.NewGame
             elif selected == "Game Controls":
                 newMenuOption = menu.Controls
+            elif selected == "Class Info":
+                newMenuOption = menu.ClassInfo
             elif selected == "Credits":
                 self.rollCredits()
             elif selected == "Exit":
@@ -137,6 +141,10 @@ class GameManager:
                 elif selected == "Save Game":
                     self.save_game()
                 newMenuOption = menu.NewGame
+        elif self.currentMenuState == menu.ClassInfo:
+
+            if selected == "Main Menu":
+                newMenuOption = menu.Main
 
         elif self.currentMenuState == menu.Loading:
             if selected == "New Game":
