@@ -24,6 +24,12 @@ class Warrior(Player):
         self.stats["CUR_HP"] = stats[3]
         self.stats["MAX_HP"] = stats[3]
         self.stats["ABILITY"] = self.max_rage_time
+        self.frames["rage"] = pygame.image.load(img + "/rage.png")
+        rect = self.frames["rage"].get_rect()
+        width = int(rect.w * (self.playerHeight / rect.h))
+        height = self.playerHeight
+        self.frames["rage"] = pygame.transform.scale(self.frames["rage"], (width, height))
+        self.frames["rage"] = self.frames["rage"].convert_alpha()
 
         self.weapons["axe"] = Weapon("images/Weapons/battlehammer.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
@@ -47,6 +53,7 @@ class Warrior(Player):
     def activate_rage(self):
         """ Method for applying the effects of rage."""
         if not self.rage_active:
+            self.image = self.frames["rage"]
             self.usingAbility = True
             self.rage_active = True
             self.num_ability_uses -= 1
