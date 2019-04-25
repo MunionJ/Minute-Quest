@@ -345,16 +345,16 @@ class DungeonRun:
                         if self.player.rect.colliderect(enemy.rect):
                             self.player.receive_dmg(enemy.stats["MELEE"],enemy.facing_right)
 
+                # Player melee attacks
                 if self.player.cur_weapon is not None:
-                    # print("DungeonRun.py: Line 244: ", self.player.cur_weapon.active)
                     if self.player.cur_weapon.active:
                         for enemy in room.enemies:
                             if self.player.cur_weapon.rect.colliderect(enemy.rect):
-                                # print("DungeonRun.py: Line 247: ", self.player.cur_weapon.rect.colliderect(enemy.rect))
-                                enemy.take_damage(self.player.deal_dmg())
-                                if not enemy.alive:
-                                    flagged_enemies.append(enemy)
-                                    room.enemies.remove(enemy)
+                                if enemy.invuln_timer <= 0:
+                                    enemy.take_damage(self.player.deal_dmg())
+                                    if not enemy.alive:
+                                        flagged_enemies.append(enemy)
+                                        room.enemies.remove(enemy)
 
 
             else:

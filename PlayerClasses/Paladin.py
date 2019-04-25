@@ -35,6 +35,10 @@ class Paladin(Player):
             self.num_ability_uses -= 1
 
     def deal_dmg(self):
+        self.stats["CUR_HP"] += int(((self.stats["MELEE"] + self.stats["MAGIC"] * 0.6) + self.cur_weapon.atk_pwr) * 0.15)
+        print(int(((self.stats["MELEE"] + self.stats["MAGIC"] * 0.6) + self.cur_weapon.atk_pwr) * 0.1))
+        if self.stats["CUR_HP"] > self.stats["MAX_HP"]:
+            self.stats["CUR_HP"] = self.stats["MAX_HP"]
         return self.stats["MELEE"] + int(self.stats["MAGIC"] * 0.6) + self.cur_weapon.atk_pwr
 
     def gain_level(self):

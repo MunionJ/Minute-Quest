@@ -68,7 +68,7 @@ class GameManager:
 
     def RunDungeon(self):
         self.loading.draw(self.gameWindow)
-        self.musicManager.set_volume(0.5)
+        self.musicManager.set_volume(0.2)
         self.musicManager.load_music("Sounds/Music/Final Fantasy Mystic Quest - Lava Dome.mp3")
         self.musicManager.play_music(0)
         self.game = DungeonRun(self.eventmanager, self.gameWindow, self.Party_Load)
@@ -79,7 +79,7 @@ class GameManager:
 
     def startBossFight(self):
         self.loading.draw(self.gameWindow)
-        self.musicManager.set_volume(0.5)
+        self.musicManager.set_volume(0.2)
         self.musicManager.load_music("Sounds/Music/Final Fantasy Mystic Quest OST - Battle 2.mp3")
         self.musicManager.play_music(0)
         self.game = BossFight(self.eventmanager, self.gameWindow, self.Party_Load)
