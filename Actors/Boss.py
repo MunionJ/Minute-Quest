@@ -386,7 +386,7 @@ class Boss(Actor):
             if self.hitWall:
                 if self.last_summon <= 0:
                     self.last_summon = self.projectile_Cooldown
-                    for i in range(30):
+                    for i in range(100):
                         tX = random.randint(32, 3200)
                         tY = -50
                         #   Arrow('images/Weapons/arrow.png', 32, 32, self.rect.center, (tX, tY), self.type, self.stats["RANGE"])

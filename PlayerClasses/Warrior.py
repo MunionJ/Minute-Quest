@@ -31,7 +31,7 @@ class Warrior(Player):
         self.frames["rage"] = pygame.transform.scale(self.frames["rage"], (width, height))
         self.frames["rage"] = self.frames["rage"].convert_alpha()
 
-        self.weapons["axe"] = Weapon("images/Weapons/battlehammer.png", (40, 40))
+        self.weapons["axe"] = Weapon("images/Weapons/silverhalberd.png", (40, 40))
         self.cur_weapon = self.weapons["axe"]
         self.cur_weapon.rect = self.rect.copy()
         self.num_ability_uses = 3
